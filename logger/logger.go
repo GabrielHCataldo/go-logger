@@ -3,6 +3,7 @@ package logger
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/iancoleman/orderedmap"
 	"log"
 	"os"
 	"reflect"
@@ -111,22 +112,20 @@ func loggNormal(l level, skipCaller int) *log.Logger {
 
 func prepareMsg(l level, skipCaller int, vs ...any) []any {
 	var msg []any
-	//todo -> aqui precisamos setar o hide e mask tags colocadas no objeto para dar o replace no valor
-	// criar tbm InfoMask e assim por diante para variaveis
 	for _, v := range vs {
 		var vr any
 		t := reflect.TypeOf(v)
+		vf := reflect.ValueOf(v)
 		if t.Kind() == reflect.Pointer {
 			t = t.Elem()
+			vr = vf.Elem()
 		}
 		switch t.Kind() {
-		case reflect.Struct, reflect.Slice, reflect.Map, reflect.Array:
-			b, err := json.Marshal(vr)
-			if err == nil {
-				vr = string(b)
-			} else {
-				vr = v
-			}
+		case reflect.Struct, reflect.Map:
+			vr = prepareStructMsg(t, vf)
+			break
+		case reflect.Slice, reflect.Array:
+			vr = prepareSliceMsg(vf, "")
 			break
 		default:
 			vr = v
@@ -135,7 +134,7 @@ func prepareMsg(l level, skipCaller int, vs ...any) []any {
 	}
 	switch opt.Mode {
 	case ModeJson:
-		return prepareMsgJson(l, skipCaller, msg)
+		return prepareMsgJson(l, skipCaller+1, msg...)
 	}
 	return msg
 }
@@ -159,11 +158,109 @@ func prepareMsgJson(l level, skipCaller int, v ...any) []any {
 	}
 	b, err := json.Marshal(jLog)
 	if err == nil {
-		vr = string(b)
+		vr = strings.ReplaceAll(string(b), "\\", "")
 	} else {
 		vr = jLog
 	}
 	return []any{vr}
+}
+
+func prepareStructMsg(t reflect.Type, v reflect.Value) any {
+	result := orderedmap.New()
+	result.SetEscapeHTML(false)
+	for i := 0; i < v.NumField(); i++ {
+		f := v.Field(i)
+		ft := t.Field(i)
+		if f.IsZero() || !f.IsValid() || (f.Kind() == reflect.Pointer && f.IsNil()) {
+			continue
+		}
+		k := getJsonNameByTag(ft.Tag.Get("json"))
+		fv := reflect.ValueOf(getValueByReflect(ft.Type, f, ft.Tag.Get("logger")))
+		if fv.IsValid() && !fv.IsZero() && len(k) != 0 {
+			result.Set(k, fv.String())
+		}
+	}
+	b, err := json.Marshal(result)
+	if err != nil {
+		return v.Interface()
+	}
+	return string(b)
+}
+
+func prepareSliceMsg(v reflect.Value, loggerTag string) any {
+	var result []string
+	for i := 0; i < v.Len(); i++ {
+		f := v.Index(i)
+		if f.IsZero() || !f.IsValid() || (f.Kind() == reflect.Pointer && f.IsNil()) {
+			continue
+		} else if f.Kind() == reflect.Pointer {
+			f = f.Elem()
+		}
+		fv := reflect.ValueOf(getValueByReflect(f.Type(), f, loggerTag))
+		if fv.IsValid() && !fv.IsZero() {
+			result = append(result, fv.String())
+		}
+	}
+	if len(result) == 0 {
+		b, err := json.Marshal(result)
+		if err != nil {
+			return v.Interface()
+		}
+		return string(b)
+	}
+	return strings.Join(result[:], ", ")
+}
+
+func getValueByReflect(t reflect.Type, v reflect.Value, loggerTag string) any {
+	if !v.CanInterface() {
+		return nil
+	}
+	switch v.Interface().(type) {
+	case time.Time:
+		return convertStringReflectValue(v, loggerTag)
+	}
+	switch v.Kind() {
+	case reflect.Struct, reflect.Map:
+		return prepareStructMsg(t, v)
+	case reflect.Array, reflect.Slice:
+		return prepareSliceMsg(v, loggerTag)
+	}
+	return convertStringReflectValue(v, loggerTag)
+}
+
+func convertStringReflectValue(v reflect.Value, loggerTag string) string {
+	s := convertToString(v.Interface())
+	if len(s) > 0 {
+		if strings.Contains(loggerTag, "hide") {
+			vm := ""
+			for i := 0; i < len(s); i++ {
+				vm += "*"
+			}
+			s = vm
+		} else if strings.Contains(loggerTag, "mask_start") {
+			if len(s) == 1 {
+				s = "*"
+			} else {
+				vm := ""
+				for i := 0; i < len(s)/2; i++ {
+					vm += "*"
+				}
+				vm += s[len(s)/2:]
+				s = vm
+			}
+		} else if strings.Contains(loggerTag, "mask_end") {
+			if len(s) == 1 {
+				s = "*"
+			} else {
+				vm := s[:len(s)/2]
+				for i := 0; i < len(s)/2; i++ {
+					vm += "*"
+				}
+				s = vm
+			}
+		}
+	}
+	return s
 }
 
 func getArgLogLevel(l level) string {

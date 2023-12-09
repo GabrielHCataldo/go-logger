@@ -43,18 +43,57 @@ func initOptions() {
 	}
 }
 
+// Info is a function that records informational messages based on the global options variable, using the level INFO.
+//
+// Usage Example:
+//
+// logger.Info("test", true, 112, 10.99)
+//
+// Result (options default):
+//
+// [INFO 2023/12/09 19:26:09] example.go:239: test true 112 10.99
 func Info(v ...any) {
 	printLog(levelInfo, 3, v...)
 }
 
+// InfoH is a function that records informational messages based on the global options variable, using the INFO level,
+// different from Info, this function will hide all values passed as parameters (v ...any).
+//
+// Usage Example:
+//
+// logger.InfoH("test", true, 112, 10.99)
+//
+// Result (options default):
+//
+// [INFO 2023/12/09 19:26:09] example.go:239: **** **** *** *****
 func InfoH(v ...any) {
 	printLogH(levelInfo, 3, v...)
 }
 
+// InfoMS is a function that logs informational messages based on the global options variable, using the INFO level,
+// unlike Info, this function will hide the initial half of the values passed as parameters (v ...any).
+//
+// Usage Example:
+//
+// logger.InfoMS("test", true, 112, 10.99)
+//
+// Result (options default):
+//
+// [INFO 2023/12/09 19:26:09] example.go:239: **st **ue **2 ***99
 func InfoMS(v ...any) {
 	printLogMS(levelInfo, 3, v...)
 }
 
+// InfoME is a function that logs informational messages based on the global options variable, using the INFO level,
+// unlike Info, this function will hide the end half of the values passed as parameters (v ...any).
+//
+// Usage Example:
+//
+// logger.InfoME("test", true, 112, 10.99)
+//
+// Result (options default):
+//
+// [INFO 2023/12/09 19:26:09] example.go:239: te** tr** 1** 10***
 func InfoME(v ...any) {
 	printLogME(levelInfo, 3, v...)
 }

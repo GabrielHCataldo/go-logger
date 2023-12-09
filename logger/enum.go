@@ -1,5 +1,7 @@
 package logger
 
+import "math/rand"
+
 type BaseEnum interface {
 	isEnumValid() bool
 }
@@ -77,4 +79,19 @@ func (l level) Color() string {
 
 func (l level) String() string {
 	return string(l)
+}
+
+func randomMode() Mode {
+	m := []Mode{ModeDefault, ModeJson}
+	return m[rand.Intn(2)]
+}
+
+func randomDateFormat() DateFormat {
+	ds := []DateFormat{
+		DateFormatFull24h, DateFormatFull12h, DateFormatNormal, DateFormatTime24h, DateFormatTime12h,
+		DateFormatTextDate, DateFormatTextDatetime24h, DateFormatTextDatetime12h, DateFormatTextDateWithWeekday,
+		DateFormatTextDatetime24hWithWeekday, DateFormatTextDatetime12hWithWeekday, DateFormatAbbrTextDate,
+		DateFormatAbbrTextDatetime24h, DateFormatAbbrTextDatetime12h,
+	}
+	return ds[rand.Intn(14)]
 }

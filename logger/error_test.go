@@ -13,11 +13,11 @@ func TestError(t *testing.T) {
 	}
 }
 
-func TestErrorF(t *testing.T) {
+func TestErrorf(t *testing.T) {
 	for _, table := range initTables() {
 		initOptionsTest()
 		t.Run(table.name, func(t *testing.T) {
-			ErrorF(table.format, table.args...)
+			Errorf(table.format, table.args...)
 		})
 	}
 }
@@ -66,29 +66,29 @@ func TestErrorME(t *testing.T) {
 	}
 }
 
-func TestErrorFH(t *testing.T) {
+func TestErrorfH(t *testing.T) {
 	for _, table := range initTables() {
 		initOptionsTest()
 		t.Run(table.name, func(t *testing.T) {
-			ErrorFH(table.format, table.args...)
+			ErrorfH(table.format, table.args...)
 		})
 	}
 }
 
-func TestErrorFMS(t *testing.T) {
+func TestErrorfMS(t *testing.T) {
 	for _, table := range initTables() {
 		initOptionsTest()
 		t.Run(table.name, func(t *testing.T) {
-			ErrorFMS(table.format, table.args...)
+			ErrorfMS(table.format, table.args...)
 		})
 	}
 }
 
-func TestErrorFME(t *testing.T) {
+func TestErrorfME(t *testing.T) {
 	for _, table := range initTables() {
 		initOptionsTest()
 		t.Run(table.name, func(t *testing.T) {
-			ErrorFME(table.format, table.args...)
+			ErrorfME(table.format, table.args...)
 		})
 	}
 }
@@ -117,43 +117,43 @@ func TestErrorOptsME(t *testing.T) {
 	}
 }
 
-func TestErrorOptsF(t *testing.T) {
+func TestErrorOptsf(t *testing.T) {
 	for _, table := range initTables() {
 		t.Run(table.name, func(t *testing.T) {
-			ErrorOptsF(table.format, *getOptionsTest(), table.args...)
+			ErrorOptsf(table.format, *getOptionsTest(), table.args...)
 		})
 	}
 }
 
-func TestErrorOptsFH(t *testing.T) {
+func TestErrorOptsfH(t *testing.T) {
 	for _, table := range initTables() {
 		t.Run(table.name, func(t *testing.T) {
-			ErrorOptsFH(table.format, *getOptionsTest(), table.args...)
+			ErrorOptsfH(table.format, *getOptionsTest(), table.args...)
 		})
 	}
 }
 
-func TestErrorOptsFMS(t *testing.T) {
+func TestErrorOptsfMS(t *testing.T) {
 	for _, table := range initTables() {
 		t.Run(table.name, func(t *testing.T) {
-			ErrorOptsFMS(table.format, *getOptionsTest(), table.args...)
+			ErrorOptsfMS(table.format, *getOptionsTest(), table.args...)
 		})
 	}
 }
 
-func TestErrorOptsFME(t *testing.T) {
+func TestErrorOptsfME(t *testing.T) {
 	for _, table := range initTables() {
 		t.Run(table.name, func(t *testing.T) {
-			ErrorOptsFME(table.format, *getOptionsTest(), table.args...)
+			ErrorOptsfME(table.format, *getOptionsTest(), table.args...)
 		})
 	}
 }
 
-func TestErrorSkipCallerF(t *testing.T) {
+func TestErrorSkipCallerf(t *testing.T) {
 	for _, table := range initTables() {
 		initOptionsTest()
 		t.Run(table.name, func(t *testing.T) {
-			ErrorSkipCallerF(table.format, table.skipCaller, table.args...)
+			ErrorSkipCallerf(table.format, table.skipCaller, table.args...)
 		})
 	}
 }
@@ -185,29 +185,29 @@ func TestErrorSkipCallerME(t *testing.T) {
 	}
 }
 
-func TestErrorSkipCallerFH(t *testing.T) {
+func TestErrorSkipCallerfH(t *testing.T) {
 	for _, table := range initTables() {
 		initOptionsTest()
 		t.Run(table.name, func(t *testing.T) {
-			ErrorSkipCallerFH(table.format, table.skipCaller, table.args...)
+			ErrorSkipCallerfH(table.format, table.skipCaller, table.args...)
 		})
 	}
 }
 
-func TestErrorSkipCallerFMS(t *testing.T) {
+func TestErrorSkipCallerfMS(t *testing.T) {
 	for _, table := range initTables() {
 		initOptionsTest()
 		t.Run(table.name, func(t *testing.T) {
-			ErrorSkipCallerFMS(table.format, table.skipCaller, table.args...)
+			ErrorSkipCallerfMS(table.format, table.skipCaller, table.args...)
 		})
 	}
 }
 
-func TestErrorSkipCallerFME(t *testing.T) {
+func TestErrorSkipCallerfME(t *testing.T) {
 	for _, table := range initTables() {
 		initOptionsTest()
 		t.Run(table.name, func(t *testing.T) {
-			ErrorSkipCallerFME(table.format, table.skipCaller, table.args...)
+			ErrorSkipCallerfME(table.format, table.skipCaller, table.args...)
 		})
 	}
 }
@@ -220,10 +220,10 @@ func TestErrorSkipCallerOpts(t *testing.T) {
 	}
 }
 
-func TestErrorSkipCallerOptsF(t *testing.T) {
+func TestErrorSkipCallerOptsf(t *testing.T) {
 	for _, table := range initTables() {
 		t.Run(table.name, func(t *testing.T) {
-			ErrorSkipCallerOptsF(table.format, table.skipCaller, *getOptionsTest(), table.args...)
+			ErrorSkipCallerOptsf(table.format, table.skipCaller, *getOptionsTest(), table.args...)
 		})
 	}
 }
@@ -252,26 +252,26 @@ func TestErrorSkipCallerOptsME(t *testing.T) {
 	}
 }
 
-func TestErrorSkipCallerOptsFH(t *testing.T) {
+func TestErrorSkipCallerOptsfH(t *testing.T) {
 	for _, table := range initTables() {
 		t.Run(table.name, func(t *testing.T) {
-			ErrorSkipCallerOptsFH(table.format, table.skipCaller, *getOptionsTest(), table.args...)
+			ErrorSkipCallerOptsfH(table.format, table.skipCaller, *getOptionsTest(), table.args...)
 		})
 	}
 }
 
-func TestErrorSkipCallerOptsFMS(t *testing.T) {
+func TestErrorSkipCallerOptsfMS(t *testing.T) {
 	for _, table := range initTables() {
 		t.Run(table.name, func(t *testing.T) {
-			ErrorSkipCallerOptsFMS(table.format, table.skipCaller, *getOptionsTest(), table.args...)
+			ErrorSkipCallerOptsfMS(table.format, table.skipCaller, *getOptionsTest(), table.args...)
 		})
 	}
 }
 
-func TestErrorSkipCallerOptsFME(t *testing.T) {
+func TestErrorSkipCallerOptsfME(t *testing.T) {
 	for _, table := range initTables() {
 		t.Run(table.name, func(t *testing.T) {
-			ErrorSkipCallerOptsFME(table.format, table.skipCaller, *getOptionsTest(), table.args...)
+			ErrorSkipCallerOptsfME(table.format, table.skipCaller, *getOptionsTest(), table.args...)
 		})
 	}
 }

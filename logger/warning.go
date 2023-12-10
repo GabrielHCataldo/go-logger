@@ -4,7 +4,7 @@ func Warning(v ...any) {
 	printLog(levelWarning, 3, *opts, "", "", v...)
 }
 
-func WarningF(format string, v ...any) {
+func Warningf(format string, v ...any) {
 	printLog(levelWarning, 3, *opts, format, "", v...)
 }
 
@@ -28,15 +28,15 @@ func WarningME(v ...any) {
 	printLog(levelWarning, 3, *opts, "", loggerTagMaskEnd, v...)
 }
 
-func WarningFH(format string, v ...any) {
+func WarningfH(format string, v ...any) {
 	printLog(levelWarning, 3, *opts, format, loggerTagHide, v...)
 }
 
-func WarningFMS(format string, v ...any) {
+func WarningfMS(format string, v ...any) {
 	printLog(levelWarning, 3, *opts, format, loggerTagMaskStart, v...)
 }
 
-func WarningFME(format string, v ...any) {
+func WarningfME(format string, v ...any) {
 	printLog(levelWarning, 3, *opts, format, loggerTagMaskEnd, v...)
 }
 
@@ -52,23 +52,23 @@ func WarningOptsME(opts Options, v ...any) {
 	printLog(levelWarning, 3, opts, "", loggerTagMaskEnd, v...)
 }
 
-func WarningOptsF(format string, opts Options, v ...any) {
+func WarningOptsf(format string, opts Options, v ...any) {
 	printLog(levelWarning, 3, opts, format, loggerTagHide, v...)
 }
 
-func WarningOptsFH(format string, opts Options, v ...any) {
+func WarningOptsfH(format string, opts Options, v ...any) {
 	printLog(levelWarning, 3, opts, format, loggerTagHide, v...)
 }
 
-func WarningOptsFMS(format string, opts Options, v ...any) {
+func WarningOptsfMS(format string, opts Options, v ...any) {
 	printLog(levelWarning, 3, opts, format, loggerTagMaskStart, v...)
 }
 
-func WarningOptsFME(format string, opts Options, v ...any) {
+func WarningOptsfME(format string, opts Options, v ...any) {
 	printLog(levelWarning, 3, opts, format, loggerTagMaskEnd, v...)
 }
 
-func WarningSkipCallerF(format string, skipCaller int, v ...any) {
+func WarningSkipCallerf(format string, skipCaller int, v ...any) {
 	printLog(levelWarning, skipCaller, *opts, format, loggerTagHide, v...)
 }
 
@@ -84,15 +84,15 @@ func WarningSkipCallerME(skipCaller int, v ...any) {
 	printLog(levelWarning, skipCaller, *opts, "", loggerTagMaskEnd, v...)
 }
 
-func WarningSkipCallerFH(format string, skipCaller int, v ...any) {
+func WarningSkipCallerfH(format string, skipCaller int, v ...any) {
 	printLog(levelWarning, skipCaller, *opts, format, loggerTagHide, v...)
 }
 
-func WarningSkipCallerFMS(format string, skipCaller int, v ...any) {
+func WarningSkipCallerfMS(format string, skipCaller int, v ...any) {
 	printLog(levelWarning, skipCaller, *opts, format, loggerTagMaskStart, v...)
 }
 
-func WarningSkipCallerFME(format string, skipCaller int, v ...any) {
+func WarningSkipCallerfME(format string, skipCaller int, v ...any) {
 	printLog(levelWarning, skipCaller, *opts, format, loggerTagMaskEnd, v...)
 }
 
@@ -100,7 +100,7 @@ func WarningSkipCallerOpts(skipCaller int, opts Options, v ...any) {
 	printLog(levelWarning, skipCaller, opts, "", "", v...)
 }
 
-func WarningSkipCallerOptsF(format string, skipCaller int, opts Options, v ...any) {
+func WarningSkipCallerOptsf(format string, skipCaller int, opts Options, v ...any) {
 	printLog(levelWarning, skipCaller, opts, format, "", v...)
 }
 
@@ -116,14 +116,14 @@ func WarningSkipCallerOptsME(skipCaller int, opts Options, v ...any) {
 	printLog(levelWarning, skipCaller, opts, "", loggerTagMaskEnd, v...)
 }
 
-func WarningSkipCallerOptsFH(format string, skipCaller int, opts Options, v ...any) {
+func WarningSkipCallerOptsfH(format string, skipCaller int, opts Options, v ...any) {
 	printLog(levelWarning, skipCaller, opts, format, loggerTagHide, v...)
 }
 
-func WarningSkipCallerOptsFMS(format string, skipCaller int, opts Options, v ...any) {
+func WarningSkipCallerOptsfMS(format string, skipCaller int, opts Options, v ...any) {
 	printLog(levelWarning, skipCaller, opts, format, loggerTagMaskStart, v...)
 }
 
-func WarningSkipCallerOptsFME(format string, skipCaller int, opts Options, v ...any) {
+func WarningSkipCallerOptsfME(format string, skipCaller int, opts Options, v ...any) {
 	printLog(levelWarning, skipCaller, opts, format, loggerTagMaskEnd, v...)
 }

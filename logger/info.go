@@ -13,7 +13,7 @@ func Info(v ...any) {
 	printLog(levelInfo, 3, *opts, "", "", v...)
 }
 
-func InfoF(format string, v ...any) {
+func Infof(format string, v ...any) {
 	printLog(levelInfo, 3, *opts, format, "", v...)
 }
 
@@ -78,15 +78,15 @@ func InfoME(v ...any) {
 	printLog(levelInfo, 3, *opts, "", loggerTagMaskEnd, v...)
 }
 
-func InfoFH(format string, v ...any) {
+func InfofH(format string, v ...any) {
 	printLog(levelInfo, 3, *opts, format, loggerTagHide, v...)
 }
 
-func InfoFMS(format string, v ...any) {
+func InfofMS(format string, v ...any) {
 	printLog(levelInfo, 3, *opts, format, loggerTagMaskStart, v...)
 }
 
-func InfoFME(format string, v ...any) {
+func InfofME(format string, v ...any) {
 	printLog(levelInfo, 3, *opts, format, loggerTagMaskEnd, v...)
 }
 
@@ -113,23 +113,23 @@ func InfoOptsME(opts Options, v ...any) {
 	printLog(levelInfo, 3, opts, "", loggerTagMaskEnd, v...)
 }
 
-func InfoOptsF(format string, opts Options, v ...any) {
+func InfoOptsf(format string, opts Options, v ...any) {
 	printLog(levelInfo, 3, opts, format, loggerTagHide, v...)
 }
 
-func InfoOptsFH(format string, opts Options, v ...any) {
+func InfoOptsfH(format string, opts Options, v ...any) {
 	printLog(levelInfo, 3, opts, format, loggerTagHide, v...)
 }
 
-func InfoOptsFMS(format string, opts Options, v ...any) {
+func InfoOptsfMS(format string, opts Options, v ...any) {
 	printLog(levelInfo, 3, opts, format, loggerTagMaskStart, v...)
 }
 
-func InfoOptsFME(format string, opts Options, v ...any) {
+func InfoOptsfME(format string, opts Options, v ...any) {
 	printLog(levelInfo, 3, opts, format, loggerTagMaskEnd, v...)
 }
 
-func InfoSkipCallerF(format string, skipCaller int, v ...any) {
+func InfoSkipCallerf(format string, skipCaller int, v ...any) {
 	printLog(levelInfo, skipCaller, *opts, format, loggerTagHide, v...)
 }
 
@@ -145,15 +145,15 @@ func InfoSkipCallerME(skipCaller int, v ...any) {
 	printLog(levelInfo, skipCaller, *opts, "", loggerTagMaskEnd, v...)
 }
 
-func InfoSkipCallerFH(format string, skipCaller int, v ...any) {
+func InfoSkipCallerfH(format string, skipCaller int, v ...any) {
 	printLog(levelInfo, skipCaller, *opts, format, loggerTagHide, v...)
 }
 
-func InfoSkipCallerFMS(format string, skipCaller int, v ...any) {
+func InfoSkipCallerfMS(format string, skipCaller int, v ...any) {
 	printLog(levelInfo, skipCaller, *opts, format, loggerTagMaskStart, v...)
 }
 
-func InfoSkipCallerFME(format string, skipCaller int, v ...any) {
+func InfoSkipCallerfME(format string, skipCaller int, v ...any) {
 	printLog(levelInfo, skipCaller, *opts, format, loggerTagMaskEnd, v...)
 }
 
@@ -161,7 +161,7 @@ func InfoSkipCallerOpts(skipCaller int, opts Options, v ...any) {
 	printLog(levelInfo, skipCaller, opts, "", "", v...)
 }
 
-func InfoSkipCallerOptsF(format string, skipCaller int, opts Options, v ...any) {
+func InfoSkipCallerOptsf(format string, skipCaller int, opts Options, v ...any) {
 	printLog(levelInfo, skipCaller, opts, format, "", v...)
 }
 
@@ -177,14 +177,14 @@ func InfoSkipCallerOptsME(skipCaller int, opts Options, v ...any) {
 	printLog(levelInfo, skipCaller, opts, "", loggerTagMaskEnd, v...)
 }
 
-func InfoSkipCallerOptsFH(format string, skipCaller int, opts Options, v ...any) {
+func InfoSkipCallerOptsfH(format string, skipCaller int, opts Options, v ...any) {
 	printLog(levelInfo, skipCaller, opts, format, loggerTagHide, v...)
 }
 
-func InfoSkipCallerOptsFMS(format string, skipCaller int, opts Options, v ...any) {
+func InfoSkipCallerOptsfMS(format string, skipCaller int, opts Options, v ...any) {
 	printLog(levelInfo, skipCaller, opts, format, loggerTagMaskStart, v...)
 }
 
-func InfoSkipCallerOptsFME(format string, skipCaller int, opts Options, v ...any) {
+func InfoSkipCallerOptsfME(format string, skipCaller int, opts Options, v ...any) {
 	printLog(levelInfo, skipCaller, opts, format, loggerTagMaskEnd, v...)
 }

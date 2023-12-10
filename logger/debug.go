@@ -4,7 +4,7 @@ func Debug(v ...any) {
 	printLog(levelDebug, 3, *opts, "", "", v...)
 }
 
-func DebugF(format string, v ...any) {
+func Debugf(format string, v ...any) {
 	printLog(levelDebug, 3, *opts, format, "", v...)
 }
 
@@ -28,15 +28,15 @@ func DebugME(v ...any) {
 	printLog(levelDebug, 3, *opts, "", loggerTagMaskEnd, v...)
 }
 
-func DebugFH(format string, v ...any) {
+func DebugfH(format string, v ...any) {
 	printLog(levelDebug, 3, *opts, format, loggerTagHide, v...)
 }
 
-func DebugFMS(format string, v ...any) {
+func DebugfMS(format string, v ...any) {
 	printLog(levelDebug, 3, *opts, format, loggerTagMaskStart, v...)
 }
 
-func DebugFME(format string, v ...any) {
+func DebugfME(format string, v ...any) {
 	printLog(levelDebug, 3, *opts, format, loggerTagMaskEnd, v...)
 }
 
@@ -52,23 +52,23 @@ func DebugOptsME(opts Options, v ...any) {
 	printLog(levelDebug, 3, opts, "", loggerTagMaskEnd, v...)
 }
 
-func DebugOptsF(format string, opts Options, v ...any) {
+func DebugOptsf(format string, opts Options, v ...any) {
 	printLog(levelDebug, 3, opts, format, loggerTagHide, v...)
 }
 
-func DebugOptsFH(format string, opts Options, v ...any) {
+func DebugOptsfH(format string, opts Options, v ...any) {
 	printLog(levelDebug, 3, opts, format, loggerTagHide, v...)
 }
 
-func DebugOptsFMS(format string, opts Options, v ...any) {
+func DebugOptsfMS(format string, opts Options, v ...any) {
 	printLog(levelDebug, 3, opts, format, loggerTagMaskStart, v...)
 }
 
-func DebugOptsFME(format string, opts Options, v ...any) {
+func DebugOptsfME(format string, opts Options, v ...any) {
 	printLog(levelDebug, 3, opts, format, loggerTagMaskEnd, v...)
 }
 
-func DebugSkipCallerF(format string, skipCaller int, v ...any) {
+func DebugSkipCallerf(format string, skipCaller int, v ...any) {
 	printLog(levelDebug, skipCaller, *opts, format, loggerTagHide, v...)
 }
 
@@ -84,15 +84,15 @@ func DebugSkipCallerME(skipCaller int, v ...any) {
 	printLog(levelDebug, skipCaller, *opts, "", loggerTagMaskEnd, v...)
 }
 
-func DebugSkipCallerFH(format string, skipCaller int, v ...any) {
+func DebugSkipCallerfH(format string, skipCaller int, v ...any) {
 	printLog(levelDebug, skipCaller, *opts, format, loggerTagHide, v...)
 }
 
-func DebugSkipCallerFMS(format string, skipCaller int, v ...any) {
+func DebugSkipCallerfMS(format string, skipCaller int, v ...any) {
 	printLog(levelDebug, skipCaller, *opts, format, loggerTagMaskStart, v...)
 }
 
-func DebugSkipCallerFME(format string, skipCaller int, v ...any) {
+func DebugSkipCallerfME(format string, skipCaller int, v ...any) {
 	printLog(levelDebug, skipCaller, *opts, format, loggerTagMaskEnd, v...)
 }
 
@@ -100,7 +100,7 @@ func DebugSkipCallerOpts(skipCaller int, opts Options, v ...any) {
 	printLog(levelDebug, skipCaller, opts, "", "", v...)
 }
 
-func DebugSkipCallerOptsF(format string, skipCaller int, opts Options, v ...any) {
+func DebugSkipCallerOptsf(format string, skipCaller int, opts Options, v ...any) {
 	printLog(levelDebug, skipCaller, opts, format, "", v...)
 }
 
@@ -116,14 +116,14 @@ func DebugSkipCallerOptsME(skipCaller int, opts Options, v ...any) {
 	printLog(levelDebug, skipCaller, opts, "", loggerTagMaskEnd, v...)
 }
 
-func DebugSkipCallerOptsFH(format string, skipCaller int, opts Options, v ...any) {
+func DebugSkipCallerOptsfH(format string, skipCaller int, opts Options, v ...any) {
 	printLog(levelDebug, skipCaller, opts, format, loggerTagHide, v...)
 }
 
-func DebugSkipCallerOptsFMS(format string, skipCaller int, opts Options, v ...any) {
+func DebugSkipCallerOptsfMS(format string, skipCaller int, opts Options, v ...any) {
 	printLog(levelDebug, skipCaller, opts, format, loggerTagMaskStart, v...)
 }
 
-func DebugSkipCallerOptsFME(format string, skipCaller int, opts Options, v ...any) {
+func DebugSkipCallerOptsfME(format string, skipCaller int, opts Options, v ...any) {
 	printLog(levelDebug, skipCaller, opts, format, loggerTagMaskEnd, v...)
 }

@@ -13,11 +13,11 @@ func TestDebug(t *testing.T) {
 	}
 }
 
-func TestDebugF(t *testing.T) {
+func TestDebugf(t *testing.T) {
 	for _, table := range initTables() {
 		initOptionsTest()
 		t.Run(table.name, func(t *testing.T) {
-			DebugF(table.format, table.args...)
+			Debugf(table.format, table.args...)
 		})
 	}
 }
@@ -66,29 +66,29 @@ func TestDebugME(t *testing.T) {
 	}
 }
 
-func TestDebugFH(t *testing.T) {
+func TestDebugfH(t *testing.T) {
 	for _, table := range initTables() {
 		initOptionsTest()
 		t.Run(table.name, func(t *testing.T) {
-			DebugFH(table.format, table.args...)
+			DebugfH(table.format, table.args...)
 		})
 	}
 }
 
-func TestDebugFMS(t *testing.T) {
+func TestDebugfMS(t *testing.T) {
 	for _, table := range initTables() {
 		initOptionsTest()
 		t.Run(table.name, func(t *testing.T) {
-			DebugFMS(table.format, table.args...)
+			DebugfMS(table.format, table.args...)
 		})
 	}
 }
 
-func TestDebugFME(t *testing.T) {
+func TestDebugfME(t *testing.T) {
 	for _, table := range initTables() {
 		initOptionsTest()
 		t.Run(table.name, func(t *testing.T) {
-			DebugFME(table.format, table.args...)
+			DebugfME(table.format, table.args...)
 		})
 	}
 }
@@ -117,43 +117,43 @@ func TestDebugOptsME(t *testing.T) {
 	}
 }
 
-func TestDebugOptsF(t *testing.T) {
+func TestDebugOptsf(t *testing.T) {
 	for _, table := range initTables() {
 		t.Run(table.name, func(t *testing.T) {
-			DebugOptsF(table.format, *getOptionsTest(), table.args...)
+			DebugOptsf(table.format, *getOptionsTest(), table.args...)
 		})
 	}
 }
 
-func TestDebugOptsFH(t *testing.T) {
+func TestDebugOptsfH(t *testing.T) {
 	for _, table := range initTables() {
 		t.Run(table.name, func(t *testing.T) {
-			DebugOptsFH(table.format, *getOptionsTest(), table.args...)
+			DebugOptsfH(table.format, *getOptionsTest(), table.args...)
 		})
 	}
 }
 
-func TestDebugOptsFMS(t *testing.T) {
+func TestDebugOptsfMS(t *testing.T) {
 	for _, table := range initTables() {
 		t.Run(table.name, func(t *testing.T) {
-			DebugOptsFMS(table.format, *getOptionsTest(), table.args...)
+			DebugOptsfMS(table.format, *getOptionsTest(), table.args...)
 		})
 	}
 }
 
-func TestDebugOptsFME(t *testing.T) {
+func TestDebugOptsfME(t *testing.T) {
 	for _, table := range initTables() {
 		t.Run(table.name, func(t *testing.T) {
-			DebugOptsFME(table.format, *getOptionsTest(), table.args...)
+			DebugOptsfME(table.format, *getOptionsTest(), table.args...)
 		})
 	}
 }
 
-func TestDebugSkipCallerF(t *testing.T) {
+func TestDebugSkipCallerf(t *testing.T) {
 	for _, table := range initTables() {
 		initOptionsTest()
 		t.Run(table.name, func(t *testing.T) {
-			DebugSkipCallerF(table.format, table.skipCaller, table.args...)
+			DebugSkipCallerf(table.format, table.skipCaller, table.args...)
 		})
 	}
 }
@@ -185,29 +185,29 @@ func TestDebugSkipCallerME(t *testing.T) {
 	}
 }
 
-func TestDebugSkipCallerFH(t *testing.T) {
+func TestDebugSkipCallerfH(t *testing.T) {
 	for _, table := range initTables() {
 		initOptionsTest()
 		t.Run(table.name, func(t *testing.T) {
-			DebugSkipCallerFH(table.format, table.skipCaller, table.args...)
+			DebugSkipCallerfH(table.format, table.skipCaller, table.args...)
 		})
 	}
 }
 
-func TestDebugSkipCallerFMS(t *testing.T) {
+func TestDebugSkipCallerfMS(t *testing.T) {
 	for _, table := range initTables() {
 		initOptionsTest()
 		t.Run(table.name, func(t *testing.T) {
-			DebugSkipCallerFMS(table.format, table.skipCaller, table.args...)
+			DebugSkipCallerfMS(table.format, table.skipCaller, table.args...)
 		})
 	}
 }
 
-func TestDebugSkipCallerFME(t *testing.T) {
+func TestDebugSkipCallerfME(t *testing.T) {
 	for _, table := range initTables() {
 		initOptionsTest()
 		t.Run(table.name, func(t *testing.T) {
-			DebugSkipCallerFME(table.format, table.skipCaller, table.args...)
+			DebugSkipCallerfME(table.format, table.skipCaller, table.args...)
 		})
 	}
 }
@@ -220,10 +220,10 @@ func TestDebugSkipCallerOpts(t *testing.T) {
 	}
 }
 
-func TestDebugSkipCallerOptsF(t *testing.T) {
+func TestDebugSkipCallerOptsf(t *testing.T) {
 	for _, table := range initTables() {
 		t.Run(table.name, func(t *testing.T) {
-			DebugSkipCallerOptsF(table.format, table.skipCaller, *getOptionsTest(), table.args...)
+			DebugSkipCallerOptsf(table.format, table.skipCaller, *getOptionsTest(), table.args...)
 		})
 	}
 }
@@ -252,26 +252,26 @@ func TestDebugSkipCallerOptsME(t *testing.T) {
 	}
 }
 
-func TestDebugSkipCallerOptsFH(t *testing.T) {
+func TestDebugSkipCallerOptsfH(t *testing.T) {
 	for _, table := range initTables() {
 		t.Run(table.name, func(t *testing.T) {
-			DebugSkipCallerOptsFH(table.format, table.skipCaller, *getOptionsTest(), table.args...)
+			DebugSkipCallerOptsfH(table.format, table.skipCaller, *getOptionsTest(), table.args...)
 		})
 	}
 }
 
-func TestDebugSkipCallerOptsFMS(t *testing.T) {
+func TestDebugSkipCallerOptsfMS(t *testing.T) {
 	for _, table := range initTables() {
 		t.Run(table.name, func(t *testing.T) {
-			DebugSkipCallerOptsFMS(table.format, table.skipCaller, *getOptionsTest(), table.args...)
+			DebugSkipCallerOptsfMS(table.format, table.skipCaller, *getOptionsTest(), table.args...)
 		})
 	}
 }
 
-func TestDebugSkipCallerOptsFME(t *testing.T) {
+func TestDebugSkipCallerOptsfME(t *testing.T) {
 	for _, table := range initTables() {
 		t.Run(table.name, func(t *testing.T) {
-			DebugSkipCallerOptsFME(table.format, table.skipCaller, *getOptionsTest(), table.args...)
+			DebugSkipCallerOptsfME(table.format, table.skipCaller, *getOptionsTest(), table.args...)
 		})
 	}
 }

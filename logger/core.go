@@ -12,21 +12,6 @@ import (
 	"time"
 )
 
-var opts = &Options{}
-
-type Options struct {
-	Mode                   Mode
-	DateFormat             DateFormat
-	EnableAsynchronousMode bool
-	UTC                    bool
-	DontPrintEmptyMessage  bool
-	RemoveSpace            bool
-	HideAllArgs            bool
-	HideArgDatetime        bool
-	HideArgCaller          bool
-	DisablePrefixColors    bool
-}
-
 type logJson struct {
 	Level    string `json:"level,omitempty"`
 	Datetime string `json:"datetime,omitempty"`
@@ -36,10 +21,76 @@ type logJson struct {
 	Msg      string `json:"msg"`
 }
 
+var opts = &Options{}
+
+type Options struct {
+	// Print mode (default: ModeDefault)
+	Mode Mode
+	// Argument date format (default: DateFormatFull24h)
+	DateFormat DateFormat
+	// Enable asynchronous printing mode (default: false)
+	EnableAsynchronousMode bool
+	// Enable argument date to be UTC (default: false)
+	UTC bool
+	// Enable to not print empty message (default: false)
+	DontPrintEmptyMessage bool
+	// Enable to remove spaces between parameters (default: false)
+	RemoveSpace bool
+	// If true will hide all datetime and prefix arguments (default: false)
+	HideAllArgs bool
+	// If true it will hide the datetime arguments (default: false)
+	HideArgDatetime bool
+	// If true, it will hide the caller arguments (default: false)
+	HideArgCaller bool
+	// If true, it will disable all argument and prefix colors (default: false)
+	DisablePrefixColors bool
+}
+
+// SetOptions sets the global options to the specified options pointer.
+//
+// This function allows you to configure the behavior of the logging package
+// by setting various options such as print mode, date format, asynchronous mode, etc.
+//
+// # Example usage:
+//
+//	logger.SetOptions(logger.Options{})
+//
+// # Parameters:
+//
+//	options - A pointer to an Options struct that contains the desired configuration options.
+//
+// # Note:
+//
+//	The Options struct contains the following fields:
+//	- Mode: Print mode (default: ModeDefault)
+//	- DateFormat: Argument date format (default: DateFormatFull24h)
+//	- EnableAsynchronousMode: Enable asynchronous printing mode (default: false)
+//	- UTC: Enable argument date to be UTC (default: false)
+//	- DontPrintEmptyMessage: Enable to not print empty message (default: false)
+//	- RemoveSpace: Enable to remove spaces between parameters (default: false)
+//	- HideAllArgs: If true will hide all datetime and prefix arguments (default: false)
+//	- HideArgDatetime: If true it will hide the datetime arguments (default: false)
+//	- HideArgCaller: If true, it will hide the caller arguments (default: false)
+//	- DisablePrefixColors: If true, it will disable all argument and prefix colors (default: false)
+//
+// # Return:
+//
+//	None
 func SetOptions(options *Options) {
 	opts = options
 }
 
+// ResetOptionsToDefault resets the global options to their default values.
+// This function initializes the opts variable with a new instance of the Options struct, effectively resetting all
+// options to their default values.
+//
+// # Example usage:
+//
+//	logger.ResetOptionsToDefault()
+//
+// # Return:
+//
+//	None
 func ResetOptionsToDefault() {
 	opts = &Options{}
 }

@@ -6,7 +6,10 @@ import (
 
 func TestInfo(t *testing.T) {
 	for _, table := range initTables() {
-		initOptionsTest()
+		opt := getOptionsTest()
+		opt.EnableAsynchronousMode = false
+		opt.DontPrintEmptyMessage = true
+		SetOptions(opt)
 		t.Run(table.name, func(t *testing.T) {
 			Info(table.args...)
 		})

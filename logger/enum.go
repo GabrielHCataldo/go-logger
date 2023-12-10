@@ -65,11 +65,11 @@ func (l level) Color() string {
 	case levelInfo:
 		return "\u001b[34m"
 	case levelDebug:
-		return "\u001b[33m"
-	case levelWarning:
-		return "\u001b[31m"
-	case levelError:
 		return "\u001b[36m"
+	case levelWarning:
+		return "\u001b[33m"
+	case levelError:
+		return "\u001b[31m"
 	default:
 		return "\u001B[0m"
 	}

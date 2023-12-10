@@ -170,7 +170,7 @@ func initPointerString() *string {
 func initTables() []tableTest {
 	return []tableTest{
 		{
-			"no arguments", "", 3, []any{},
+			"no arguments", "", 3, []any{nil, "", 0, map[string]any{}, []any{}},
 		},
 		{
 			"normal arguments", "%s, %s, %s, %s, %s, %s, %s last is %s", 3, []any{"test", true, 12.3, 200,
@@ -193,8 +193,8 @@ func initOptionsTest() {
 	SetOptions(getOptionsTest())
 }
 
-func getOptionsTest() *options {
-	return &options{
+func getOptionsTest() *Options {
+	return &Options{
 		Mode:                   randomMode(),
 		DateFormat:             randomDateFormat(),
 		EnableAsynchronousMode: util.RandomBool(),

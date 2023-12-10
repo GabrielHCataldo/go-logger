@@ -8,7 +8,7 @@ func ErrorF(format string, v ...any) {
 	printLog(levelError, 3, *opts, format, "", v...)
 }
 
-func ErrorOpts(opts options, v ...any) {
+func ErrorOpts(opts Options, v ...any) {
 	printLog(levelError, 3, opts, "", loggerTagHide, v...)
 }
 
@@ -40,31 +40,31 @@ func ErrorFME(format string, v ...any) {
 	printLog(levelError, 3, *opts, format, loggerTagMaskEnd, v...)
 }
 
-func ErrorOptsH(opts options, v ...any) {
+func ErrorOptsH(opts Options, v ...any) {
 	printLog(levelError, 3, opts, "", loggerTagHide, v...)
 }
 
-func ErrorOptsMS(opts options, v ...any) {
+func ErrorOptsMS(opts Options, v ...any) {
 	printLog(levelError, 3, opts, "", loggerTagMaskStart, v...)
 }
 
-func ErrorOptsME(opts options, v ...any) {
+func ErrorOptsME(opts Options, v ...any) {
 	printLog(levelError, 3, opts, "", loggerTagMaskEnd, v...)
 }
 
-func ErrorOptsF(format string, opts options, v ...any) {
+func ErrorOptsF(format string, opts Options, v ...any) {
 	printLog(levelError, 3, opts, format, loggerTagHide, v...)
 }
 
-func ErrorOptsFH(format string, opts options, v ...any) {
+func ErrorOptsFH(format string, opts Options, v ...any) {
 	printLog(levelError, 3, opts, format, loggerTagHide, v...)
 }
 
-func ErrorOptsFMS(format string, opts options, v ...any) {
+func ErrorOptsFMS(format string, opts Options, v ...any) {
 	printLog(levelError, 3, opts, format, loggerTagMaskStart, v...)
 }
 
-func ErrorOptsFME(format string, opts options, v ...any) {
+func ErrorOptsFME(format string, opts Options, v ...any) {
 	printLog(levelError, 3, opts, format, loggerTagMaskEnd, v...)
 }
 
@@ -96,34 +96,34 @@ func ErrorSkipCallerFME(format string, skipCaller int, v ...any) {
 	printLog(levelError, skipCaller, *opts, format, loggerTagMaskEnd, v...)
 }
 
-func ErrorSkipCallerOpts(skipCaller int, opts options, v ...any) {
+func ErrorSkipCallerOpts(skipCaller int, opts Options, v ...any) {
 	printLog(levelError, skipCaller, opts, "", "", v...)
 }
 
-func ErrorSkipCallerOptsF(format string, skipCaller int, opts options, v ...any) {
+func ErrorSkipCallerOptsF(format string, skipCaller int, opts Options, v ...any) {
 	printLog(levelError, skipCaller, opts, format, "", v...)
 }
 
-func ErrorSkipCallerOptsH(skipCaller int, opts options, v ...any) {
+func ErrorSkipCallerOptsH(skipCaller int, opts Options, v ...any) {
 	printLog(levelError, skipCaller, opts, "", loggerTagHide, v...)
 }
 
-func ErrorSkipCallerOptsMS(skipCaller int, opts options, v ...any) {
+func ErrorSkipCallerOptsMS(skipCaller int, opts Options, v ...any) {
 	printLog(levelError, skipCaller, opts, "", loggerTagMaskStart, v...)
 }
 
-func ErrorSkipCallerOptsME(skipCaller int, opts options, v ...any) {
+func ErrorSkipCallerOptsME(skipCaller int, opts Options, v ...any) {
 	printLog(levelError, skipCaller, opts, "", loggerTagMaskEnd, v...)
 }
 
-func ErrorSkipCallerOptsFH(format string, skipCaller int, opts options, v ...any) {
+func ErrorSkipCallerOptsFH(format string, skipCaller int, opts Options, v ...any) {
 	printLog(levelError, skipCaller, opts, format, loggerTagHide, v...)
 }
 
-func ErrorSkipCallerOptsFMS(format string, skipCaller int, opts options, v ...any) {
+func ErrorSkipCallerOptsFMS(format string, skipCaller int, opts Options, v ...any) {
 	printLog(levelError, skipCaller, opts, format, loggerTagMaskStart, v...)
 }
 
-func ErrorSkipCallerOptsFME(format string, skipCaller int, opts options, v ...any) {
+func ErrorSkipCallerOptsFME(format string, skipCaller int, opts Options, v ...any) {
 	printLog(levelError, skipCaller, opts, format, loggerTagMaskEnd, v...)
 }

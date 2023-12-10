@@ -55,17 +55,24 @@ func RandomBool() bool {
 	return rand.Intn(2) == 1
 }
 
-func IsNilValueReflect(fieldValue reflect.Value) bool {
-	if (fieldValue.Kind() == reflect.Interface ||
-		fieldValue.Kind() == reflect.Pointer ||
-		fieldValue.Kind() == reflect.Slice ||
-		fieldValue.Kind() == reflect.Chan ||
-		fieldValue.Kind() == reflect.Func ||
-		fieldValue.Kind() == reflect.UnsafePointer ||
-		fieldValue.Kind() == reflect.Map) && fieldValue.IsNil() {
+func IsNilValueReflect(v reflect.Value) bool {
+	if (v.Kind() == reflect.Interface ||
+		v.Kind() == reflect.Pointer ||
+		v.Kind() == reflect.Slice ||
+		v.Kind() == reflect.Chan ||
+		v.Kind() == reflect.Func ||
+		v.Kind() == reflect.UnsafePointer ||
+		v.Kind() == reflect.Map) && v.IsNil() {
 		return true
 	}
 	return false
+}
+
+func IsZeroReflect(v reflect.Value) bool {
+	return v.IsZero() || IsNilValueReflect(v) ||
+		(v.Kind() == reflect.Map && len(v.MapKeys()) == 0) ||
+		(v.Kind() == reflect.Slice && v.Len() == 0) ||
+		(v.Kind() == reflect.Array && v.Len() == 0)
 }
 
 func formatFuncName(name string) string {

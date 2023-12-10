@@ -11,6 +11,11 @@ type Mode string
 type level string
 
 const (
+	loggerTagHide      = "hide"
+	loggerTagMaskStart = "mask_start"
+	loggerTagMaskEnd   = "mask_end"
+)
+const (
 	DateFormatFull24h                    DateFormat = "2006/01/02 15:04:09"
 	DateFormatFull12h                    DateFormat = "2006/01/02 3:04:05PM"
 	DateFormatNormal                     DateFormat = "2006/01/02"
@@ -36,14 +41,6 @@ const (
 	levelWarning level = "WARNING"
 	levelError   level = "ERROR"
 )
-
-func (m Mode) isEnumValid() bool {
-	switch m {
-	case ModeDefault, ModeJson:
-		return true
-	}
-	return false
-}
 
 func (d DateFormat) isEnumValid() bool {
 	switch d {
@@ -73,8 +70,9 @@ func (l level) Color() string {
 		return "\u001b[31m"
 	case levelError:
 		return "\u001b[36m"
+	default:
+		return "\u001B[0m"
 	}
-	return "\u001B[0m"
 }
 
 func (l level) String() string {
@@ -87,11 +85,11 @@ func randomMode() Mode {
 }
 
 func randomDateFormat() DateFormat {
-	ds := []DateFormat{
+	ds := []DateFormat{"",
 		DateFormatFull24h, DateFormatFull12h, DateFormatNormal, DateFormatTime24h, DateFormatTime12h,
 		DateFormatTextDate, DateFormatTextDatetime24h, DateFormatTextDatetime12h, DateFormatTextDateWithWeekday,
 		DateFormatTextDatetime24hWithWeekday, DateFormatTextDatetime12hWithWeekday, DateFormatAbbrTextDate,
 		DateFormatAbbrTextDatetime24h, DateFormatAbbrTextDatetime12h,
 	}
-	return ds[rand.Intn(14)]
+	return ds[rand.Intn(15)]
 }

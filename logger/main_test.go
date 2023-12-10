@@ -2,7 +2,6 @@ package logger
 
 import (
 	"go-logger/internal/util"
-	"testing"
 	"time"
 )
 
@@ -23,7 +22,7 @@ type test struct {
 	PrivateEmails        []string    `json:"privateEmails,omitempty" logger:"mask_start"`
 	Balances             []float32   `json:"balances,omitempty"`
 	PrivateBalances      []float32   `json:"privateBalances,omitempty" logger:"mask_end"`
-	TotalBalances        []float64   `json:"TotalBalances,omitempty"`
+	TotalBalances        []float64   `json:"totalBalances,omitempty"`
 	PrivateTotalBalances []float64   `json:"privateTotalBalances,omitempty" logger:"hide"`
 	Booleans             []bool      `json:"booleans,omitempty"`
 	PrivateBooleans      []bool      `json:"privateBooleans,omitempty" logger:"mask_end"`
@@ -32,6 +31,7 @@ type test struct {
 	Work                 workTest    `json:"work,omitempty"`
 	PrivateWork          workTest    `json:"privateWork,omitempty" logger:"hide"`
 	Home                 homeTest    `json:"home,omitempty"`
+	PointerHome          *homeTest   `json:"pointerHome,omitempty"`
 }
 
 type bankTest struct {
@@ -57,15 +57,23 @@ type homeTest struct {
 }
 
 type tableTest struct {
-	name string
-	args []any
+	name       string
+	format     string
+	skipCaller int
+	args       []any
 }
 
 func initSliceTest() []any {
-	return []any{"test", 23, 23.2, true, false, initStructTest()}
+	return []any{"test", 23, 23.2, true, false, initStructTest(), initMapTest(), nil}
 }
 
 func initMapTest() map[string]any {
+	hTest := bankTest{
+		AccountDigits: "123",
+		Account:       "123981023",
+		Balance:       30.89,
+		TotalBalance:  200.17,
+	}
 	return map[string]any{
 		"name":        "Foo Bar",
 		"birthDate":   time.Date(1999, 1, 21, 0, 0, 0, 0, time.Local),
@@ -77,12 +85,8 @@ func initMapTest() map[string]any {
 		"emptyFloat":  0.0,
 		"married":     true,
 		"emails":      []string{"gabriel@test.com", "gabrielcataldo.adm@gmail.com", "biel@test.org"},
-		"bank": bankTest{
-			AccountDigits: "123",
-			Account:       "123981023",
-			Balance:       30.89,
-			TotalBalance:  200.17,
-		},
+		"bank":        hTest,
+		"pointerBank": &hTest,
 		"work": map[string]any{
 			"name":          "Foo Bar Company",
 			"address":       "Foo Bar Street",
@@ -117,6 +121,11 @@ func initStructTest() test {
 		Month:         12,
 		Salary:        1238.99,
 	}
+	hTest := homeTest{
+		Address:       "Foo Bar Street",
+		AddressNumber: "23",
+		Neighborhood:  "Bar",
+	}
 	return test{
 		Name:                 "Foo Bar",
 		BirthDate:            time.Date(1999, 1, 21, 0, 0, 0, 0, time.Local),
@@ -138,60 +147,63 @@ func initStructTest() test {
 		PrivateBank:          bTest,
 		Work:                 wTest,
 		PrivateWork:          wTest,
-		Home: homeTest{
-			Address:       "Foo Bar Street",
-			AddressNumber: "23",
-			Neighborhood:  "Bar",
-		},
+		Home:                 hTest,
+		PointerHome:          &hTest,
 	}
+}
+
+func initPointerStructTest() *test {
+	sTest := initStructTest()
+	return &sTest
+}
+
+func initPointerSliceTest() *[]any {
+	s := initSliceTest()
+	return &s
+}
+
+func initPointerString() *string {
+	s := "test pointer string"
+	return &s
 }
 
 func initTables() []tableTest {
 	return []tableTest{
 		{
-			"no arguments", []any{},
+			"no arguments", "", 3, []any{},
 		},
 		{
-			"normal arguments", []any{"test", true, 12.3, 200, time.Now()},
+			"normal arguments", "%s, %s, %s, %s, %s, %s, %s last is %s", 3, []any{"test", true, 12.3, 200,
+				initPointerString(), time.Now(), initPointerStructTest(), initPointerSliceTest()},
 		},
 		{
-			"map argument", []any{"map:", initMapTest()},
+			"map argument", "%s %s", 3, []any{"map:", initMapTest()},
 		},
 		{
-			"struct argument", []any{"struct:", initStructTest()},
+			"struct argument", "%s %s", 3, []any{"struct:", initStructTest()},
 		},
 		{
-			"slice argument", []any{"slice", initSliceTest()},
+			"slice argument", "%s %s", 3, []any{"slice", initSliceTest()},
 		},
 	}
 }
 
 func initOptionsTest() {
-	SetOptions(&options{
-		//Mode:                randomMode(),
-		DateFormat:          randomDateFormat(),
-		UTC:                 util.RandomBool(),
-		HideAllArgs:         util.RandomBool(),
-		HideArgDatetime:     util.RandomBool(),
-		HideArgCaller:       util.RandomBool(),
-		DisablePrefixColors: util.RandomBool(),
-	})
+	ResetOptionsToDefault()
+	SetOptions(getOptionsTest())
 }
 
-func TestInfo(t *testing.T) {
-	for _, table := range initTables() {
-		initOptionsTest()
-		t.Run(table.name, func(t *testing.T) {
-			Info(table.args...)
-		})
-	}
-}
-
-func TestDebug(t *testing.T) {
-	for _, table := range initTables() {
-		initOptionsTest()
-		t.Run(table.name, func(t *testing.T) {
-			Debug(table.args...)
-		})
+func getOptionsTest() *options {
+	return &options{
+		Mode:                   randomMode(),
+		DateFormat:             randomDateFormat(),
+		EnableAsynchronousMode: util.RandomBool(),
+		UTC:                    util.RandomBool(),
+		DontPrintEmptyMessage:  util.RandomBool(),
+		RemoveSpace:            util.RandomBool(),
+		HideAllArgs:            util.RandomBool(),
+		HideArgDatetime:        util.RandomBool(),
+		HideArgCaller:          util.RandomBool(),
+		DisablePrefixColors:    util.RandomBool(),
 	}
 }

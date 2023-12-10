@@ -11,17 +11,11 @@ import (
 	"time"
 )
 
-// GetCallerInfo gets the source file name, line number and the function name
-// that makes the call. skipCaller is the number of the stack frames to ascend,
-// with 0 identifying the caller of Callers.
 func GetCallerInfo(skipCaller int) (fileName string, line string, funcName string) {
-	// Create a slice that will store the return program counter for the caller
 	pc := make([]uintptr, 1)
 	runtime.Callers(skipCaller, pc)
-	// Get the information about the function
 	funcInfo := runtime.FuncForPC(pc[0])
 	file, lineInt := funcInfo.FileLine(pc[0])
-	// Extract the base names for the file and the function
 	fileBase := path.Base(file)
 	name := formatFuncName(funcInfo.Name())
 	return fileBase, strconv.Itoa(lineInt), name

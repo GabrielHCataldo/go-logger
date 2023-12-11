@@ -40,7 +40,7 @@ func Errorf(format string, v ...any) {
 //
 // [ERROR 2023/12/09 19:26:09] example.go:239: test true 112 10.99
 func ErrorOpts(opts Options, v ...any) {
-	printLog(levelError, 3, opts, "", loggerTagHide, v...)
+	printLog(levelError, 3, opts, "", "", v...)
 }
 
 // ErrorSkipCaller is a function that logs informational messages based on the Options global variable, using the ERROR
@@ -55,7 +55,7 @@ func ErrorOpts(opts Options, v ...any) {
 //
 // [ERROR 2023/12/09 19:26:09] subexample.go:139: te** tr** 1** 10***
 func ErrorSkipCaller(skipCaller int, v ...any) {
-	printLog(levelError, skipCaller, *opts, "", "", v...)
+	printLog(levelError, skipCaller+1, *opts, "", "", v...)
 }
 
 // ErrorH is a function that records informational messages based on the Options global variable, using the ERROR level.
@@ -202,7 +202,7 @@ func ErrorOptsME(opts Options, v ...any) {
 //
 // [ERROR 2023/12/09 19:26:09] example.go:239: test, true, 112, last is 10.99
 func ErrorOptsf(format string, opts Options, v ...any) {
-	printLog(levelError, 3, opts, format, loggerTagHide, v...)
+	printLog(levelError, 3, opts, format, "", v...)
 }
 
 // ErrorOptsfH is a function that records informational messages based on the Options variable passed as a parameter,
@@ -263,7 +263,7 @@ func ErrorOptsfME(format string, opts Options, v ...any) {
 //
 // [ERROR 2023/12/09 19:26:09] subexample.go:239: test, true, 112, last is 10.99
 func ErrorSkipCallerf(format string, skipCaller int, v ...any) {
-	printLog(levelError, skipCaller, *opts, format, loggerTagHide, v...)
+	printLog(levelError, skipCaller+1, *opts, format, "", v...)
 }
 
 // ErrorSkipCallerH is a function that logs informational messages based on the Options global variable, using the
@@ -278,7 +278,7 @@ func ErrorSkipCallerf(format string, skipCaller int, v ...any) {
 //
 // [ERROR 2023/12/09 19:26:09] subexample.go:239: ****, ****, ***, *****
 func ErrorSkipCallerH(skipCaller int, v ...any) {
-	printLog(levelError, skipCaller, *opts, "", loggerTagHide, v...)
+	printLog(levelError, skipCaller+1, *opts, "", loggerTagHide, v...)
 }
 
 // ErrorSkipCallerMS is a function that logs informational messages based on the Options global variable, using the
@@ -294,7 +294,7 @@ func ErrorSkipCallerH(skipCaller int, v ...any) {
 //
 // [ERROR 2023/12/09 19:26:09] subexample.go:239: **st **ue **2 ***99
 func ErrorSkipCallerMS(skipCaller int, v ...any) {
-	printLog(levelError, skipCaller, *opts, "", loggerTagMaskStart, v...)
+	printLog(levelError, skipCaller+1, *opts, "", loggerTagMaskStart, v...)
 }
 
 // ErrorSkipCallerME is a function that logs informational messages based on the Options global variable, using the
@@ -310,7 +310,7 @@ func ErrorSkipCallerMS(skipCaller int, v ...any) {
 //
 // [ERROR 2023/12/09 19:26:09] example.go:239: te** tr** 1** 10***
 func ErrorSkipCallerME(skipCaller int, v ...any) {
-	printLog(levelError, skipCaller, *opts, "", loggerTagMaskEnd, v...)
+	printLog(levelError, skipCaller+1, *opts, "", loggerTagMaskEnd, v...)
 }
 
 // ErrorSkipCallerfH is a function that writes informational messages based on the Options global variable, using the
@@ -326,7 +326,7 @@ func ErrorSkipCallerME(skipCaller int, v ...any) {
 //
 // [ERROR 2023/12/09 19:26:09] subexample.go:23: ****, ****, ***, last is *****
 func ErrorSkipCallerfH(format string, skipCaller int, v ...any) {
-	printLog(levelError, skipCaller, *opts, format, loggerTagHide, v...)
+	printLog(levelError, skipCaller+1, *opts, format, loggerTagHide, v...)
 }
 
 // ErrorSkipCallerfMS is a function that writes informational messages based on the Options global variable, using the
@@ -343,7 +343,7 @@ func ErrorSkipCallerfH(format string, skipCaller int, v ...any) {
 //
 // [ERROR 2023/12/09 19:26:09] subexample.go:239: **st, **ue, **2, last is ***99
 func ErrorSkipCallerfMS(format string, skipCaller int, v ...any) {
-	printLog(levelError, skipCaller, *opts, format, loggerTagMaskStart, v...)
+	printLog(levelError, skipCaller+1, *opts, format, loggerTagMaskStart, v...)
 }
 
 // ErrorSkipCallerfME is a function that writes informational messages based on the Options global variable, using the
@@ -360,7 +360,7 @@ func ErrorSkipCallerfMS(format string, skipCaller int, v ...any) {
 //
 // [ERROR 2023/12/09 19:26:09] subexample.go:239: te**, tr**, 1**, last is 10***
 func ErrorSkipCallerfME(format string, skipCaller int, v ...any) {
-	printLog(levelError, skipCaller, *opts, format, loggerTagMaskEnd, v...)
+	printLog(levelError, skipCaller+1, *opts, format, loggerTagMaskEnd, v...)
 }
 
 // ErrorSkipCallerOpts is a function that records informational messages, using the ERROR level, the file name and line
@@ -376,7 +376,7 @@ func ErrorSkipCallerfME(format string, skipCaller int, v ...any) {
 //
 // [ERROR 2023/12/09 19:26:09] subexample.go:239: test, true, 112, last is 10.99
 func ErrorSkipCallerOpts(skipCaller int, opts Options, v ...any) {
-	printLog(levelError, skipCaller, opts, "", "", v...)
+	printLog(levelError, skipCaller+1, opts, "", "", v...)
 }
 
 // ErrorSkipCallerOptsf is a function that records informational messages based on the Options variable passed as
@@ -392,7 +392,7 @@ func ErrorSkipCallerOpts(skipCaller int, opts Options, v ...any) {
 //
 // [ERROR 2023/12/09 19:26:09] subexample.go:239: test, true, 112, last is 10.99
 func ErrorSkipCallerOptsf(format string, skipCaller int, opts Options, v ...any) {
-	printLog(levelError, skipCaller, opts, format, "", v...)
+	printLog(levelError, skipCaller+1, opts, format, "", v...)
 }
 
 // ErrorSkipCallerOptsH is a function that records informational messages based on the Options variable passed as
@@ -408,7 +408,7 @@ func ErrorSkipCallerOptsf(format string, skipCaller int, opts Options, v ...any)
 //
 // [ERROR 2023/12/09 19:26:09] subexample.go:23: **** **** *** *****
 func ErrorSkipCallerOptsH(skipCaller int, opts Options, v ...any) {
-	printLog(levelError, skipCaller, opts, "", loggerTagHide, v...)
+	printLog(levelError, skipCaller+1, opts, "", loggerTagHide, v...)
 }
 
 // ErrorSkipCallerOptsMS is a function that records informational messages based on the Options variable passed as
@@ -424,7 +424,7 @@ func ErrorSkipCallerOptsH(skipCaller int, opts Options, v ...any) {
 //
 // [ERROR 2023/12/09 19:26:09] subexample.go:239: **st **ue **2 ***99
 func ErrorSkipCallerOptsMS(skipCaller int, opts Options, v ...any) {
-	printLog(levelError, skipCaller, opts, "", loggerTagMaskStart, v...)
+	printLog(levelError, skipCaller+1, opts, "", loggerTagMaskStart, v...)
 }
 
 // ErrorSkipCallerOptsME is a function that records informational messages based on the Options variable passed as
@@ -440,7 +440,7 @@ func ErrorSkipCallerOptsMS(skipCaller int, opts Options, v ...any) {
 //
 // [ERROR 2023/12/09 19:26:09] subexample.go:239: te** tr** 1** 10***
 func ErrorSkipCallerOptsME(skipCaller int, opts Options, v ...any) {
-	printLog(levelError, skipCaller, opts, "", loggerTagMaskEnd, v...)
+	printLog(levelError, skipCaller+1, opts, "", loggerTagMaskEnd, v...)
 }
 
 // ErrorSkipCallerOptsfH is a function that records informational messages based on the Options variable passed
@@ -457,7 +457,7 @@ func ErrorSkipCallerOptsME(skipCaller int, opts Options, v ...any) {
 //
 // [ERROR 2023/12/09 19:26:09] subexample.go:23: ****, ****, ***, last is *****
 func ErrorSkipCallerOptsfH(format string, skipCaller int, opts Options, v ...any) {
-	printLog(levelError, skipCaller, opts, format, loggerTagHide, v...)
+	printLog(levelError, skipCaller+1, opts, format, loggerTagHide, v...)
 }
 
 // ErrorSkipCallerOptsfMS is a function that records informational messages based on the Options variable passed
@@ -474,7 +474,7 @@ func ErrorSkipCallerOptsfH(format string, skipCaller int, opts Options, v ...any
 //
 // [ERROR 2023/12/09 19:26:09] subexample.go:239: **st, **ue, **2, last is ***99
 func ErrorSkipCallerOptsfMS(format string, skipCaller int, opts Options, v ...any) {
-	printLog(levelError, skipCaller, opts, format, loggerTagMaskStart, v...)
+	printLog(levelError, skipCaller+1, opts, format, loggerTagMaskStart, v...)
 }
 
 // ErrorSkipCallerOptsfME is a function that records informational messages based on the Options variable passed
@@ -491,5 +491,5 @@ func ErrorSkipCallerOptsfMS(format string, skipCaller int, opts Options, v ...an
 //
 // [ERROR 2023/12/09 19:26:09] subexample.go:239: te**, tr**, 1**, last is 10***
 func ErrorSkipCallerOptsfME(format string, skipCaller int, opts Options, v ...any) {
-	printLog(levelError, skipCaller, opts, format, loggerTagMaskEnd, v...)
+	printLog(levelError, skipCaller+1, opts, format, loggerTagMaskEnd, v...)
 }

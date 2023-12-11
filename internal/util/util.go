@@ -71,6 +71,7 @@ func IsNilValueReflect(v reflect.Value) bool {
 func IsZeroReflect(v reflect.Value) bool {
 	return v.IsZero() || IsNilValueReflect(v) ||
 		(v.Kind() == reflect.Map && len(v.MapKeys()) == 0) ||
+		(v.Kind() == reflect.Struct && v.NumField() == 0) ||
 		(v.Kind() == reflect.Slice && v.Len() == 0) ||
 		(v.Kind() == reflect.Array && v.Len() == 0)
 }

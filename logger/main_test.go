@@ -1,7 +1,7 @@
 package logger
 
 import (
-	"go-logger/internal/util"
+	"github.com/GabrielHCataldo/go-logger/internal/util"
 	"time"
 )
 
@@ -195,8 +195,8 @@ func initOptionsTest() {
 
 func getOptionsTest() *Options {
 	return &Options{
-		Mode:                   randomMode(),
-		DateFormat:             randomDateFormat(),
+		Mode:                   RandomMode(),
+		DateFormat:             RandomDateFormat(),
 		EnableAsynchronousMode: util.RandomBool(),
 		UTC:                    util.RandomBool(),
 		DontPrintEmptyMessage:  util.RandomBool(),

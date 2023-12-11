@@ -40,7 +40,7 @@ func Warningf(format string, v ...any) {
 //
 // [WARNING 2023/12/09 19:26:09] example.go:239: test true 112 10.99
 func WarningOpts(opts Options, v ...any) {
-	printLog(levelWarning, 3, opts, "", loggerTagHide, v...)
+	printLog(levelWarning, 3, opts, "", "", v...)
 }
 
 // WarningSkipCaller is a function that logs informational messages based on the Options global variable, using the WARNING
@@ -55,7 +55,7 @@ func WarningOpts(opts Options, v ...any) {
 //
 // [WARNING 2023/12/09 19:26:09] subexample.go:139: te** tr** 1** 10***
 func WarningSkipCaller(skipCaller int, v ...any) {
-	printLog(levelWarning, skipCaller, *opts, "", "", v...)
+	printLog(levelWarning, skipCaller+1, *opts, "", "", v...)
 }
 
 // WarningH is a function that records informational messages based on the Options global variable, using the WARNING level.
@@ -263,7 +263,7 @@ func WarningOptsfME(format string, opts Options, v ...any) {
 //
 // [WARNING 2023/12/09 19:26:09] subexample.go:239: test, true, 112, last is 10.99
 func WarningSkipCallerf(format string, skipCaller int, v ...any) {
-	printLog(levelWarning, skipCaller, *opts, format, loggerTagHide, v...)
+	printLog(levelWarning, skipCaller+1, *opts, format, "", v...)
 }
 
 // WarningSkipCallerH is a function that logs informational messages based on the Options global variable, using the
@@ -278,7 +278,7 @@ func WarningSkipCallerf(format string, skipCaller int, v ...any) {
 //
 // [WARNING 2023/12/09 19:26:09] subexample.go:239: ****, ****, ***, *****
 func WarningSkipCallerH(skipCaller int, v ...any) {
-	printLog(levelWarning, skipCaller, *opts, "", loggerTagHide, v...)
+	printLog(levelWarning, skipCaller+1, *opts, "", loggerTagHide, v...)
 }
 
 // WarningSkipCallerMS is a function that logs informational messages based on the Options global variable, using the
@@ -294,7 +294,7 @@ func WarningSkipCallerH(skipCaller int, v ...any) {
 //
 // [WARNING 2023/12/09 19:26:09] subexample.go:239: **st **ue **2 ***99
 func WarningSkipCallerMS(skipCaller int, v ...any) {
-	printLog(levelWarning, skipCaller, *opts, "", loggerTagMaskStart, v...)
+	printLog(levelWarning, skipCaller+1, *opts, "", loggerTagMaskStart, v...)
 }
 
 // WarningSkipCallerME is a function that logs informational messages based on the Options global variable, using the
@@ -310,7 +310,7 @@ func WarningSkipCallerMS(skipCaller int, v ...any) {
 //
 // [WARNING 2023/12/09 19:26:09] example.go:239: te** tr** 1** 10***
 func WarningSkipCallerME(skipCaller int, v ...any) {
-	printLog(levelWarning, skipCaller, *opts, "", loggerTagMaskEnd, v...)
+	printLog(levelWarning, skipCaller+1, *opts, "", loggerTagMaskEnd, v...)
 }
 
 // WarningSkipCallerfH is a function that writes informational messages based on the Options global variable, using the
@@ -326,7 +326,7 @@ func WarningSkipCallerME(skipCaller int, v ...any) {
 //
 // [WARNING 2023/12/09 19:26:09] subexample.go:23: ****, ****, ***, last is *****
 func WarningSkipCallerfH(format string, skipCaller int, v ...any) {
-	printLog(levelWarning, skipCaller, *opts, format, loggerTagHide, v...)
+	printLog(levelWarning, skipCaller+1, *opts, format, loggerTagHide, v...)
 }
 
 // WarningSkipCallerfMS is a function that writes informational messages based on the Options global variable, using the
@@ -343,7 +343,7 @@ func WarningSkipCallerfH(format string, skipCaller int, v ...any) {
 //
 // [WARNING 2023/12/09 19:26:09] subexample.go:239: **st, **ue, **2, last is ***99
 func WarningSkipCallerfMS(format string, skipCaller int, v ...any) {
-	printLog(levelWarning, skipCaller, *opts, format, loggerTagMaskStart, v...)
+	printLog(levelWarning, skipCaller+1, *opts, format, loggerTagMaskStart, v...)
 }
 
 // WarningSkipCallerfME is a function that writes informational messages based on the Options global variable, using the
@@ -360,7 +360,7 @@ func WarningSkipCallerfMS(format string, skipCaller int, v ...any) {
 //
 // [WARNING 2023/12/09 19:26:09] subexample.go:239: te**, tr**, 1**, last is 10***
 func WarningSkipCallerfME(format string, skipCaller int, v ...any) {
-	printLog(levelWarning, skipCaller, *opts, format, loggerTagMaskEnd, v...)
+	printLog(levelWarning, skipCaller+1, *opts, format, loggerTagMaskEnd, v...)
 }
 
 // WarningSkipCallerOpts is a function that records informational messages, using the WARNING level, the file name and line
@@ -376,7 +376,7 @@ func WarningSkipCallerfME(format string, skipCaller int, v ...any) {
 //
 // [WARNING 2023/12/09 19:26:09] subexample.go:239: test, true, 112, last is 10.99
 func WarningSkipCallerOpts(skipCaller int, opts Options, v ...any) {
-	printLog(levelWarning, skipCaller, opts, "", "", v...)
+	printLog(levelWarning, skipCaller+1, opts, "", "", v...)
 }
 
 // WarningSkipCallerOptsf is a function that records informational messages based on the Options variable passed as
@@ -392,7 +392,7 @@ func WarningSkipCallerOpts(skipCaller int, opts Options, v ...any) {
 //
 // [WARNING 2023/12/09 19:26:09] subexample.go:239: test, true, 112, last is 10.99
 func WarningSkipCallerOptsf(format string, skipCaller int, opts Options, v ...any) {
-	printLog(levelWarning, skipCaller, opts, format, "", v...)
+	printLog(levelWarning, skipCaller+1, opts, format, "", v...)
 }
 
 // WarningSkipCallerOptsH is a function that records informational messages based on the Options variable passed as
@@ -408,7 +408,7 @@ func WarningSkipCallerOptsf(format string, skipCaller int, opts Options, v ...an
 //
 // [WARNING 2023/12/09 19:26:09] subexample.go:23: **** **** *** *****
 func WarningSkipCallerOptsH(skipCaller int, opts Options, v ...any) {
-	printLog(levelWarning, skipCaller, opts, "", loggerTagHide, v...)
+	printLog(levelWarning, skipCaller+1, opts, "", loggerTagHide, v...)
 }
 
 // WarningSkipCallerOptsMS is a function that records informational messages based on the Options variable passed as
@@ -424,7 +424,7 @@ func WarningSkipCallerOptsH(skipCaller int, opts Options, v ...any) {
 //
 // [WARNING 2023/12/09 19:26:09] subexample.go:239: **st **ue **2 ***99
 func WarningSkipCallerOptsMS(skipCaller int, opts Options, v ...any) {
-	printLog(levelWarning, skipCaller, opts, "", loggerTagMaskStart, v...)
+	printLog(levelWarning, skipCaller+1, opts, "", loggerTagMaskStart, v...)
 }
 
 // WarningSkipCallerOptsME is a function that records informational messages based on the Options variable passed as
@@ -440,7 +440,7 @@ func WarningSkipCallerOptsMS(skipCaller int, opts Options, v ...any) {
 //
 // [WARNING 2023/12/09 19:26:09] subexample.go:239: te** tr** 1** 10***
 func WarningSkipCallerOptsME(skipCaller int, opts Options, v ...any) {
-	printLog(levelWarning, skipCaller, opts, "", loggerTagMaskEnd, v...)
+	printLog(levelWarning, skipCaller+1, opts, "", loggerTagMaskEnd, v...)
 }
 
 // WarningSkipCallerOptsfH is a function that records informational messages based on the Options variable passed
@@ -457,7 +457,7 @@ func WarningSkipCallerOptsME(skipCaller int, opts Options, v ...any) {
 //
 // [WARNING 2023/12/09 19:26:09] subexample.go:23: ****, ****, ***, last is *****
 func WarningSkipCallerOptsfH(format string, skipCaller int, opts Options, v ...any) {
-	printLog(levelWarning, skipCaller, opts, format, loggerTagHide, v...)
+	printLog(levelWarning, skipCaller+1, opts, format, loggerTagHide, v...)
 }
 
 // WarningSkipCallerOptsfMS is a function that records informational messages based on the Options variable passed
@@ -474,7 +474,7 @@ func WarningSkipCallerOptsfH(format string, skipCaller int, opts Options, v ...a
 //
 // [WARNING 2023/12/09 19:26:09] subexample.go:239: **st, **ue, **2, last is ***99
 func WarningSkipCallerOptsfMS(format string, skipCaller int, opts Options, v ...any) {
-	printLog(levelWarning, skipCaller, opts, format, loggerTagMaskStart, v...)
+	printLog(levelWarning, skipCaller+1, opts, format, loggerTagMaskStart, v...)
 }
 
 // WarningSkipCallerOptsfME is a function that records informational messages based on the Options variable passed
@@ -491,5 +491,5 @@ func WarningSkipCallerOptsfMS(format string, skipCaller int, opts Options, v ...
 //
 // [WARNING 2023/12/09 19:26:09] subexample.go:239: te**, tr**, 1**, last is 10***
 func WarningSkipCallerOptsfME(format string, skipCaller int, opts Options, v ...any) {
-	printLog(levelWarning, skipCaller, opts, format, loggerTagMaskEnd, v...)
+	printLog(levelWarning, skipCaller+1, opts, format, loggerTagMaskEnd, v...)
 }

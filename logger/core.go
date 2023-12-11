@@ -3,9 +3,10 @@ package logger
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/GabrielHCataldo/go-logger/internal/util"
 	"github.com/iancoleman/orderedmap"
-	"go-logger/internal/util"
 	"log"
+	"math"
 	"os"
 	"reflect"
 	"strings"
@@ -18,7 +19,7 @@ type logJson struct {
 	File     string `json:"file,omitempty"`
 	Func     string `json:"func,omitempty"`
 	Line     string `json:"line,omitempty"`
-	Msg      string `json:"msg"`
+	Msg      any    `json:"msg"`
 }
 
 var opts = &Options{}
@@ -44,6 +45,10 @@ type Options struct {
 	HideArgCaller bool
 	// If true, it will disable all argument and prefix colors (default: false)
 	DisablePrefixColors bool
+	// If true, json mode msg field becomes slice (default: false, only if Mode is ModeJson)
+	//
+	// IMPORTANT: If true, the format parameter will not work
+	EnableMsgFieldForSlice bool
 }
 
 // SetOptions sets the global options to the specified options pointer.
@@ -72,6 +77,8 @@ type Options struct {
 //	- HideArgDatetime: If true it will hide the datetime arguments (default: false)
 //	- HideArgCaller: If true, it will hide the caller arguments (default: false)
 //	- DisablePrefixColors: If true, it will disable all argument and prefix colors (default: false)
+//	- EnableMsgFieldForSlice: If true, json mode msg field becomes slice (default: false, only if Mode is ModeJson)
+//	  IMPORTANT: If true, the format parameter will not work
 //
 // # Return:
 //
@@ -97,24 +104,23 @@ func ResetOptionsToDefault() {
 
 func printLog(lvl level, skipCaller int, opts Options, format string, tag string, v ...any) {
 	if opts.EnableAsynchronousMode {
-		go executePrintLog(lvl, skipCaller, opts, format, tag, v...)
+		opts.HideArgCaller = true
+		go executePrintLog(lvl, 1, opts, format, tag, v...)
 	} else {
-		executePrintLog(lvl, skipCaller, opts, format, tag, v...)
+		executePrintLog(lvl, skipCaller+3, opts, format, tag, v...)
 	}
 }
 
 func executePrintLog(lvl level, skipCaller int, opts Options, format string, tag string, v ...any) {
 	logger := getLogger(lvl, skipCaller+1, opts)
-	msg := prepareMsg(lvl, skipCaller, tag, opts, v...)
+	msg := prepareMsg(tag, opts, v...)
 	if opts.DontPrintEmptyMessage && (msg == nil && len(msg) == 0) {
 		return
 	}
-	if len(format) != 0 {
-		logger.Printf(format, msg...)
-	} else if opts.RemoveSpace {
-		logger.Print(msg...)
+	if opts.Mode == ModeJson {
+		printJsonMsg(logger, lvl, skipCaller, opts, format, msg...)
 	} else {
-		logger.Println(msg...)
+		printDefaultMsg(logger, format, msg...)
 	}
 }
 
@@ -122,10 +128,10 @@ func getLogger(lvl level, skipCaller int, opts Options) *log.Logger {
 	if opts.Mode == ModeJson {
 		return log.New(os.Stdout, "", 0)
 	}
-	return log.New(os.Stdout, getLoggerNormalPrefix(lvl, skipCaller, opts), 0)
+	return log.New(os.Stdout, getLoggerNormalPrefix(lvl, skipCaller+1, opts), 0)
 }
 
-func prepareMsg(lvl level, skipCaller int, tag string, opts Options, msgContents ...any) []any {
+func prepareMsg(tag string, opts Options, msgContents ...any) []any {
 	var processedMsg []any
 	for _, msgContent := range msgContents {
 		if msgContent == nil {
@@ -140,66 +146,48 @@ func prepareMsg(lvl level, skipCaller int, tag string, opts Options, msgContents
 		if opts.DontPrintEmptyMessage && util.IsZeroReflect(value) {
 			continue
 		}
-		processedValue := processMsgValue(valueType, value, tag)
+		processedValue := processMsgValue(valueType, value, tag, opts)
 		processedMsg = append(processedMsg, processedValue)
-	}
-	if opts.Mode == ModeJson {
-		return prepareModeJsonMsg(lvl, skipCaller+1, opts, processedMsg...)
 	}
 	return processedMsg
 }
 
-func processMsgValue(valueType reflect.Type, value reflect.Value, tag string) any {
+func printDefaultMsg(logger *log.Logger, format string, msg ...any) {
+	if len(format) != 0 {
+		logger.Printf(format, msg...)
+	} else if opts.RemoveSpace {
+		logger.Print(msg...)
+	} else {
+		logger.Println(msg...)
+	}
+}
+
+func printJsonMsg(logger *log.Logger, lvl level, skipCaller int, opts Options, format string, v ...any) {
+	var processedMsg any
+	processedMsg = getLoggerJson(lvl, skipCaller+1, opts, format, v...)
+	bytes, _ := json.Marshal(processedMsg)
+	logger.Print(string(bytes))
+}
+
+func processMsgValue(valueType reflect.Type, value reflect.Value, tag string, opts Options) any {
 	var processedValue any
+	isSub := opts.Mode == ModeJson && opts.EnableMsgFieldForSlice
 	switch valueType.Kind() {
 	case reflect.Struct:
-		processedValue = prepareStructMsg(valueType, value, false, tag)
+		processedValue = prepareStructMsg(valueType, value, isSub, tag)
 	case reflect.Map:
-		processedValue = prepareMapMsg(value, false, tag)
+		processedValue = prepareMapMsg(value, isSub, tag)
 	case reflect.Slice, reflect.Array:
-		processedValue = prepareSliceMsg(value, false, tag)
+		processedValue = prepareSliceMsg(value, isSub, tag)
 	default:
-		processedValue = value
+		processedValue = getValueByReflect(valueType, value, tag)
 	}
 	return processedValue
 }
 
-func getLogJson(lvl level, skipCaller int, opts Options, v ...any) logJson {
-	lg := logJson{
-		Level: lvl.String(),
-		Msg:   strings.Replace(fmt.Sprintln(v...), "\n", "", -1),
-	}
-	if opts.HideAllArgs {
-		return lg
-	}
-	if !opts.HideArgDatetime {
-		lg.Datetime = getArgDatetime(opts)
-	}
-	if !opts.HideArgCaller {
-		fileName, line, funcName := util.GetCallerInfo(skipCaller + 1)
-		lg.File = fileName
-		lg.Func = funcName
-		lg.Line = line
-	}
-	return lg
-}
-
-func prepareModeJsonMsg(lvl level, skipCaller int, opts Options, v ...any) []any {
-	if opts.DontPrintEmptyMessage && len(v) == 0 {
-		return []any{}
-	}
-	var processedMsg any
-	processedMsg = getLogJson(lvl, skipCaller, opts, v...)
-	bytes, err := json.Marshal(processedMsg)
-	if err == nil {
-		processedMsg = strings.ReplaceAll(string(bytes), "\\", "")
-	}
-	return []any{processedMsg}
-}
-
 func prepareStructMsg(t reflect.Type, v reflect.Value, sub bool, tag string) any {
-	if x, ok := v.Interface().(time.Time); ok {
-		return x.Format(time.RFC3339)
+	if _, ok := v.Interface().(time.Time); ok {
+		return convertStringReflectValue(v, tag)
 	}
 	result := orderedmap.New()
 	result.SetEscapeHTML(false)
@@ -217,7 +205,7 @@ func prepareStructMsg(t reflect.Type, v reflect.Value, sub bool, tag string) any
 		if len(fieldTag) == 0 {
 			fieldTag = fieldType.Tag.Get("logger")
 		}
-		fieldValueProcessed := getFieldValue(fieldType.Type, fieldValue, fieldTag)
+		fieldValueProcessed := getValueByReflect(fieldType.Type, fieldValue, fieldTag)
 		if len(jsonName) != 0 && fieldValueProcessed != nil {
 			result.Set(jsonName, fieldValueProcessed)
 		}
@@ -240,7 +228,7 @@ func prepareMapMsg(v reflect.Value, sub bool, tag string) any {
 			result.Set(mKeyString, nil)
 			continue
 		}
-		mValueProcessed := getFieldValue(mValue.Elem().Type(), mValue.Elem(), tag)
+		mValueProcessed := getValueByReflect(mValue.Elem().Type(), mValue.Elem(), tag)
 		if len(mKeyString) != 0 && mValueProcessed != nil {
 			result.Set(mKeyString, mValueProcessed)
 		}
@@ -255,16 +243,16 @@ func prepareMapMsg(v reflect.Value, sub bool, tag string) any {
 func prepareSliceMsg(v reflect.Value, sub bool, tag string) any {
 	var result []any
 	for i := 0; i < v.Len(); i++ {
-		fieldValue := v.Index(i)
-		if util.IsNilValueReflect(fieldValue) {
+		indexValue := v.Index(i)
+		if util.IsNilValueReflect(indexValue) {
 			result = append(result, nil)
 			continue
-		} else if fieldValue.Kind() == reflect.Pointer || fieldValue.Kind() == reflect.Interface {
-			fieldValue = fieldValue.Elem()
+		} else if indexValue.Kind() == reflect.Pointer || indexValue.Kind() == reflect.Interface {
+			indexValue = indexValue.Elem()
 		}
-		fieldValueProcessed := getFieldValue(fieldValue.Type(), fieldValue, tag)
-		if fieldValueProcessed != nil {
-			result = append(result, fieldValueProcessed)
+		indexValueProcessed := getValueByReflect(indexValue.Type(), indexValue, tag)
+		if indexValueProcessed != nil {
+			result = append(result, indexValueProcessed)
 		}
 	}
 	if sub {
@@ -290,12 +278,42 @@ func getLoggerNormalPrefix(lvl level, skipCaller int, opts Options) string {
 	b.WriteString(getArgLogLevel(lvl, opts))
 	b.WriteString(datetimeString)
 	if !opts.HideAllArgs && !opts.HideArgCaller {
-		b.WriteString(" " + getArgCaller(skipCaller+1) + ":")
+		b.WriteString(" " + getArgCaller(skipCaller) + ":")
 	} else if datetimeString == "" {
 		b.WriteString(":")
 	}
 	b.WriteString(" ")
 	return b.String()
+}
+
+func getLoggerJson(lvl level, skipCaller int, opts Options, format string, v ...any) logJson {
+	var msg any
+	if opts.EnableMsgFieldForSlice {
+		msg = v
+	} else {
+		if len(format) != 0 {
+			msg = fmt.Sprintf(format, v...)
+		} else {
+			msg = strings.Replace(fmt.Sprintln(v...), "\n", "", -1)
+		}
+	}
+	lg := logJson{
+		Level: lvl.String(),
+		Msg:   msg,
+	}
+	if opts.HideAllArgs {
+		return lg
+	}
+	if !opts.HideArgDatetime {
+		lg.Datetime = getArgDatetime(opts)
+	}
+	if !opts.HideArgCaller {
+		fileName, line, funcName := util.GetCallerInfo(skipCaller + 1)
+		lg.File = fileName
+		lg.Func = funcName
+		lg.Line = line
+	}
+	return lg
 }
 
 func getArgLogLevel(lvl level, opts Options) string {
@@ -313,12 +331,9 @@ func getArgDatetime(opts Options) string {
 }
 
 func getArgCaller(skipCaller int) string {
+	skipCaller = int(math.Max(float64(skipCaller), 0))
 	fileName, line, _ := util.GetCallerInfo(skipCaller)
 	return fileName + ":" + line
-}
-
-func getFieldValue(fieldType reflect.Type, fieldValue reflect.Value, tag string) any {
-	return getValueByReflect(fieldType, fieldValue, tag)
 }
 
 func getValueByReflect(t reflect.Type, v reflect.Value, tag string) any {

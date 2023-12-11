@@ -79,12 +79,12 @@ func (l level) String() string {
 	return string(l)
 }
 
-func randomMode() Mode {
+func RandomMode() Mode {
 	m := []Mode{ModeDefault, ModeJson}
 	return m[rand.Intn(2)]
 }
 
-func randomDateFormat() DateFormat {
+func RandomDateFormat() DateFormat {
 	ds := []DateFormat{"",
 		DateFormatFull24h, DateFormatFull12h, DateFormatNormal, DateFormatTime24h, DateFormatTime12h,
 		DateFormatTextDate, DateFormatTextDatetime24h, DateFormatTextDatetime12h, DateFormatTextDateWithWeekday,

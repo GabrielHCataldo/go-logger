@@ -37,7 +37,9 @@ Use go get.
 
 Then import the go-logger package into your own code.
 
-	import "github.com/GabrielHCataldo/go-logger/logger"
+```go
+import "github.com/GabrielHCataldo/go-logger/logger"
+```
 
 Usability and documentation
 ------------
@@ -46,19 +48,21 @@ For more details on the examples, visit [All examples link](https://github/Gabri
 
 Using go-logger's features is very easy, let's start with a basic example:
 
-    import "github.com/GabrielHCataldo/go-logger/logger"
+```go
+import "github.com/GabrielHCataldo/go-logger/logger"
 
-    func main() {
-        basicMsg := getBasicMsg()
-        logger.Info(basicMsg...)
-        logger.Debug(basicMsg...)
-        logger.Warning(basicMsg...)
-        logger.Error(basicMsg...)
-    }
-    
-    func getBasicMsg() []any {
-	    return []any{"basic example with empty any values", nil, "", 0, map[string]any{}, []any{}}
-    }
+func main() {
+    basicMsg := getBasicMsg()
+    logger.Info(basicMsg...)
+    logger.Debug(basicMsg...)
+    logger.Warning(basicMsg...)
+    logger.Error(basicMsg...)
+}
+
+func getBasicMsg() []any {
+    return []any{"basic example with empty any values", nil, "", 0, map[string]any{}, []any{}}
+}
+```
 
 Outputs:
 
@@ -70,31 +74,33 @@ Outputs:
 Podemos modificar essa estrutura padrão para uma estrutura de log em JSON, basta editar a suas opcoes globais como
 abaixo:
 
-    import "github.com/GabrielHCataldo/go-logger/logger"
+```go
+import "github.com/GabrielHCataldo/go-logger/logger"
 
-    func main() {
-        // set on global options
-        logger.SetOptions(&logger.Options{
-            Mode:                   logger.ModeJson,
-            UTC:                    false,
-            DontPrintEmptyMessage:  false,
-            RemoveSpace:            false,
-            HideAllArgs:            false,
-            HideArgDatetime:        false,
-            HideArgCaller:          false,
-            DisablePrefixColors:    false,
-            EnableMsgFieldForSlice: false,
-        })
-        basicMsg := getBasicMsg()
-        logger.Info(basicMsg...)
-        logger.Debug(basicMsg...)
-        logger.Warning(basicMsg...)
-        logger.Error(basicMsg...)
-    }
-    
-    func getBasicMsg() []any {
-	    return []any{"basic example with empty any values", nil, "", 0, map[string]any{}, []any{}}
-    }
+func main() {
+    // set on global options
+    logger.SetOptions(&logger.Options{
+        Mode:                   logger.ModeJson,
+        UTC:                    false,
+        DontPrintEmptyMessage:  false,
+        RemoveSpace:            false,
+        HideAllArgs:            false,
+        HideArgDatetime:        false,
+        HideArgCaller:          false,
+        DisablePrefixColors:    false,
+        EnableMsgFieldForSlice: false,
+    })
+    basicMsg := getBasicMsg()
+    logger.Info(basicMsg...)
+    logger.Debug(basicMsg...)
+    logger.Warning(basicMsg...)
+    logger.Error(basicMsg...)
+}
+
+func getBasicMsg() []any {
+    return []any{"basic example with empty any values", nil, "", 0, map[string]any{}, []any{}}
+}
+```
 
 Outputs:
 
@@ -106,33 +112,35 @@ Outputs:
 You can also pass custom options as a parameter so as not to impact the defined global settings,
 just use the functions with the **Opts** pattern, see:
 
-    import "github.com/GabrielHCataldo/go-logger/logger"
+```go
+import "github.com/GabrielHCataldo/go-logger/logger"
 
-    func main() {
-        opts := logger.Options{
-            Mode:                   logger.ModeJson,
-		    DateFormat:             logger.DateFormatFull24h,
-            UTC:                    false,
-            DontPrintEmptyMessage:  false,
-            RemoveSpace:            false,
-            HideAllArgs:            false,
-            HideArgDatetime:        false,
-            HideArgCaller:          false,
-            DisablePrefixColors:    false,
-            EnableMsgFieldForSlice: false,
-        }
-        basicMsg := getBasicMsg()
-        logger.InfoOpts(opts, basicMsg...)
-        // field msg json to slice
-        opts.EnableMsgFieldForSlice = true
-        logger.DebugOpts(opts, basicMsg...)
-        logger.Warning(basicMsg...)
-        logger.Error(basicMsg...)
+func main() {
+    opts := logger.Options{
+        Mode:                   logger.ModeJson,
+        DateFormat:             logger.DateFormatFull24h,
+        UTC:                    false,
+        DontPrintEmptyMessage:  false,
+        RemoveSpace:            false,
+        HideAllArgs:            false,
+        HideArgDatetime:        false,
+        HideArgCaller:          false,
+        DisablePrefixColors:    false,
+        EnableMsgFieldForSlice: false,
     }
-    
-    func getBasicMsg() []any {
-	    return []any{"basic example with empty any values", nil, "", 0, map[string]any{}, []any{}}
-    }
+    basicMsg := getBasicMsg()
+    logger.InfoOpts(opts, basicMsg...)
+    // field msg json to slice
+    opts.EnableMsgFieldForSlice = true
+    logger.DebugOpts(opts, basicMsg...)
+    logger.Warning(basicMsg...)
+    logger.Error(basicMsg...)
+}
+
+func getBasicMsg() []any {
+    return []any{"basic example with empty any values", nil, "", 0, map[string]any{}, []any{}}
+}
+```
 
 Outputs:
 
@@ -145,48 +153,50 @@ In go-logger we have the same **format** pattern as a parameter in some native f
 This value formats the parameters passed in **v**, works both in standard mode and in default mode.
 JSON, just call the functions with the **f** pattern, see some examples below:
 
-    import "github.com/GabrielHCataldo/go-logger/logger"
+```go
+import "github.com/GabrielHCataldo/go-logger/logger"
 
-    func main() {
-        customOpts := logger.Options{
-            Mode:       logger.ModeJson,
-            DateFormat: logger.DateFormatAbbrTextDatetime12h,
-            UTC:                    false,
-            DontPrintEmptyMessage:  false,
-            RemoveSpace:            false,
-            HideAllArgs:            false,
-            HideArgDatetime:        false,
-            HideArgCaller:          false,
-            DisablePrefixColors:    false,
-            EnableMsgFieldForSlice: false,
-        }
-        format := "%v, %v, %v, %v, %v, %v, %v, last is %v"
-        msg := getBasicMsg()
-        logger.Infof(format, msg...)
-        logger.DebugOptsf(format, customOpts, msg...)
-        logger.WarningfMS(format, msg...)
-        logger.ErrorOptsfMS(format, customOpts, msg...)
+func main() {
+    customOpts := logger.Options{
+        Mode:       logger.ModeJson,
+        DateFormat: logger.DateFormatAbbrTextDatetime12h,
+        UTC:                    false,
+        DontPrintEmptyMessage:  false,
+        RemoveSpace:            false,
+        HideAllArgs:            false,
+        HideArgDatetime:        false,
+        HideArgCaller:          false,
+        DisablePrefixColors:    false,
+        EnableMsgFieldForSlice: false,
     }
+    format := "%v, %v, %v, %v, %v, %v, %v, last is %v"
+    msg := getBasicMsg()
+    logger.Infof(format, msg...)
+    logger.DebugOptsf(format, customOpts, msg...)
+    logger.WarningfMS(format, msg...)
+    logger.ErrorOptsfMS(format, customOpts, msg...)
+}
 
-    func getBasicMsg() []any {
-        s := []any{
-            "text string",
-            1,
-            12.213,
-            true,
-            nil,
-            time.Now(),
-        }
-        m := map[string]any{
-            "int":      1,
-            "float":    12.213,
-            "string":   "text string",
-            "bool":     true,
-            "nilValue": nil,
-            "time":     time.Now(),
-        }
-        return []any{"basic example with any values", "text string", 1, 12.213, true, time.Now(), m, s}
+func getBasicMsg() []any {
+    s := []any{
+        "text string",
+        1,
+        12.213,
+        true,
+        nil,
+        time.Now(),
     }
+    m := map[string]any{
+        "int":      1,
+        "float":    12.213,
+        "string":   "text string",
+        "bool":     true,
+        "nilValue": nil,
+        "time":     time.Now(),
+    }
+    return []any{"basic example with any values", "text string", 1, 12.213, true, time.Now(), m, s}
+}
+```
 
 Outputs: 
 
@@ -199,52 +209,54 @@ For a clearer debug, we have in our argument the caller's name and line, to be m
 sub calls, for example, you can call functions with the **SkipCaller** pattern and pass the number you want
 as a parameter to skip the caller, see an example below:
 
-    import "github.com/GabrielHCataldo/go-logger/logger"
+```go
+import "github.com/GabrielHCataldo/go-logger/logger"
 
-    func main() {
-	    subFunc()
-    }
+func main() {
+    subFunc()
+}
 
-    func subFunc() {
-        customOpts := logger.Options{
-            Mode:                   logger.ModeJson,
-            DateFormat:             logger.DateFormatFull12h,
-            UTC:                    false,
-            DontPrintEmptyMessage:  false,
-            RemoveSpace:            false,
-            HideAllArgs:            false,
-            HideArgDatetime:        false,
-            HideArgCaller:          false,
-            DisablePrefixColors:    false,
-            EnableMsgFieldForSlice: false,
-        }
-        format := "%v, %v, %v, %v, %v, %v, %v, last is %v"
-        msg := getBasicMsg()
-        logger.InfoSkipCaller(1, msg...)
-        logger.DebugSkipCallerOpts(1, customOpts, msg...)
-        logger.WarningSkipCallerOptsf(format, 2, customOpts, msg...)
-        logger.ErrorSkipCaller(2, msg...)
+func subFunc() {
+    customOpts := logger.Options{
+        Mode:                   logger.ModeJson,
+        DateFormat:             logger.DateFormatFull12h,
+        UTC:                    false,
+        DontPrintEmptyMessage:  false,
+        RemoveSpace:            false,
+        HideAllArgs:            false,
+        HideArgDatetime:        false,
+        HideArgCaller:          false,
+        DisablePrefixColors:    false,
+        EnableMsgFieldForSlice: false,
     }
-    
-    func getBasicMsg() []any {
-        s := []any{
-            "text string",
-            1,
-            12.213,
-            true,
-            nil,
-            time.Now(),
-        }
-        m := map[string]any{
-            "int":      1,
-            "float":    12.213,
-            "string":   "text string",
-            "bool":     true,
-            "nilValue": nil,
-            "time":     time.Now(),
-        }
-        return []any{"basic example with any values", "text string", 1, 12.213, true, time.Now(), m, s}
+    format := "%v, %v, %v, %v, %v, %v, %v, last is %v"
+    msg := getBasicMsg()
+    logger.InfoSkipCaller(1, msg...)
+    logger.DebugSkipCallerOpts(1, customOpts, msg...)
+    logger.WarningSkipCallerOptsf(format, 2, customOpts, msg...)
+    logger.ErrorSkipCaller(2, msg...)
+}
+
+func getBasicMsg() []any {
+    s := []any{
+        "text string",
+        1,
+        12.213,
+        true,
+        nil,
+        time.Now(),
     }
+    m := map[string]any{
+        "int":      1,
+        "float":    12.213,
+        "string":   "text string",
+        "bool":     true,
+        "nilValue": nil,
+        "time":     time.Now(),
+    }
+    return []any{"basic example with any values", "text string", 1, 12.213, true, time.Now(), m, s}
+}
+```
 
 Outputs:
     
@@ -257,51 +269,53 @@ We have a complete solution to hide/mask values that works for all types, exampl
 Below we will use a structure, where we will add the **logger** tag with the values **hide** | **mask_start** | **mask_end**
 indicating how we want the value to be hidden. See the example below:
 
-    import "github.com/GabrielHCataldo/go-logger/logger"
+```go
+import "github.com/GabrielHCataldo/go-logger/logger"
 
-    type test struct {
-        Name          string    `json:"name,omitempty"`
-        BirthDate     time.Time `json:"birthDate,omitempty"`
-        Document      string    `json:"document,omitempty" logger:"mask_start"`
-        Emails        []string  `json:"emails,omitempty"`
-        Balances      []float32 `json:"balances,omitempty" logger:"mask_end"`
-        TotalBalances []float64 `json:"totalBalances,omitempty"`
-        Booleans      []bool    `json:"booleans,omitempty"`
-        Bank          bankTest  `json:"bank,omitempty"`
-    }
+type test struct {
+    Name          string    `json:"name,omitempty"`
+    BirthDate     time.Time `json:"birthDate,omitempty"`
+    Document      string    `json:"document,omitempty" logger:"mask_start"`
+    Emails        []string  `json:"emails,omitempty"`
+    Balances      []float32 `json:"balances,omitempty" logger:"mask_end"`
+    TotalBalances []float64 `json:"totalBalances,omitempty"`
+    Booleans      []bool    `json:"booleans,omitempty"`
+    Bank          bankTest  `json:"bank,omitempty"`
+}
 
-    type bankTest struct {
-        AccountDigits string  `json:"accountDigits,omitempty"`
-        Account       string  `json:"account,omitempty"`
-        Balance       float32 `json:"balance,omitempty" logger:"hide"`
-        TotalBalance  float64 `json:"totalBalance,omitempty"`
-    }
+type bankTest struct {
+    AccountDigits string  `json:"accountDigits,omitempty"`
+    Account       string  `json:"account,omitempty"`
+    Balance       float32 `json:"balance,omitempty" logger:"hide"`
+    TotalBalance  float64 `json:"totalBalance,omitempty"`
+}
 
-    func main() {
-        testStruct := getTestStruct()
-        msg := []any{"test mask/hide struct:", testStruct}
-        logger.Info(msg...)
-        logger.Debug(msg...)
-        logger.Warning(msg...)
-        logger.Error(msg...)
+func main() {
+    testStruct := getTestStruct()
+    msg := []any{"test mask/hide struct:", testStruct}
+    logger.Info(msg...)
+    logger.Debug(msg...)
+    logger.Warning(msg...)
+    logger.Error(msg...)
+}
+
+func getTestStruct() test {
+    bank := bankTest{
+        AccountDigits: "123",
+        Account:       "123981023",
+        Balance:       30.89,
+        TotalBalance:  200.17,
     }
-    
-    func getTestStruct() test {
-        bank := bankTest{
-            AccountDigits: "123",
-            Account:       "123981023",
-            Balance:       30.89,
-            TotalBalance:  200.17,
-        }
-        return test{
-            Name:      "Foo Bar",
-            BirthDate: time.Date(1999, 1, 21, 0, 0, 0, 0, time.Local),
-            Document:  "02104996642",
-            Emails:    []string{"gabriel@test.com", "gabrielcataldo.231@gmail.com", "biel@test.org"},
-            Balances:  []float32{10.88, 11, 13.99, 12391.23, 23321},
-            Bank:      bank,
-        }
-    }    
+    return test{
+        Name:      "Foo Bar",
+        BirthDate: time.Date(1999, 1, 21, 0, 0, 0, 0, time.Local),
+        Document:  "02104996642",
+        Emails:    []string{"gabriel@test.com", "gabrielcataldo.231@gmail.com", "biel@test.org"},
+        Balances:  []float32{10.88, 11, 13.99, 12391.23, 23321},
+        Bank:      bank,
+    }
+}    
+```
     
 Outputs:
 
@@ -313,36 +327,38 @@ Outputs:
 You can also use functions with the ending **H** to hide all values, **MS** to mask half
 initial half of all values, and **ME** to mask the trailing half of all values. Look:
 
-    import "github.com/GabrielHCataldo/go-logger/logger"
+```go
+import "github.com/GabrielHCataldo/go-logger/logger"
 
-    func main() {
-        // also applies to other levels
-        msg := getBasicMsg()
-        logger.Info(msg...)
-        logger.InfoH(msg...)
-        logger.InfoMS(msg...)
-        logger.InfoME(msg...)
-    }
+func main() {
+    // also applies to other levels
+    msg := getBasicMsg()
+    logger.Info(msg...)
+    logger.InfoH(msg...)
+    logger.InfoMS(msg...)
+    logger.InfoME(msg...)
+}
 
-    func getBasicMsg() []any {
-        s := []any{
-            "text string",
-            1,
-            12.213,
-            true,
-            nil,
-            time.Now(),
-        }
-        m := map[string]any{
-            "int":      1,
-            "float":    12.213,
-            "string":   "text string",
-            "bool":     true,
-            "nilValue": nil,
-            "time":     time.Now(),
-        }
-        return []any{"basic example with any values", "text string", 1, 12.213, true, time.Now(), m, s}
+func getBasicMsg() []any {
+    s := []any{
+        "text string",
+        1,
+        12.213,
+        true,
+        nil,
+        time.Now(),
     }
+    m := map[string]any{
+        "int":      1,
+        "float":    12.213,
+        "string":   "text string",
+        "bool":     true,
+        "nilValue": nil,
+        "time":     time.Now(),
+    }
+    return []any{"basic example with any values", "text string", 1, 12.213, true, time.Now(), m, s}
+}
+```
 
 Outputs:
 
@@ -356,52 +372,54 @@ as already mentioned above, and you can also pass it as a global variable by cal
 and to reset the global options to default, you can call the function **ResetOptionsToDefault**
 see the example below:
 
-    import "github.com/GabrielHCataldo/go-logger/logger"
+```go
+import "github.com/GabrielHCataldo/go-logger/logger"
 
-    func main() {
-        logger.SetOptions(getCustomOptionsExample())
-        msg := getBasicMsg()
-        format := "%v, %v, %v, %v, %v, %v, %v, last is %v"
-        logger.Info(msg...)
-        logger.ResetOptionsToDefault()
-        logger.Debug(msg...)
-        logger.WarningSkipCallerOptsf(format, 1, *getCustomOptionsExample(), msg...)
-        logger.ErrorOptsf(format, *getCustomOptionsExample(), msg...)
+func main() {
+    logger.SetOptions(getCustomOptionsExample())
+    msg := getBasicMsg()
+    format := "%v, %v, %v, %v, %v, %v, %v, last is %v"
+    logger.Info(msg...)
+    logger.ResetOptionsToDefault()
+    logger.Debug(msg...)
+    logger.WarningSkipCallerOptsf(format, 1, *getCustomOptionsExample(), msg...)
+    logger.ErrorOptsf(format, *getCustomOptionsExample(), msg...)
+}
+
+func getCustomOptionsExample() *logger.Options {
+    return &logger.Options{
+        Mode:                  logger.RandomMode(),
+        DateFormat:            logger.RandomDateFormat(),
+        UTC:                   util.RandomBool(),
+        DontPrintEmptyMessage: util.RandomBool(),
+        RemoveSpace:           util.RandomBool(),
+        HideAllArgs:           util.RandomBool(),
+        HideArgDatetime:       util.RandomBool(),
+        HideArgCaller:         util.RandomBool(),
+        DisablePrefixColors:   util.RandomBool(),
     }
-    
-    func getCustomOptionsExample() *logger.Options {
-        return &logger.Options{
-            Mode:                  logger.RandomMode(),
-            DateFormat:            logger.RandomDateFormat(),
-            UTC:                   util.RandomBool(),
-            DontPrintEmptyMessage: util.RandomBool(),
-            RemoveSpace:           util.RandomBool(),
-            HideAllArgs:           util.RandomBool(),
-            HideArgDatetime:       util.RandomBool(),
-            HideArgCaller:         util.RandomBool(),
-            DisablePrefixColors:   util.RandomBool(),
-        }
+}
+
+func getBasicMsg() []any {
+    s := []any{
+        "text string",
+        1,
+        12.213,
+        true,
+        nil,
+        time.Now(),
     }
-    
-    func getBasicMsg() []any {
-        s := []any{
-            "text string",
-            1,
-            12.213,
-            true,
-            nil,
-            time.Now(),
-        }
-        m := map[string]any{
-            "int":      1,
-            "float":    12.213,
-            "string":   "text string",
-            "bool":     true,
-            "nilValue": nil,
-            "time":     time.Now(),
-        }
-        return []any{"basic example with any values", "text string", 1, 12.213, true, time.Now(), m, s}
+    m := map[string]any{
+        "int":      1,
+        "float":    12.213,
+        "string":   "text string",
+        "bool":     true,
+        "nilValue": nil,
+        "time":     time.Now(),
     }
+    return []any{"basic example with any values", "text string", 1, 12.213, true, time.Now(), m, s}
+}
+```
 
 Outputs:
 
@@ -414,42 +432,46 @@ Finally, if you want to print messages asynchronously, you can configure your gl
 or via parameter filling the **EnableAsynchronousMode** field as **true**, remembering that the information,
 file (ex: main.go:23) are not printed in the asynchronous message, see:
 
-    import "github.com/GabrielHCataldo/go-logger/logger"
+```go
+import "github.com/GabrielHCataldo/go-logger/logger"
 
-    func main() {
-        asyncOpt := logger.Options{EnableAsynchronousMode: true}
-        msg := getBasicMsg()
-        logger.SetOptions(&asyncOpt)
-        logger.Info(msg...)
-        logger.ResetOptionsToDefault()
-        logger.InfoOpts(asyncOpt)
+func main() {
+    asyncOpt := logger.Options{EnableAsynchronousMode: true}
+    msg := getBasicMsg()
+    logger.SetOptions(&asyncOpt)
+    logger.Info(msg...)
+    logger.ResetOptionsToDefault()
+    logger.InfoOpts(asyncOpt)
+}
+
+func getBasicMsg() []any {
+    s := []any{
+        "text string",
+        1,
+        12.213,
+        true,
+        nil,
+        time.Now(),
     }
-    
-    func getBasicMsg() []any {
-        s := []any{
-            "text string",
-            1,
-            12.213,
-            true,
-            nil,
-            time.Now(),
-        }
-        m := map[string]any{
-            "int":      1,
-            "float":    12.213,
-            "string":   "text string",
-            "bool":     true,
-            "nilValue": nil,
-            "time":     time.Now(),
-        }
-        return []any{"basic example with any values", "text string", 1, 12.213, true, time.Now(), m, s}
+    m := map[string]any{
+        "int":      1,
+        "float":    12.213,
+        "string":   "text string",
+        "bool":     true,
+        "nilValue": nil,
+        "time":     time.Now(),
     }
+    return []any{"basic example with any values", "text string", 1, 12.213, true, time.Now(), m, s}
+}
+```
 
 #### IMPORTANT
 In our go-logger lib we have several calls with all the examples above, always following the standards of
 nomenclature, let's explain it better:
 
-    logger.InfoSkipCallerOptsfH("format", 1, opts, v...)
+```go
+logger.InfoSkipCallerOptsfH("format", 1, opts, v...)
+```
 
 All our calls have this priority layout by default, eliminating them according to your desire in 
 At the moment, the only mandatory name is the level, see:
@@ -458,19 +480,27 @@ At the moment, the only mandatory name is the level, see:
 
 Example eliminating just SkipCaller:
 
-    logger.InfoOptsfH("format", opts, v...)
+```go
+logger.InfoOptsfH("format", opts, v...)
+```
 
 Example eliminating just Opts:
 
-    logger.InfoSkipCallerfH("format", 1, v...)
+```go
+logger.InfoSkipCallerfH("format", 1, v...)
+```
 
 Example eliminating only the f (format):
 
-    logger.InfoSkipCallerOptsH(1, opts, v...)
+```go
+logger.InfoSkipCallerOptsH(1, opts, v...)
+```
 
 Example eliminating only H/MS/ME (masks):
 
-    logger.InfoSkipCallerOpts("format", 1, opts, v...)
+```go
+logger.InfoSkipCallerOpts("format", 1, opts, v...)
+```
 
 How to contribute
 ------

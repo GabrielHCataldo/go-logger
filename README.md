@@ -3,16 +3,17 @@ go-logger
 <img align="right" src="gopher-logger.png" alt="">
 
 [![Project status](https://img.shields.io/badge/version-v1.0.0-vividgreen.svg)](https://github.com/GabrielHCataldo/go-logger/releases/tag/v1.0.2)
-[![GoDoc](https://godoc.org/github/GabrielHCataldo/go-logger?status.svg)](https://pkg.go.dev/github.com/GabrielHCataldo/go-logger/logger)
 [![Go Report Card](https://goreportcard.com/badge/github.com/GabrielHCataldo/go-logger)](https://goreportcard.com/report/github.com/GabrielHCataldo/go-logger)
 [![Coverage Status](https://coveralls.io/repos/GabrielHCataldo/go-logger/badge.svg?branch=main&service=github)](https://coveralls.io/github/GabrielHCataldo/go-logger?branch=main)
 [![Open Source Helpers](https://www.codetriage.com/gabrielhcataldo/go-logger/badges/users.svg)](https://www.codetriage.com/gabrielhcataldo/go-logger)
-[![TODOs](https://badgen.net/https/api.tickgit.com/badgen/github.com/GabrielHCataldo/go-logger/logger)](https://www.tickgit.com/browse?repo=github.com/GabrielHCataldo/go-logger)
+[![GoDoc](https://godoc.org/github/GabrielHCataldo/go-logger?status.svg)](https://pkg.go.dev/github.com/GabrielHCataldo/go-logger/logger)
 ![License](https://img.shields.io/dub/l/vibe-d.svg)
 
 [//]: # ([![build workflow]&#40;https://github.com/GabrielHCataldo/go-logger/actions/workflows/go.yml/badge.svg&#41;]&#40;https://github.com/GabrielHCataldo/go-logger/actions&#41;)
 
 [//]: # ([![Source graph]&#40;https://sourcegraph.com/github.com/go-logger/logger/-/badge.svg&#41;]&#40;https://sourcegraph.com/github.com/go-logger/logger?badge&#41;)
+
+[//]: # ([![TODOs]&#40;https://badgen.net/https/api.tickgit.com/badgen/github.com/GabrielHCataldo/go-logger/logger&#41;]&#40;https://www.tickgit.com/browse?repo=github.com/GabrielHCataldo/go-logger&#41;)
 
 The go-logger project came to facilitate and increase your project's log customization capacity, being the most complete
 at the moment. Below are some ready to use:

@@ -1,6 +1,7 @@
 package logger
 
 import (
+	"errors"
 	"github.com/GabrielHCataldo/go-logger/internal/util"
 	"time"
 )
@@ -183,7 +184,10 @@ func initTables() []tableTest {
 			"struct argument", "%s %s", 3, []any{"struct:", initStructTest()},
 		},
 		{
-			"slice argument", "%s %s", 3, []any{"slice", initSliceTest()},
+			"slice argument", "%s %s", 3, []any{"slice:", initSliceTest()},
+		},
+		{
+			"error argument", "%s %s", 3, []any{"error:", errors.New("new error test")},
 		},
 	}
 }

@@ -140,8 +140,14 @@ func prepareMsg(tag string, opts Options, msgContents ...any) []any {
 		valueType := reflect.TypeOf(msgContent)
 		value := reflect.ValueOf(msgContent)
 		if valueType.Kind() == reflect.Pointer || valueType.Kind() == reflect.Interface {
-			valueType = valueType.Elem()
-			value = value.Elem()
+			if x, ok := value.Interface().(error); ok {
+				s := x.Error()
+				valueType = reflect.TypeOf(s)
+				value = reflect.ValueOf(s)
+			} else {
+				valueType = valueType.Elem()
+				value = value.Elem()
+			}
 		}
 		if opts.DontPrintEmptyMessage && util.IsZeroReflect(value) {
 			continue

@@ -103,6 +103,8 @@ func convertValueBasedOnType(i any) (output string) {
 		return t.Format(time.RFC3339)
 	case string:
 		return t
+	case error:
+		return t.Error()
 	default:
 		return fmt.Sprintf(`"%s"`, t)
 	}

@@ -204,6 +204,12 @@ func prepareStructMsg(t reflect.Type, v reflect.Value, sub bool, tag string) any
 		fieldStruct := t.Field(i)
 		fieldTag := tag
 		fieldName := util.GetJsonNameByTag(fieldStruct.Tag.Get("json"))
+		if fieldName == "-" {
+			continue
+		}
+		if !fieldStruct.IsExported() {
+			continue
+		}
 		if len(fieldName) == 0 {
 			fieldName = fieldStruct.Name
 		}

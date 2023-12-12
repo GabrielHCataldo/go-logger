@@ -38,6 +38,8 @@ type test struct {
 	Home                 homeTest    `json:"home,omitempty"`
 	PointerHome          *homeTest   `json:"pointerHome,omitempty"`
 	MapInterface         map[any]any
+	privateField         any
+	HideFieldJson        any `json:"-"`
 }
 
 type bankTest struct {
@@ -162,6 +164,8 @@ func initStructTest() test {
 			false:              "test",
 			customMapKeyString: "custom value",
 		},
+		privateField:  "private not show",
+		HideFieldJson: "not show",
 	}
 }
 

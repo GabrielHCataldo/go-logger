@@ -27,7 +27,7 @@ func GetJsonNameByTag(tag string) string {
 	if len(splitTag) > 0 {
 		result = splitTag[0]
 	}
-	if len(result) == 0 || result == "-" {
+	if len(result) == 0 || result == "omitempty" {
 		return ""
 	}
 	return result

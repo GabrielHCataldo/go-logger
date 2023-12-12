@@ -199,19 +199,22 @@ func prepareStructMsg(t reflect.Type, v reflect.Value, sub bool, tag string) any
 	result.SetEscapeHTML(false)
 	for i := 0; i < v.NumField(); i++ {
 		fieldValue := v.Field(i)
-		fieldType := t.Field(i)
+		fieldStruct := t.Field(i)
 		fieldTag := tag
-		jsonName := util.GetJsonNameByTag(fieldType.Tag.Get("json"))
+		if fieldValue.Kind() == reflect.Pointer || fieldValue.Kind() == reflect.Interface {
+			fieldValue = fieldValue.Elem()
+		}
+		jsonName := util.GetJsonNameByTag(fieldStruct.Tag.Get("json"))
 		if util.IsNilValueReflect(fieldValue) {
-			if !util.ContainsJsonOmitemptyByTag(fieldType.Tag.Get("json")) {
+			if !util.ContainsJsonOmitemptyByTag(fieldStruct.Tag.Get("json")) {
 				result.Set(jsonName, nil)
 			}
 			continue
 		}
 		if len(fieldTag) == 0 {
-			fieldTag = fieldType.Tag.Get("logger")
+			fieldTag = fieldStruct.Tag.Get("logger")
 		}
-		fieldValueProcessed := getValueByReflect(fieldType.Type, fieldValue, fieldTag)
+		fieldValueProcessed := getValueByReflect(fieldValue.Type(), fieldValue, fieldTag)
 		if len(jsonName) != 0 && fieldValueProcessed != nil {
 			result.Set(jsonName, fieldValueProcessed)
 		}

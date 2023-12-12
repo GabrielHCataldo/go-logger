@@ -139,9 +139,6 @@ func prepareMsg(tag string, opts Options, msgContents ...any) []any {
 		}
 		valueType := reflect.TypeOf(msgContent)
 		value := reflect.ValueOf(msgContent)
-		if !value.CanInterface() {
-			continue
-		}
 		if valueType.Kind() == reflect.Pointer || valueType.Kind() == reflect.Interface {
 			if x, ok := value.Interface().(error); ok {
 				s := x.Error()
@@ -195,10 +192,10 @@ func processMsgValue(valueType reflect.Type, value reflect.Value, tag string, op
 }
 
 func prepareStructMsg(t reflect.Type, v reflect.Value, sub bool, tag string) any {
-	if !v.CanInterface() {
-		return nil
-	} else if _, ok := v.Interface().(time.Time); ok {
-		return convertStringReflectValue(v, tag)
+	if v.CanInterface() {
+		if _, ok := v.Interface().(time.Time); ok {
+			return convertStringReflectValue(v, tag)
+		}
 	}
 	result := orderedmap.New()
 	result.SetEscapeHTML(false)
@@ -240,9 +237,6 @@ func prepareMapMsg(v reflect.Value, sub bool, tag string) any {
 	for _, key := range v.MapKeys() {
 		mKey := key.Convert(v.Type().Key())
 		mValue := v.MapIndex(mKey)
-		if !mKey.CanInterface() {
-			continue
-		}
 		mKeyString := util.ConvertToString(mKey.Interface())
 		if len(mKeyString) != 0 && util.IsNilValueReflect(mValue) {
 			result.Set(mKeyString, nil)
@@ -357,11 +351,6 @@ func getArgCaller(skipCaller int) string {
 }
 
 func getValueByReflect(t reflect.Type, v reflect.Value, tag string) any {
-	if !v.CanInterface() {
-		return nil
-	} else if _, ok := v.Interface().(time.Time); ok {
-		return convertStringReflectValue(v, tag)
-	}
 	switch t.Kind() {
 	case reflect.Struct:
 		return prepareStructMsg(t, v, true, tag)

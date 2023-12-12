@@ -6,6 +6,10 @@ import (
 	"time"
 )
 
+type customMapKey string
+
+const customMapKeyString customMapKey = "customMapKeyV"
+
 type test struct {
 	Name                 string      `json:"name,omitempty"`
 	BirthDate            time.Time   `json:"birthDate,omitempty" logger:"mask_end"`
@@ -33,6 +37,7 @@ type test struct {
 	PrivateWork          workTest    `json:"privateWork,omitempty" logger:"hide"`
 	Home                 homeTest    `json:"home,omitempty"`
 	PointerHome          *homeTest   `json:"pointerHome,omitempty"`
+	MapInterface         map[any]any
 }
 
 type bankTest struct {
@@ -150,6 +155,13 @@ func initStructTest() test {
 		PrivateWork:          wTest,
 		Home:                 hTest,
 		PointerHome:          &hTest,
+		MapInterface: map[any]any{
+			1:                  "test",
+			"test":             1,
+			true:               1,
+			false:              "test",
+			customMapKeyString: "custom value",
+		},
 	}
 }
 

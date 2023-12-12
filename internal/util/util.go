@@ -106,6 +106,6 @@ func convertValueBasedOnType(i any) (output string) {
 	case error:
 		return t.Error()
 	default:
-		return fmt.Sprintf(`"%s"`, t)
+		return fmt.Sprintf(`%s`, t)
 	}
 }

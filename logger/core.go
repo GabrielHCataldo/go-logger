@@ -201,22 +201,25 @@ func prepareStructMsg(t reflect.Type, v reflect.Value, sub bool, tag string) any
 		fieldValue := v.Field(i)
 		fieldStruct := t.Field(i)
 		fieldTag := tag
-		if fieldValue.Kind() == reflect.Pointer || fieldValue.Kind() == reflect.Interface {
-			fieldValue = fieldValue.Elem()
-		}
-		jsonName := util.GetJsonNameByTag(fieldStruct.Tag.Get("json"))
-		if util.IsNilValueReflect(fieldValue) {
-			if !util.ContainsJsonOmitemptyByTag(fieldStruct.Tag.Get("json")) {
-				result.Set(jsonName, nil)
-			}
-			continue
+		fieldName := util.GetJsonNameByTag(fieldStruct.Tag.Get("json"))
+		if len(fieldName) == 0 {
+			fieldName = fieldStruct.Name
 		}
 		if len(fieldTag) == 0 {
 			fieldTag = fieldStruct.Tag.Get("logger")
 		}
+		if util.IsNilValueReflect(fieldValue) {
+			if !util.ContainsJsonOmitemptyByTag(fieldStruct.Tag.Get("json")) {
+				result.Set(fieldName, nil)
+			}
+			continue
+		}
+		if fieldValue.Kind() == reflect.Pointer || fieldValue.Kind() == reflect.Interface {
+			fieldValue = fieldValue.Elem()
+		}
 		fieldValueProcessed := getValueByReflect(fieldValue.Type(), fieldValue, fieldTag)
-		if len(jsonName) != 0 && fieldValueProcessed != nil {
-			result.Set(jsonName, fieldValueProcessed)
+		if len(fieldName) != 0 && fieldValueProcessed != nil {
+			result.Set(fieldName, fieldValueProcessed)
 		}
 	}
 	if sub {

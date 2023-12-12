@@ -209,5 +209,6 @@ func getOptionsTest() *Options {
 		HideArgDatetime:        util.RandomBool(),
 		HideArgCaller:          util.RandomBool(),
 		DisablePrefixColors:    util.RandomBool(),
+		EnableMsgFieldForSlice: util.RandomBool(),
 	}
 }

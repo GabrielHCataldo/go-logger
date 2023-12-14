@@ -248,7 +248,10 @@ func prepareMapMsg(v reflect.Value, sub bool, tag string) any {
 			result.Set(mKeyString, nil)
 			continue
 		}
-		mValueProcessed := getValueByReflect(mValue.Elem().Type(), mValue.Elem(), tag)
+		if mValue.Kind() == reflect.Interface || mValue.Kind() == reflect.Pointer {
+			mValue = mValue.Elem()
+		}
+		mValueProcessed := getValueByReflect(mValue.Type(), mValue, tag)
 		if len(mKeyString) != 0 && mValueProcessed != nil {
 			result.Set(mKeyString, mValueProcessed)
 		}

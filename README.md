@@ -72,8 +72,8 @@ Outputs:
     [WARNING 2023/12/10 17:23:09] main.go:7: basic example with empty any values  0 {} null
     [ERROR 2023/12/10 17:23:09] main.go:8: basic example with empty any values  0 {} null
 
-Podemos modificar essa estrutura padrão para uma estrutura de log em JSON, basta editar a suas opcoes globais como
-abaixo:
+We can modify this default structure to a JSON log structure, just edit its global options like
+below:
 
 ```go
 import "github.com/GabrielHCataldo/go-logger/logger"

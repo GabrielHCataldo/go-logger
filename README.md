@@ -16,7 +16,7 @@ go-logger
 [//]: # ([![TODOs]&#40;https://badgen.net/https/api.tickgit.com/badgen/github.com/GabrielHCataldo/go-logger/logger&#41;]&#40;https://www.tickgit.com/browse?repo=github.com/GabrielHCataldo/go-logger&#41;)
 
 The go-logger project came to facilitate and increase your project's log customization capacity, being the most complete
-at the moment. Below are some ready to use:
+from the market. Below are functions to use:
 
 - Log Level (Info, Debug, Warning, Error)
 - Different message modes (Default or Json)

@@ -29,6 +29,10 @@ type Options struct {
 	Mode Mode
 	// Argument date format (default: DateFormatFull24h)
 	DateFormat DateFormat
+	// Custom prefix text
+	CustomPrefixText string
+	// Custom after prefix text
+	CustomAfterPrefixText string
 	// Enable asynchronous printing mode (default: false)
 	EnableAsynchronousMode bool
 	// Enable argument date to be UTC (default: false)
@@ -48,7 +52,7 @@ type Options struct {
 	// If true, json mode msg field becomes slice (default: false, only if Mode is ModeJson)
 	//
 	// IMPORTANT: If true, the format parameter will not work
-	EnableMsgFieldForSlice bool
+	EnableJsonMsgFieldForSlice bool
 }
 
 // SetOptions sets the global options to the specified options pointer.
@@ -77,7 +81,7 @@ type Options struct {
 //	- HideArgDatetime: If true it will hide the datetime arguments (default: false)
 //	- HideArgCaller: If true, it will hide the caller arguments (default: false)
 //	- DisablePrefixColors: If true, it will disable all argument and prefix colors (default: false)
-//	- EnableMsgFieldForSlice: If true, json mode msg field becomes slice (default: false, only if Mode is ModeJson)
+//	- EnableJsonMsgFieldForSlice: If true, json mode msg field becomes slice (default: false, only if Mode is ModeJson)
 //	  IMPORTANT: If true, the format parameter will not work
 //
 // # Return:
@@ -177,7 +181,7 @@ func printJsonMsg(logger *log.Logger, lvl level, skipCaller int, opts Options, f
 
 func processMsgValue(valueType reflect.Type, value reflect.Value, tag string, opts Options) any {
 	var processedValue any
-	isSub := opts.Mode == ModeJson && opts.EnableMsgFieldForSlice
+	isSub := opts.Mode == ModeJson && opts.EnableJsonMsgFieldForSlice
 	switch valueType.Kind() {
 	case reflect.Struct:
 		processedValue = prepareStructMsg(valueType, value, isSub, tag)
@@ -294,6 +298,10 @@ func buildDatetimeString(opts Options) string {
 
 func getLoggerNormalPrefix(lvl level, skipCaller int, opts Options) string {
 	var b strings.Builder
+	if len(opts.CustomPrefixText) != 0 {
+		b.WriteString(opts.CustomPrefixText)
+		b.WriteString(" ")
+	}
 	if !opts.HideAllArgs && !opts.HideArgDatetime {
 		b.WriteString("[")
 	}
@@ -306,12 +314,19 @@ func getLoggerNormalPrefix(lvl level, skipCaller int, opts Options) string {
 		b.WriteString(":")
 	}
 	b.WriteString(" ")
+	if len(opts.CustomAfterPrefixText) != 0 {
+		b.WriteString(opts.CustomAfterPrefixText)
+		b.WriteString(" ")
+	}
 	return b.String()
 }
 
 func getLoggerJson(lvl level, skipCaller int, opts Options, format string, v ...any) logJson {
 	var msg any
-	if opts.EnableMsgFieldForSlice {
+	if len(opts.CustomPrefixText) != 0 {
+		v = append([]any{opts.CustomPrefixText}, v...)
+	}
+	if opts.EnableJsonMsgFieldForSlice {
 		msg = v
 	} else {
 		if len(format) != 0 {

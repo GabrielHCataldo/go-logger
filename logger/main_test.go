@@ -187,23 +187,23 @@ func initPointerString() *string {
 func initTables() []tableTest {
 	return []tableTest{
 		{
-			"no arguments", "", 3, []any{nil, "", 0, map[string]any{}, []any{}},
+			"no arguments", "", 1, []any{nil, "", 0, map[string]any{}, []any{}},
 		},
 		{
 			"normal arguments", "%s, %s, %s, %s, %s, %s, %s last is %s", 3, []any{"test", true, 12.3, 200,
 				initPointerString(), time.Now(), initPointerStructTest(), initPointerSliceTest()},
 		},
 		{
-			"map argument", "%s %s", 3, []any{"map:", initMapTest()},
+			"map argument", "%s %s", 1, []any{"map:", initMapTest()},
 		},
 		{
-			"struct argument", "%s %s", 3, []any{"struct:", initStructTest()},
+			"struct argument", "%s %s", 1, []any{"struct:", initStructTest()},
 		},
 		{
-			"slice argument", "%s %s", 3, []any{"slice:", initSliceTest()},
+			"slice argument", "%s %s", 1, []any{"slice:", initSliceTest()},
 		},
 		{
-			"error argument", "%s %s", 3, []any{"error:", errors.New("new error test")},
+			"error argument", "%s %s", 1, []any{"error:", errors.New("new error test")},
 		},
 	}
 }
@@ -215,16 +215,18 @@ func initOptionsTest() {
 
 func getOptionsTest() *Options {
 	return &Options{
-		Mode:                   RandomMode(),
-		DateFormat:             RandomDateFormat(),
-		EnableAsynchronousMode: util.RandomBool(),
-		UTC:                    util.RandomBool(),
-		DontPrintEmptyMessage:  util.RandomBool(),
-		RemoveSpace:            util.RandomBool(),
-		HideAllArgs:            util.RandomBool(),
-		HideArgDatetime:        util.RandomBool(),
-		HideArgCaller:          util.RandomBool(),
-		DisablePrefixColors:    util.RandomBool(),
-		EnableMsgFieldForSlice: util.RandomBool(),
+		Mode:                       RandomMode(),
+		DateFormat:                 RandomDateFormat(),
+		CustomPrefixText:           "",
+		CustomAfterPrefixText:      "",
+		EnableAsynchronousMode:     util.RandomBool(),
+		UTC:                        util.RandomBool(),
+		DontPrintEmptyMessage:      util.RandomBool(),
+		RemoveSpace:                util.RandomBool(),
+		HideAllArgs:                util.RandomBool(),
+		HideArgDatetime:            util.RandomBool(),
+		HideArgCaller:              util.RandomBool(),
+		DisablePrefixColors:        util.RandomBool(),
+		EnableJsonMsgFieldForSlice: util.RandomBool(),
 	}
 }

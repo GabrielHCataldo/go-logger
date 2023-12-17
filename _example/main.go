@@ -71,7 +71,7 @@ func partialJsonMode() {
 	basicMsg := getBasicMsg()
 	logger.InfoOpts(opts, basicMsg...)
 	// field msg json to slice
-	opts.EnableMsgFieldForSlice = true
+	opts.EnableJsonMsgFieldForSlice = true
 	logger.DebugOpts(opts, basicMsg...)
 	logger.Warning(basicMsg...)
 	logger.Error(basicMsg...)
@@ -96,17 +96,34 @@ func maskHideFunc() {
 
 func formatFunc() {
 	customOpts := logger.Options{
-		Mode:                   logger.ModeJson,
-		DateFormat:             logger.DateFormatFull24h,
+		// Print mode (default: ModeDefault)
+		Mode: logger.ModeJson,
+		// Argument date format (default: DateFormatFull24h)
+		DateFormat: logger.DateFormatFull24h,
+		// Custom prefix text
+		CustomPrefixText: "",
+		// Custom after prefix text (only if Mode is ModeDefault)
+		CustomAfterPrefixText: "",
+		// Enable asynchronous printing mode (default: false)
 		EnableAsynchronousMode: false,
-		UTC:                    false,
-		DontPrintEmptyMessage:  false,
-		RemoveSpace:            false,
-		HideAllArgs:            false,
-		HideArgDatetime:        false,
-		HideArgCaller:          false,
-		DisablePrefixColors:    false,
-		EnableMsgFieldForSlice: false,
+		// Enable argument date to be UTC (default: false)
+		UTC: false,
+		// Enable to not print empty message (default: false)
+		DontPrintEmptyMessage: false,
+		// Enable to remove spaces between parameters (default: false)
+		RemoveSpace: false,
+		// If true will hide all datetime and prefix arguments (default: false)
+		HideAllArgs: false,
+		// If true it will hide the datetime arguments (default: false)
+		HideArgDatetime: false,
+		// If true, it will hide the caller arguments (default: false)
+		HideArgCaller: false,
+		// If true, it will disable all argument and prefix colors (default: false)
+		DisablePrefixColors: false,
+		// If true, json mode msg field becomes slice (default: false, only if Mode is ModeJson)
+		//
+		// IMPORTANT: If true, the format parameter will not work
+		EnableJsonMsgFieldForSlice: false,
 	}
 	format := "%v, %v, %v, %v, %v, %v, %v, last is %v"
 	msg := getBasicMsg()
@@ -122,17 +139,33 @@ func skipCallerFun() {
 
 func subFunc() {
 	customOpts := logger.Options{
-		Mode:                   logger.ModeJson,
-		DateFormat:             logger.DateFormatFull12h,
+		Mode: logger.ModeJson,
+		// Argument date format (default: DateFormatFull24h)
+		DateFormat: logger.DateFormatFull12h,
+		// Custom prefix text
+		CustomPrefixText: "",
+		// Custom after prefix text (only if Mode is ModeDefault)
+		CustomAfterPrefixText: "",
+		// Enable asynchronous printing mode (default: false)
 		EnableAsynchronousMode: false,
-		UTC:                    false,
-		DontPrintEmptyMessage:  false,
-		RemoveSpace:            false,
-		HideAllArgs:            false,
-		HideArgDatetime:        false,
-		HideArgCaller:          false,
-		DisablePrefixColors:    false,
-		EnableMsgFieldForSlice: false,
+		// Enable argument date to be UTC (default: false)
+		UTC: false,
+		// Enable to not print empty message (default: false)
+		DontPrintEmptyMessage: false,
+		// Enable to remove spaces between parameters (default: false)
+		RemoveSpace: false,
+		// If true will hide all datetime and prefix arguments (default: false)
+		HideAllArgs: false,
+		// If true it will hide the datetime arguments (default: false)
+		HideArgDatetime: false,
+		// If true, it will hide the caller arguments (default: false)
+		HideArgCaller: false,
+		// If true, it will disable all argument and prefix colors (default: false)
+		DisablePrefixColors: false,
+		// If true, json mode msg field becomes slice (default: false, only if Mode is ModeJson)
+		//
+		// IMPORTANT: If true, the format parameter will not work
+		EnableJsonMsgFieldForSlice: false,
 	}
 	format := "%v, %v, %v, %v, %v, %v, %v, last is %v"
 	msg := getBasicMsg()

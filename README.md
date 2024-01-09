@@ -2,7 +2,7 @@ go-logger
 =================
 <img align="right" src="gopher-logger.png" alt="">
 
-[![Project status](https://img.shields.io/badge/version-v1.0.9-vividgreen.svg)](https://github.com/GabrielHCataldo/go-logger/releases/tag/v1.0.5)
+[![Project status](https://img.shields.io/badge/version-v1.1.0-vividgreen.svg)](https://github.com/GabrielHCataldo/go-logger/releases/tag/v1.1.0)
 [![Go Report Card](https://goreportcard.com/badge/github.com/GabrielHCataldo/go-logger)](https://goreportcard.com/report/github.com/GabrielHCataldo/go-logger)
 [![Coverage Status](https://coveralls.io/repos/GabrielHCataldo/go-logger/badge.svg?branch=main&service=github)](https://coveralls.io/github/GabrielHCataldo/go-logger?branch=main)
 [![Open Source Helpers](https://www.codetriage.com/gabrielhcataldo/go-logger/badges/users.svg)](https://www.codetriage.com/gabrielhcataldo/go-logger)

@@ -196,6 +196,9 @@ func processMsgValue(valueType reflect.Type, value reflect.Value, tag string, op
 }
 
 func prepareStructMsg(t reflect.Type, v reflect.Value, sub bool, tag string) any {
+	if v.IsZero() {
+		return nil
+	}
 	if v.CanInterface() {
 		if _, ok := v.Interface().(time.Time); ok {
 			return convertStringReflectValue(v, tag)
@@ -242,6 +245,9 @@ func prepareStructMsg(t reflect.Type, v reflect.Value, sub bool, tag string) any
 }
 
 func prepareMapMsg(v reflect.Value, sub bool, tag string) any {
+	if v.IsZero() {
+		return nil
+	}
 	result := orderedmap.New()
 	result.SetEscapeHTML(false)
 	for _, key := range v.MapKeys() {
@@ -269,6 +275,9 @@ func prepareMapMsg(v reflect.Value, sub bool, tag string) any {
 
 func prepareSliceMsg(v reflect.Value, sub bool, tag string) any {
 	var result []any
+	if v.IsZero() {
+		return result
+	}
 	for i := 0; i < v.Len(); i++ {
 		indexValue := v.Index(i)
 		if util.IsNilValueReflect(indexValue) {

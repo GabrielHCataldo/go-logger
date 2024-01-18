@@ -33,6 +33,7 @@ func TestDebugOpts(t *testing.T) {
 func TestDebugSkipCaller(t *testing.T) {
 	for _, table := range initTables() {
 		initOptionsTest()
+		SetOptions(&Options{Mode: ModeJson})
 		t.Run(table.name, func(t *testing.T) {
 			DebugSkipCaller(table.skipCaller, table.args...)
 		})

@@ -126,7 +126,7 @@ func executePrintLog(lvl level, skipCaller int, opts Options, format string, tag
 		return
 	}
 	if helper.IsEqual(opts.Mode, ModeJson) {
-		printJsonMsg(logger, lvl, skipCaller, opts, format, msg...)
+		printJsonMsg(logger, lvl, skipCaller+1, opts, format, msg...)
 	} else {
 		printDefaultMsg(logger, format, msg...)
 	}
@@ -165,7 +165,7 @@ func printDefaultMsg(logger *log.Logger, format string, msg ...any) {
 
 func printJsonMsg(logger *log.Logger, lvl level, skipCaller int, opts Options, format string, v ...any) {
 	var processedMsg any
-	processedMsg = getLoggerJson(lvl, skipCaller+1, opts, format, v...)
+	processedMsg = getLoggerJson(lvl, skipCaller, opts, format, v...)
 	bytes, _ := json.Marshal(processedMsg)
 	logger.Print(string(bytes))
 }
@@ -336,7 +336,7 @@ func getLoggerJson(lvl level, skipCaller int, opts Options, format string, v ...
 		lg.Datetime = getArgDatetime(opts)
 	}
 	if !opts.HideArgCaller {
-		fileName, line, funcName := helper.GetCallerInfo(skipCaller + 1)
+		fileName, line, funcName := helper.GetCallerInfo(skipCaller)
 		lg.File = fileName
 		lg.Func = funcName
 		lg.Line = line

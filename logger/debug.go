@@ -10,7 +10,7 @@ package logger
 //
 // [DEBUG 2023/12/09 19:26:09] example.go:239: test true 112 10.99
 func Debug(v ...any) {
-	printLog(levelDebug, 3, *opts, "", "", v...)
+	printLog(levelDebug, 2, *opts, "", "", v...)
 }
 
 // Debugf is a function that records informational messages based on the Options global variable, using the DEBUG level.
@@ -25,7 +25,7 @@ func Debug(v ...any) {
 //
 // [DEBUG 2023/12/09 19:26:09] example.go:239: test, true, 112, last is 10.99
 func Debugf(format string, v ...any) {
-	printLog(levelDebug, 3, *opts, format, "", v...)
+	printLog(levelDebug, 2, *opts, format, "", v...)
 }
 
 // DebugOpts is a function that records informational messages, using the DEBUG level. Unlike Debug, this function passes
@@ -40,7 +40,7 @@ func Debugf(format string, v ...any) {
 //
 // [DEBUG 2023/12/09 19:26:09] example.go:239: test true 112 10.99
 func DebugOpts(opts Options, v ...any) {
-	printLog(levelDebug, 3, opts, "", "", v...)
+	printLog(levelDebug, 2, opts, "", "", v...)
 }
 
 // DebugSkipCaller is a function that logs informational messages based on the Options global variable, using the DEBUG
@@ -69,7 +69,7 @@ func DebugSkipCaller(skipCaller int, v ...any) {
 //
 // [DEBUG 2023/12/09 19:26:09] example.go:239: **** **** *** *****
 func DebugH(v ...any) {
-	printLog(levelDebug, 3, *opts, "", loggerTagHide, v...)
+	printLog(levelDebug, 2, *opts, "", loggerTagHide, v...)
 }
 
 // DebugMS is a function that records informational messages based on the Options global variable, using the DEBUG level.
@@ -83,7 +83,7 @@ func DebugH(v ...any) {
 //
 // [DEBUG 2023/12/09 19:26:09] example.go:239: **st **ue **2 ***99
 func DebugMS(v ...any) {
-	printLog(levelDebug, 3, *opts, "", loggerTagMaskStart, v...)
+	printLog(levelDebug, 2, *opts, "", loggerTagMaskStart, v...)
 }
 
 // DebugME is a function that records informational messages based on the Options global variable, using the DEBUG level.
@@ -97,7 +97,7 @@ func DebugMS(v ...any) {
 //
 // [DEBUG 2023/12/09 19:26:09] example.go:239: te** tr** 1** 10***
 func DebugME(v ...any) {
-	printLog(levelDebug, 3, *opts, "", loggerTagMaskEnd, v...)
+	printLog(levelDebug, 2, *opts, "", loggerTagMaskEnd, v...)
 }
 
 // DebugfH is a function that records informational messages based on the Options global variable, using the DEBUG level,
@@ -112,7 +112,7 @@ func DebugME(v ...any) {
 //
 // [DEBUG 2023/12/09 19:26:09] example.go:239: ****, ****, ***, last is *****
 func DebugfH(format string, v ...any) {
-	printLog(levelDebug, 3, *opts, format, loggerTagHide, v...)
+	printLog(levelDebug, 2, *opts, format, loggerTagHide, v...)
 }
 
 // DebugfMS is a function that records informational messages based on the Options global variable, using the DEBUG level,
@@ -127,7 +127,7 @@ func DebugfH(format string, v ...any) {
 //
 // [DEBUG 2023/12/09 19:26:09] example.go:239: **st, **ue, **2, last is ***99
 func DebugfMS(format string, v ...any) {
-	printLog(levelDebug, 3, *opts, format, loggerTagMaskStart, v...)
+	printLog(levelDebug, 2, *opts, format, loggerTagMaskStart, v...)
 }
 
 // DebugfME is a function that records informational messages based on the Options global variable, using the DEBUG level,
@@ -142,7 +142,7 @@ func DebugfMS(format string, v ...any) {
 //
 // [DEBUG 2023/12/09 19:26:09] example.go:239: te**, tr**, 1**, last is 10***
 func DebugfME(format string, v ...any) {
-	printLog(levelDebug, 3, *opts, format, loggerTagMaskEnd, v...)
+	printLog(levelDebug, 2, *opts, format, loggerTagMaskEnd, v...)
 }
 
 // DebugOptsH is a function that records informative messages based on the Options variable passed as a parameter,
@@ -157,7 +157,7 @@ func DebugfME(format string, v ...any) {
 //
 // [DEBUG 2023/12/09 19:26:09] example.go:239: ****, ****, ***, *****
 func DebugOptsH(opts Options, v ...any) {
-	printLog(levelDebug, 3, opts, "", loggerTagHide, v...)
+	printLog(levelDebug, 2, opts, "", loggerTagHide, v...)
 }
 
 // DebugOptsMS is a function that records informative messages based on the Options variable passed as a parameter,
@@ -172,7 +172,7 @@ func DebugOptsH(opts Options, v ...any) {
 //
 // [DEBUG 2023/12/09 19:26:09] example.go:239: **st **ue **2 ***99
 func DebugOptsMS(opts Options, v ...any) {
-	printLog(levelDebug, 3, opts, "", loggerTagMaskStart, v...)
+	printLog(levelDebug, 2, opts, "", loggerTagMaskStart, v...)
 }
 
 // DebugOptsME is a function that records informative messages based on the Options variable passed as a parameter,
@@ -187,7 +187,7 @@ func DebugOptsMS(opts Options, v ...any) {
 //
 // [DEBUG 2023/12/09 19:26:09] example.go:239: te** tr** 1** 10***
 func DebugOptsME(opts Options, v ...any) {
-	printLog(levelDebug, 3, opts, "", loggerTagMaskEnd, v...)
+	printLog(levelDebug, 2, opts, "", loggerTagMaskEnd, v...)
 }
 
 // DebugOptsf is a function that records informational messages based on the Options variable passed as a parameter,
@@ -202,7 +202,7 @@ func DebugOptsME(opts Options, v ...any) {
 //
 // [DEBUG 2023/12/09 19:26:09] example.go:239: test, true, 112, last is 10.99
 func DebugOptsf(format string, opts Options, v ...any) {
-	printLog(levelDebug, 3, opts, format, "", v...)
+	printLog(levelDebug, 2, opts, format, "", v...)
 }
 
 // DebugOptsfH is a function that records informational messages based on the Options variable passed as a parameter,
@@ -217,7 +217,7 @@ func DebugOptsf(format string, opts Options, v ...any) {
 //
 // [DEBUG 2023/12/09 19:26:09] example.go:239: ****, ****, ***, last is *****
 func DebugOptsfH(format string, opts Options, v ...any) {
-	printLog(levelDebug, 3, opts, format, loggerTagHide, v...)
+	printLog(levelDebug, 2, opts, format, loggerTagHide, v...)
 }
 
 // DebugOptsfMS is a function that records informational messages based on the Options variable passed as a parameter,
@@ -232,7 +232,7 @@ func DebugOptsfH(format string, opts Options, v ...any) {
 //
 // [DEBUG 2023/12/09 19:26:09] example.go:239: **st, **ue, **2, last is ***99
 func DebugOptsfMS(format string, opts Options, v ...any) {
-	printLog(levelDebug, 3, opts, format, loggerTagMaskStart, v...)
+	printLog(levelDebug, 2, opts, format, loggerTagMaskStart, v...)
 }
 
 // DebugOptsfME is a function that records informational messages based on the Options variable passed as a parameter,
@@ -247,7 +247,7 @@ func DebugOptsfMS(format string, opts Options, v ...any) {
 //
 // [DEBUG 2023/12/09 19:26:09] example.go:239: te**, tr**, 1**, last is 10***
 func DebugOptsfME(format string, opts Options, v ...any) {
-	printLog(levelDebug, 3, opts, format, loggerTagMaskEnd, v...)
+	printLog(levelDebug, 2, opts, format, loggerTagMaskEnd, v...)
 }
 
 // DebugSkipCallerf is a function that logs informational messages based on the Options global variable, using the
@@ -257,7 +257,7 @@ func DebugOptsfME(format string, opts Options, v ...any) {
 //
 // # Usage Example:
 //
-// logger.DebugSkipCallerf("%s, %s, %s, last is %s", 3, "test", true, 112, 10.99)
+// logger.DebugSkipCallerf("%s, %s, %s, last is %s", 2, "test", true, 112, 10.99)
 //
 // # Result (default):
 //
@@ -272,7 +272,7 @@ func DebugSkipCallerf(format string, skipCaller int, v ...any) {
 //
 // # Usage Example:
 //
-// logger.DebugSkipCallerH(3, "test", true, 112, 10.99)
+// logger.DebugSkipCallerH(2, "test", true, 112, 10.99)
 //
 // # Result (default):
 //
@@ -288,7 +288,7 @@ func DebugSkipCallerH(skipCaller int, v ...any) {
 //
 // # Usage Example:
 //
-// logger.DebugSkipCallerMS(3, "test", true, 112, 10.99)
+// logger.DebugSkipCallerMS(2, "test", true, 112, 10.99)
 //
 // # Result (default):
 //
@@ -304,7 +304,7 @@ func DebugSkipCallerMS(skipCaller int, v ...any) {
 //
 // # Usage Example:
 //
-// logger.DebugSkipCallerME(3, "test", true, 112, 10.99)
+// logger.DebugSkipCallerME(2, "test", true, 112, 10.99)
 //
 // # Result (default):
 //
@@ -320,7 +320,7 @@ func DebugSkipCallerME(skipCaller int, v ...any) {
 //
 // # Usage Example:
 //
-// logger.DebugSkipCallerfH("%s, %s, %s, last is %s", 3, "test", true, 112, 10.99)
+// logger.DebugSkipCallerfH("%s, %s, %s, last is %s", 2, "test", true, 112, 10.99)
 //
 // # Result (default):
 //
@@ -337,7 +337,7 @@ func DebugSkipCallerfH(format string, skipCaller int, v ...any) {
 //
 // # Usage Example:
 //
-// logger.DebugSkipCallerfMS("%s, %s, %s, last is %s", 3, "test", true, 112, 10.99)
+// logger.DebugSkipCallerfMS("%s, %s, %s, last is %s", 2, "test", true, 112, 10.99)
 //
 // # Result (default):
 //
@@ -354,7 +354,7 @@ func DebugSkipCallerfMS(format string, skipCaller int, v ...any) {
 //
 // # Usage Example:
 //
-// logger.DebugSkipCallerfME("%s, %s, %s, last is %s", 3, "test", true, 112, 10.99)
+// logger.DebugSkipCallerfME("%s, %s, %s, last is %s", 2, "test", true, 112, 10.99)
 //
 // # Result (default):
 //
@@ -370,7 +370,7 @@ func DebugSkipCallerfME(format string, skipCaller int, v ...any) {
 //
 // # Usage Example:
 //
-// logger.DebugSkipCallerOpts(3, Options{}, "test", true, 112, 10.99)
+// logger.DebugSkipCallerOpts(2, Options{}, "test", true, 112, 10.99)
 //
 // # Result (default):
 //
@@ -386,7 +386,7 @@ func DebugSkipCallerOpts(skipCaller int, opts Options, v ...any) {
 //
 // # Usage Example:
 //
-// logger.DebugSkipCallerOptsf("%s, %s, %s, last is %s", 3, Options{}, "test", true, 112, 10.99)
+// logger.DebugSkipCallerOptsf("%s, %s, %s, last is %s", 2, Options{}, "test", true, 112, 10.99)
 //
 // # Result (default):
 //
@@ -402,7 +402,7 @@ func DebugSkipCallerOptsf(format string, skipCaller int, opts Options, v ...any)
 //
 // # Usage Example:
 //
-// logger.DebugSkipCallerOptsH(3, Options{}, "test", true, 112, 10.99)
+// logger.DebugSkipCallerOptsH(2, Options{}, "test", true, 112, 10.99)
 //
 // # Result (default):
 //
@@ -418,7 +418,7 @@ func DebugSkipCallerOptsH(skipCaller int, opts Options, v ...any) {
 //
 // # Usage Example:
 //
-// logger.DebugSkipCallerOptsMS(3, Options{}, "test", true, 112, 10.99)
+// logger.DebugSkipCallerOptsMS(2, Options{}, "test", true, 112, 10.99)
 //
 // # Result (default):
 //
@@ -434,7 +434,7 @@ func DebugSkipCallerOptsMS(skipCaller int, opts Options, v ...any) {
 //
 // # Usage Example:
 //
-// logger.DebugSkipCallerOptsME(3, Options{}, "test", true, 112, 10.99)
+// logger.DebugSkipCallerOptsME(2, Options{}, "test", true, 112, 10.99)
 //
 // # Result (default):
 //
@@ -451,7 +451,7 @@ func DebugSkipCallerOptsME(skipCaller int, opts Options, v ...any) {
 //
 // # Usage Example:
 //
-// logger.DebugSkipCallerOptsfH("%s, %s, %s, last is %s", 3, Options{}, "test", true, 112, 10.99)
+// logger.DebugSkipCallerOptsfH("%s, %s, %s, last is %s", 2, Options{}, "test", true, 112, 10.99)
 //
 // # Result (default):
 //
@@ -468,7 +468,7 @@ func DebugSkipCallerOptsfH(format string, skipCaller int, opts Options, v ...any
 //
 // # Usage Example:
 //
-// logger.DebugSkipCallerOptsfMS("%s, %s, %s, last is %s", 3, Options{}, "test", true, 112, 10.99)
+// logger.DebugSkipCallerOptsfMS("%s, %s, %s, last is %s", 2, Options{}, "test", true, 112, 10.99)
 //
 // # Result (default):
 //
@@ -485,7 +485,7 @@ func DebugSkipCallerOptsfMS(format string, skipCaller int, opts Options, v ...an
 //
 // # Usage Example:
 //
-// logger.DebugSkipCallerOptsfME("%s, %s, %s, last is %s", 3, Options{}, "test", true, 112, 10.99)
+// logger.DebugSkipCallerOptsfME("%s, %s, %s, last is %s", 2, Options{}, "test", true, 112, 10.99)
 //
 // # Result (default):
 //

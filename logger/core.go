@@ -88,7 +88,11 @@ type Options struct {
 //
 //	None
 func SetOptions(options *Options) {
-	opts = options
+	if helper.IsNotNil(options) {
+		opts = options
+	} else {
+		opts = &Options{}
+	}
 }
 
 // ResetOptionsToDefault resets the global options to their default values.

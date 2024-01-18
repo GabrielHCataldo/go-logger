@@ -218,6 +218,10 @@ func initOptionsTest() {
 	SetOptions(getOptionsTest())
 }
 
+func initOptionsTestNil() {
+	SetOptions(nil)
+}
+
 func getOptionsTest() *Options {
 	return &Options{
 		Mode:                       RandomMode(),

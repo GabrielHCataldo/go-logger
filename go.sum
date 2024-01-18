@@ -4,6 +4,10 @@ github.com/GabrielHCataldo/go-helper v1.2.0 h1:6NEzNpecrEBSYy94oSw5kMcIgz/57rRU4
 github.com/GabrielHCataldo/go-helper v1.2.0/go.mod h1:+whI36aUg1BfvLpZWJ8j81+d5iPuxl58ApOJqTIliCU=
 github.com/GabrielHCataldo/go-helper v1.2.1 h1:WUnImGvrDJWM/ZLprlZYsSXwpBYC0PGGYAvtEylJc5I=
 github.com/GabrielHCataldo/go-helper v1.2.1/go.mod h1:+whI36aUg1BfvLpZWJ8j81+d5iPuxl58ApOJqTIliCU=
+github.com/GabrielHCataldo/go-helper v1.2.2 h1:WotTDPb7HBFbfHq4QhdvmkxFoXHFlKCtvY+S+R7f1E0=
+github.com/GabrielHCataldo/go-helper v1.2.2/go.mod h1:+whI36aUg1BfvLpZWJ8j81+d5iPuxl58ApOJqTIliCU=
+github.com/GabrielHCataldo/go-helper v1.2.3 h1:1dNJExPkOzJeq+e+VnxVNI8rNToDRiJblMYlqmibFXQ=
+github.com/GabrielHCataldo/go-helper v1.2.3/go.mod h1:+whI36aUg1BfvLpZWJ8j81+d5iPuxl58ApOJqTIliCU=
 github.com/cockroachdb/apd v1.1.0 h1:3LFP3629v+1aKXU5Q37mxmRxX/pIu1nijXydLShEq5I=
 github.com/cockroachdb/apd v1.1.0/go.mod h1:8Sl8LxpKi29FqWXR16WEFZRNSz3SoPzUzeMeY4+DwBQ=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=

@@ -3,7 +3,7 @@ package logger
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/GabrielHCataldo/go-logger/internal/util"
+	"github.com/GabrielHCataldo/go-helper/helper"
 	"github.com/iancoleman/orderedmap"
 	"log"
 	"math"
@@ -118,10 +118,10 @@ func printLog(lvl level, skipCaller int, opts Options, format string, tag string
 func executePrintLog(lvl level, skipCaller int, opts Options, format string, tag string, v ...any) {
 	logger := getLogger(lvl, skipCaller+1, opts)
 	msg := prepareMsg(tag, opts, v...)
-	if opts.DontPrintEmptyMessage && (msg == nil && len(msg) == 0) {
+	if opts.DontPrintEmptyMessage && helper.IsEmpty(msg) {
 		return
 	}
-	if opts.Mode == ModeJson {
+	if helper.IsEqual(opts.Mode, ModeJson) {
 		printJsonMsg(logger, lvl, skipCaller, opts, format, msg...)
 	} else {
 		printDefaultMsg(logger, format, msg...)
@@ -129,7 +129,7 @@ func executePrintLog(lvl level, skipCaller int, opts Options, format string, tag
 }
 
 func getLogger(lvl level, skipCaller int, opts Options) *log.Logger {
-	if opts.Mode == ModeJson {
+	if helper.IsEqual(opts.Mode, ModeJson) {
 		return log.New(os.Stdout, "", 0)
 	}
 	return log.New(os.Stdout, getLoggerNormalPrefix(lvl, skipCaller+1, opts), 0)
@@ -138,32 +138,19 @@ func getLogger(lvl level, skipCaller int, opts Options) *log.Logger {
 func prepareMsg(tag string, opts Options, msgContents ...any) []any {
 	var processedMsg []any
 	for _, msgContent := range msgContents {
-		if msgContent == nil {
+		if helper.IsNil(msgContent) {
+			continue
+		} else if opts.DontPrintEmptyMessage && helper.IsEmpty(msgContent) {
 			continue
 		}
-		valueType := reflect.TypeOf(msgContent)
-		value := reflect.ValueOf(msgContent)
-		if valueType.Kind() == reflect.Pointer || valueType.Kind() == reflect.Interface {
-			if x, ok := value.Interface().(error); ok {
-				s := x.Error()
-				valueType = reflect.TypeOf(s)
-				value = reflect.ValueOf(s)
-			} else {
-				valueType = valueType.Elem()
-				value = value.Elem()
-			}
-		}
-		if opts.DontPrintEmptyMessage && util.IsZeroReflect(value) {
-			continue
-		}
-		processedValue := processMsgValue(valueType, value, tag, opts)
+		processedValue := processMsgValue(msgContent, tag, opts)
 		processedMsg = append(processedMsg, processedValue)
 	}
 	return processedMsg
 }
 
 func printDefaultMsg(logger *log.Logger, format string, msg ...any) {
-	if len(format) != 0 {
+	if helper.IsNotEmpty(format) {
 		logger.Printf(format, msg...)
 	} else if opts.RemoveSpace {
 		logger.Print(msg...)
@@ -179,123 +166,111 @@ func printJsonMsg(logger *log.Logger, lvl level, skipCaller int, opts Options, f
 	logger.Print(string(bytes))
 }
 
-func processMsgValue(valueType reflect.Type, value reflect.Value, tag string, opts Options) any {
+func processMsgValue(value any, tag string, opts Options) any {
 	var processedValue any
-	isSub := opts.Mode == ModeJson && opts.EnableJsonMsgFieldForSlice
-	switch valueType.Kind() {
-	case reflect.Struct:
-		processedValue = prepareStructMsg(valueType, value, isSub, tag)
-	case reflect.Map:
+	isSub := helper.IsEqual(opts.Mode, ModeJson) && opts.EnableJsonMsgFieldForSlice
+	if helper.IsStruct(value) {
+		processedValue = prepareStructMsg(value, isSub, tag)
+	} else if helper.IsMap(value) {
 		processedValue = prepareMapMsg(value, isSub, tag)
-	case reflect.Slice, reflect.Array:
+	} else if helper.IsSlice(value) {
 		processedValue = prepareSliceMsg(value, isSub, tag)
-	default:
-		processedValue = getValueByReflect(valueType, value, tag)
+	} else {
+		processedValue = prepareValue(value, tag)
 	}
 	return processedValue
 }
 
-func prepareStructMsg(t reflect.Type, v reflect.Value, sub bool, tag string) any {
-	if !v.IsValid() {
-		return nil
-	}
-	if v.CanInterface() {
-		if _, ok := v.Interface().(time.Time); ok {
-			return convertStringReflectValue(v, tag)
-		}
-	}
+func prepareStructMsg(value any, sub bool, tag string) any {
+	v, t := reflectValueOf(value)
 	result := orderedmap.New()
 	result.SetEscapeHTML(false)
 	for i := 0; i < v.NumField(); i++ {
 		fieldValue := v.Field(i)
 		fieldStruct := t.Field(i)
-		fieldTag := tag
-		fieldName := util.GetJsonNameByTag(fieldStruct.Tag.Get("json"))
-		if fieldName == "-" {
+		var fieldRealValue any
+		var fieldName string
+		var fieldTag string
+		fieldName = getJsonNameByTag(fieldStruct.Tag.Get("json"))
+		fieldTag = tag
+		if !fieldStruct.IsExported() || !fieldValue.IsValid() {
 			continue
 		}
-		if !fieldStruct.IsExported() {
-			continue
+		if fieldValue.CanInterface() && !fieldValue.IsZero() && fieldValue.IsValid() {
+			fieldRealValue = fieldValue.Interface()
+			if (helper.IsPointer(fieldRealValue) || helper.IsInterface(fieldRealValue)) &&
+				!fieldValue.Elem().IsZero() && fieldValue.Elem().IsValid() && fieldValue.Elem().CanInterface() {
+				fieldRealValue = fieldValue.Elem().Interface()
+			}
 		}
-		if len(fieldName) == 0 {
+		if helper.IsEmpty(fieldName) {
 			fieldName = fieldStruct.Name
 		}
-		if len(fieldTag) == 0 {
+		if helper.IsEmpty(fieldTag) {
 			fieldTag = fieldStruct.Tag.Get("logger")
 		}
-		if util.IsNilValueReflect(fieldValue) {
-			if !util.ContainsJsonOmitemptyByTag(fieldStruct.Tag.Get("json")) {
-				result.Set(fieldName, nil)
-			}
+		if helper.IsEmpty(fieldRealValue) &&
+			strings.Contains(fieldStruct.Tag.Get("json"), "omitempty") {
 			continue
 		}
-		if fieldValue.Kind() == reflect.Pointer || fieldValue.Kind() == reflect.Interface {
-			fieldValue = fieldValue.Elem()
-		}
-		fieldValueProcessed := getValueByReflect(fieldValue.Type(), fieldValue, fieldTag)
-		if len(fieldName) != 0 && fieldValueProcessed != nil {
+		fieldValueProcessed := prepareValue(fieldRealValue, fieldTag)
+		if helper.IsNotEmpty(fieldName) {
 			result.Set(fieldName, fieldValueProcessed)
 		}
 	}
 	if sub {
 		return result.Values()
 	}
-	bytes, _ := json.Marshal(result)
-	return string(bytes)
+	return helper.SimpleConvertToString(result)
 }
 
-func prepareMapMsg(v reflect.Value, sub bool, tag string) any {
-	if !v.IsValid() {
-		return nil
-	}
+func prepareMapMsg(value any, sub bool, tag string) any {
+	v, _ := reflectValueOf(value)
 	result := orderedmap.New()
 	result.SetEscapeHTML(false)
 	for _, key := range v.MapKeys() {
 		mKey := key.Convert(v.Type().Key())
 		mValue := v.MapIndex(mKey)
-		mKeyString := util.ConvertToString(mKey.Interface())
-		if len(mKeyString) != 0 && util.IsNilValueReflect(mValue) {
-			result.Set(mKeyString, nil)
-			continue
+		mKeyString := helper.SimpleConvertToString(mKey.Interface())
+		var mRealValue any
+		if mValue.CanInterface() && !mValue.IsZero() && mValue.IsValid() {
+			mRealValue = mValue.Interface()
+			if (helper.IsPointer(mRealValue) || helper.IsInterface(mRealValue)) &&
+				!mValue.Elem().IsZero() && mValue.Elem().CanInterface() {
+				mRealValue = mValue.Elem()
+			}
 		}
-		if mValue.Kind() == reflect.Interface || mValue.Kind() == reflect.Pointer {
-			mValue = mValue.Elem()
-		}
-		mValueProcessed := getValueByReflect(mValue.Type(), mValue, tag)
-		if len(mKeyString) != 0 && mValueProcessed != nil {
+		mValueProcessed := prepareValue(mValue.Interface(), tag)
+		if helper.IsNotEmpty(mKeyString) {
 			result.Set(mKeyString, mValueProcessed)
 		}
 	}
 	if sub {
 		return result.Values()
 	}
-	bytes, _ := json.Marshal(result)
-	return string(bytes)
+	return helper.SimpleConvertToString(result)
 }
 
-func prepareSliceMsg(v reflect.Value, sub bool, tag string) any {
+func prepareSliceMsg(value any, sub bool, tag string) any {
+	v, _ := reflectValueOf(value)
 	var result []any
-	if !v.IsValid() {
-		return result
-	}
 	for i := 0; i < v.Len(); i++ {
+		var indexRealValue any
 		indexValue := v.Index(i)
-		if util.IsNilValueReflect(indexValue) {
-			result = append(result, nil)
-			continue
-		} else if indexValue.Kind() == reflect.Pointer || indexValue.Kind() == reflect.Interface {
-			indexValue = indexValue.Elem()
+		if indexValue.CanInterface() && !indexValue.IsZero() && indexValue.IsValid() {
+			indexRealValue = indexValue.Interface()
+			if (helper.IsPointer(indexRealValue) || helper.IsInterface(indexRealValue)) &&
+				!indexValue.Elem().IsZero() && indexValue.Elem().CanInterface() {
+				indexRealValue = indexValue.Elem()
+			}
 		}
-		indexValueProcessed := getValueByReflect(indexValue.Type(), indexValue, tag)
-		if indexValueProcessed != nil {
-			result = append(result, indexValueProcessed)
-		}
+		indexValueProcessed := prepareValue(indexValue.Interface(), tag)
+		result = append(result, indexValueProcessed)
 	}
 	if sub {
 		return result
 	}
-	bytes, _ := json.Marshal(result)
-	return string(bytes)
+	return helper.SimpleConvertToString(result)
 }
 
 func buildDatetimeString(opts Options) string {
@@ -307,7 +282,7 @@ func buildDatetimeString(opts Options) string {
 
 func getLoggerNormalPrefix(lvl level, skipCaller int, opts Options) string {
 	var b strings.Builder
-	if len(opts.CustomPrefixText) != 0 {
+	if helper.IsNotEmpty(opts.CustomPrefixText) {
 		b.WriteString(opts.CustomPrefixText)
 		b.WriteString(" ")
 	}
@@ -319,11 +294,11 @@ func getLoggerNormalPrefix(lvl level, skipCaller int, opts Options) string {
 	b.WriteString(datetimeString)
 	if !opts.HideAllArgs && !opts.HideArgCaller {
 		b.WriteString(" " + getArgCaller(skipCaller) + ":")
-	} else if datetimeString == "" {
+	} else if helper.IsEmpty(datetimeString) {
 		b.WriteString(":")
 	}
 	b.WriteString(" ")
-	if len(opts.CustomAfterPrefixText) != 0 {
+	if helper.IsNotEmpty(opts.CustomAfterPrefixText) {
 		b.WriteString(opts.CustomAfterPrefixText)
 		b.WriteString(" ")
 	}
@@ -332,17 +307,19 @@ func getLoggerNormalPrefix(lvl level, skipCaller int, opts Options) string {
 
 func getLoggerJson(lvl level, skipCaller int, opts Options, format string, v ...any) logJson {
 	var msg any
-	if len(opts.CustomPrefixText) != 0 {
-		v = append([]any{opts.CustomPrefixText}, v...)
+	var prefixes []any
+	if helper.IsNotEmpty(opts.CustomPrefixText) {
+		prefixes = append(prefixes, opts.CustomPrefixText)
 	}
 	if opts.EnableJsonMsgFieldForSlice {
 		msg = v
+	} else if helper.IsNotEmpty(format) && helper.IsNotEmpty(prefixes) {
+		prefix := fmt.Sprintln(prefixes)
+		msg = fmt.Sprintln(prefix, fmt.Sprintf(format, v...))
+	} else if helper.IsNotEmpty(format) {
+		msg = fmt.Sprintf(format, v...)
 	} else {
-		if len(format) != 0 {
-			msg = fmt.Sprintf(format, v...)
-		} else {
-			msg = strings.Replace(fmt.Sprintln(v...), "\n", "", -1)
-		}
+		msg = helper.Sprintln(v...)
 	}
 	lg := logJson{
 		Level: lvl.String(),
@@ -355,7 +332,7 @@ func getLoggerJson(lvl level, skipCaller int, opts Options, format string, v ...
 		lg.Datetime = getArgDatetime(opts)
 	}
 	if !opts.HideArgCaller {
-		fileName, line, funcName := util.GetCallerInfo(skipCaller + 1)
+		fileName, line, funcName := helper.GetCallerInfo(skipCaller + 1)
 		lg.File = fileName
 		lg.Func = funcName
 		lg.Line = line
@@ -379,34 +356,32 @@ func getArgDatetime(opts Options) string {
 
 func getArgCaller(skipCaller int) string {
 	skipCaller = int(math.Max(float64(skipCaller), 0))
-	fileName, line, _ := util.GetCallerInfo(skipCaller)
+	fileName, line, _ := helper.GetCallerInfo(skipCaller)
 	return fileName + ":" + line
 }
 
-func getValueByReflect(t reflect.Type, v reflect.Value, tag string) any {
-	switch t.Kind() {
-	case reflect.Struct:
-		return prepareStructMsg(t, v, true, tag)
-	case reflect.Map:
-		return prepareMapMsg(v, true, tag)
-	case reflect.Array, reflect.Slice:
-		return prepareSliceMsg(v, true, tag)
-	default:
-		if strings.Contains(tag, loggerTagHide) ||
-			strings.Contains(tag, loggerTagMaskStart) ||
-			strings.Contains(tag, loggerTagMaskEnd) {
-			return convertStringReflectValue(v, tag)
-		}
-		return v.Interface()
+func prepareValue(value any, tag string) any {
+	if helper.IsStruct(value) {
+		return prepareStructMsg(value, true, tag)
+	} else if helper.IsMap(value) {
+		return prepareMapMsg(value, true, tag)
+	} else if helper.IsSlice(value) {
+		return prepareSliceMsg(value, true, tag)
+	} else if strings.Contains(tag, loggerTagHide) || strings.Contains(tag, loggerTagMaskStart) ||
+		strings.Contains(tag, loggerTagMaskEnd) {
+		return convertStringReflectValue(value, tag)
+	} else if helper.IsNotNil(value) {
+		return convertStringReflectValue(value, tag)
+	} else {
+		return nil
 	}
 }
 
-func convertStringReflectValue(v reflect.Value, tag string) string {
-	s := util.ConvertToString(v.Interface())
-	if len(s) == 0 {
+func convertStringReflectValue(value any, tag string) string {
+	s := helper.SimpleConvertToString(value)
+	if helper.IsEmpty(s) {
 		return s
-	}
-	if strings.Contains(tag, loggerTagHide) {
+	} else if strings.Contains(tag, loggerTagHide) {
 		s = maskString(s, '*')
 	} else if strings.Contains(tag, loggerTagMaskStart) {
 		s = maskStartOrEndOfString(s, '*', true)
@@ -449,4 +424,26 @@ func getCurrentTime(useUTC bool) time.Time {
 		return t.UTC()
 	}
 	return t.Local()
+}
+
+func reflectValueOf(value any) (reflect.Value, reflect.Type) {
+	v := reflect.ValueOf(value)
+	t := reflect.TypeOf(value)
+	if helper.IsPointer(value) || helper.IsInterface(value) {
+		v = v.Elem()
+		t = t.Elem()
+	}
+	return v, t
+}
+
+func getJsonNameByTag(tag string) string {
+	result := ""
+	splitTag := strings.Split(tag, ",")
+	if helper.IsNotEmpty(splitTag) {
+		result = splitTag[0]
+	}
+	if helper.IsEmpty(result) || helper.IsEqual(result, "omitempty") {
+		return ""
+	}
+	return result
 }

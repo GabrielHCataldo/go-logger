@@ -1,6 +1,9 @@
 package logger
 
-import "math/rand"
+import (
+	"github.com/GabrielHCataldo/go-helper/helper"
+	"math/rand"
+)
 
 type BaseEnum interface {
 	isEnumValid() bool
@@ -92,4 +95,12 @@ func RandomDateFormat() DateFormat {
 		DateFormatAbbrTextDatetime24h, DateFormatAbbrTextDatetime12h,
 	}
 	return ds[rand.Intn(15)]
+}
+
+func RandomCustomPrefix() string {
+	var s string
+	if helper.RandomBool() {
+		s = "custom prefix"
+	}
+	return s
 }

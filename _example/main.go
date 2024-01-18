@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/GabrielHCataldo/go-logger/internal/util"
+	"github.com/GabrielHCataldo/go-helper/helper"
 	"github.com/GabrielHCataldo/go-logger/logger"
 	"os"
 	"os/signal"
@@ -229,13 +229,13 @@ func getCustomOptionsExample() *logger.Options {
 	return &logger.Options{
 		Mode:                  logger.RandomMode(),
 		DateFormat:            logger.RandomDateFormat(),
-		UTC:                   util.RandomBool(),
-		DontPrintEmptyMessage: util.RandomBool(),
-		RemoveSpace:           util.RandomBool(),
-		HideAllArgs:           util.RandomBool(),
-		HideArgDatetime:       util.RandomBool(),
-		HideArgCaller:         util.RandomBool(),
-		DisablePrefixColors:   util.RandomBool(),
+		UTC:                   helper.RandomBool(),
+		DontPrintEmptyMessage: helper.RandomBool(),
+		RemoveSpace:           helper.RandomBool(),
+		HideAllArgs:           helper.RandomBool(),
+		HideArgDatetime:       helper.RandomBool(),
+		HideArgCaller:         helper.RandomBool(),
+		DisablePrefixColors:   helper.RandomBool(),
 	}
 }
 

@@ -2,7 +2,7 @@ package logger
 
 import (
 	"errors"
-	"github.com/GabrielHCataldo/go-logger/internal/util"
+	"github.com/GabrielHCataldo/go-helper/helper"
 	"time"
 )
 
@@ -19,7 +19,7 @@ type test struct {
 	Nil                  *bankTest   `json:"nil"`
 	NilSlice             []any       `json:"nilSlice"`
 	NilMap               map[any]any `json:"nilMap"`
-	EmptyString          string      `json:"emptyString"`
+	EmptyString          string      `json:"emptyString,omitempty"`
 	EmptyBool            bool        `json:"emptyBool"`
 	EmptyInt             int         `json:"emptyInt"`
 	EmptyFloat           float64     `json:"emptyFloat"`
@@ -72,7 +72,8 @@ type tableTest struct {
 }
 
 func initSliceTest() []any {
-	return []any{"test", 23, 23.2, true, false, initStructTest(), initMapTest(), nil}
+	var a *any
+	return []any{a, "test", 23, 23.2, true, false, initStructTest(), initMapTest(), nil, initPointerStructTest()}
 }
 
 func initMapTest() map[string]any {
@@ -179,6 +180,10 @@ func initPointerSliceTest() *[]any {
 	return &s
 }
 
+func initSliceBytes() []byte {
+	return []byte("test slice bytes string")
+}
+
 func initPointerString() *string {
 	s := "test pointer string"
 	return &s
@@ -187,23 +192,23 @@ func initPointerString() *string {
 func initTables() []tableTest {
 	return []tableTest{
 		{
-			"no arguments", "", 1, []any{nil, "", 0, map[string]any{}, []any{}},
+			"no arguments", "%v, %v, %v, %v, %v", 1, []any{nil, "", 0, map[string]any{}, []any{}},
 		},
 		{
-			"normal arguments", "%s, %s, %s, %s, %s, %s, %s last is %s", 3, []any{"test", true, 12.3, 200,
-				initPointerString(), time.Now(), initPointerStructTest(), initPointerSliceTest()},
+			"normal arguments", "%s, %s, %s, %s, %s, %s, %s, %s last is %s", 1, []any{"test", true, 12.3, 200,
+				initPointerString(), time.Now(), initPointerStructTest(), initPointerSliceTest(), initSliceBytes()},
 		},
 		{
-			"map argument", "%s %s", 1, []any{"map:", initMapTest()},
+			"map argument", "%v %v", 1, []any{"map:", initMapTest()},
 		},
 		{
-			"struct argument", "%s %s", 1, []any{"struct:", initStructTest()},
+			"struct argument", "%v %v", 1, []any{"struct:", initStructTest()},
 		},
 		{
-			"slice argument", "%s %s", 1, []any{"slice:", initSliceTest()},
+			"slice argument", "%v %v", 1, []any{"slice:", initSliceTest()},
 		},
 		{
-			"error argument", "%s %s", 1, []any{"error:", errors.New("new error test")},
+			"error argument", "%v %v", 1, []any{"error:", errors.New("new error test")},
 		},
 	}
 }
@@ -217,16 +222,16 @@ func getOptionsTest() *Options {
 	return &Options{
 		Mode:                       RandomMode(),
 		DateFormat:                 RandomDateFormat(),
-		CustomPrefixText:           "",
-		CustomAfterPrefixText:      "",
-		EnableAsynchronousMode:     util.RandomBool(),
-		UTC:                        util.RandomBool(),
-		DontPrintEmptyMessage:      util.RandomBool(),
-		RemoveSpace:                util.RandomBool(),
-		HideAllArgs:                util.RandomBool(),
-		HideArgDatetime:            util.RandomBool(),
-		HideArgCaller:              util.RandomBool(),
-		DisablePrefixColors:        util.RandomBool(),
-		EnableJsonMsgFieldForSlice: util.RandomBool(),
+		CustomPrefixText:           RandomCustomPrefix(),
+		CustomAfterPrefixText:      "after prefix",
+		EnableAsynchronousMode:     helper.RandomBool(),
+		UTC:                        helper.RandomBool(),
+		DontPrintEmptyMessage:      helper.RandomBool(),
+		RemoveSpace:                helper.RandomBool(),
+		HideAllArgs:                helper.RandomBool(),
+		HideArgDatetime:            helper.RandomBool(),
+		HideArgCaller:              helper.RandomBool(),
+		DisablePrefixColors:        helper.RandomBool(),
+		EnableJsonMsgFieldForSlice: helper.RandomBool(),
 	}
 }

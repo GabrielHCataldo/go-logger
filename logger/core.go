@@ -125,7 +125,7 @@ func executePrintLog(lvl level, skipCaller int, opts Options, format string, tag
 	if opts.DontPrintEmptyMessage && helper.IsEmpty(msg) {
 		return
 	}
-	if helper.IsEqual(opts.Mode, ModeJson) {
+	if helper.Equals(opts.Mode, ModeJson) {
 		printJsonMsg(logger, lvl, skipCaller+1, opts, format, msg...)
 	} else {
 		printDefaultMsg(logger, format, msg...)
@@ -133,7 +133,7 @@ func executePrintLog(lvl level, skipCaller int, opts Options, format string, tag
 }
 
 func getLogger(lvl level, skipCaller int, opts Options) *log.Logger {
-	if helper.IsEqual(opts.Mode, ModeJson) {
+	if helper.Equals(opts.Mode, ModeJson) {
 		return log.New(os.Stdout, "", 0)
 	}
 	return log.New(os.Stdout, getLoggerNormalPrefix(lvl, skipCaller+1, opts), 0)
@@ -172,7 +172,7 @@ func printJsonMsg(logger *log.Logger, lvl level, skipCaller int, opts Options, f
 
 func processMsgValue(value any, tag string, opts Options) any {
 	var processedValue any
-	isSub := helper.IsEqual(opts.Mode, ModeJson) && opts.EnableJsonMsgFieldForSlice
+	isSub := helper.Equals(opts.Mode, ModeJson) && opts.EnableJsonMsgFieldForSlice
 	if helper.IsStruct(value) {
 		processedValue = prepareStructMsg(value, isSub, tag)
 	} else if helper.IsMap(value) {
@@ -446,7 +446,7 @@ func getJsonNameByTag(tag string) string {
 	if helper.IsNotEmpty(splitTag) {
 		result = splitTag[0]
 	}
-	if helper.IsEmpty(result) || helper.IsEqual(result, "omitempty") {
+	if helper.IsEmpty(result) || helper.Equals(result, "omitempty") {
 		return ""
 	}
 	return result

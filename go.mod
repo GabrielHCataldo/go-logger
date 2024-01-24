@@ -5,7 +5,7 @@ go 1.21.3
 require github.com/iancoleman/orderedmap v0.3.0
 
 require (
-	github.com/GabrielHCataldo/go-helper v1.2.3
+	github.com/GabrielHCataldo/go-helper v1.2.7
 	github.com/cockroachdb/apd v1.1.0 // indirect
 	github.com/gabriel-vasile/mimetype v1.4.3 // indirect
 	github.com/go-playground/locales v0.14.1 // indirect

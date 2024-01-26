@@ -63,18 +63,27 @@ func (d DateFormat) Format() string {
 	return string(DateFormatFull24h)
 }
 
-func (l level) Color() string {
+func (l level) ColorLevel() string {
 	switch l {
 	case levelInfo:
-		return "\u001b[34m"
+		return "\x1b[34m"
 	case levelDebug:
-		return "\u001b[36m"
+		return "\x1b[36m"
 	case levelWarning:
-		return "\u001b[33m"
+		return "\x1b[33m"
 	case levelError:
-		return "\u001b[31m"
+		return "\x1b[31m"
 	default:
-		return "\u001B[0m"
+		return "\x1b[0m"
+	}
+}
+
+func (l level) ColorMessage() string {
+	switch l {
+	case levelError:
+		return "\x1b[31m"
+	default:
+		return "\x1b[0m"
 	}
 }
 

@@ -130,7 +130,7 @@ func executePrintLog(lvl level, skipCaller int, opts Options, format string, tag
 	if helper.Equals(opts.Mode, ModeJson) {
 		printJsonMsg(logger, lvl, skipCaller+1, opts, format, msg...)
 	} else {
-		printDefaultMsg(logger, format, msg...)
+		printDefaultMsg(logger, lvl, format, msg...)
 	}
 }
 
@@ -155,13 +155,14 @@ func prepareMsg(tag string, opts Options, msgContents ...any) []any {
 	return processedMsg
 }
 
-func printDefaultMsg(logger *log.Logger, format string, msg ...any) {
+func printDefaultMsg(logger *log.Logger, lvl level, format string, msg ...any) {
+	nMsg := prepareMessageColor(lvl, msg...)
 	if helper.IsNotEmpty(format) {
-		logger.Printf(format, msg...)
+		logger.Printf(format, nMsg...)
 	} else if opts.RemoveSpace {
-		logger.Print(msg...)
+		logger.Print(nMsg...)
 	} else {
-		logger.Println(msg...)
+		logger.Println(nMsg...)
 	}
 }
 
@@ -299,7 +300,9 @@ func getLoggerNormalPrefix(lvl level, skipCaller int, opts Options) string {
 	b.WriteString(getArgLogLevel(lvl, opts))
 	b.WriteString(datetimeString)
 	if !opts.HideAllArgs && !opts.HideArgCaller {
-		b.WriteString(" " + getArgCaller(skipCaller) + ":")
+		b.WriteString(" \x1b[4m")
+		b.WriteString(getArgCaller(skipCaller))
+		b.WriteString("\x1b[0m:")
 	} else if helper.IsEmpty(datetimeString) {
 		b.WriteString(":")
 	}
@@ -308,7 +311,7 @@ func getLoggerNormalPrefix(lvl level, skipCaller int, opts Options) string {
 		b.WriteString(opts.CustomAfterPrefixText)
 		b.WriteString(" ")
 	}
-	prepareMessageColor(lvl, &b)
+	prepareMessageColorOnPrefix(lvl, &b)
 	return b.String()
 }
 
@@ -348,13 +351,13 @@ func getLoggerJson(lvl level, skipCaller int, opts Options, format string, v ...
 }
 
 func getArgLogLevel(lvl level, opts Options) string {
-	var color string
+	color := "\x1b[1m"
 	if opts.DisablePrefixColors {
-		color = level("").Color()
+		color += level("").ColorLevel()
 	} else {
-		color = lvl.Color()
+		color += lvl.ColorLevel()
 	}
-	return strings.Join([]string{color, lvl.String(), "\u001B[0m"}, "")
+	return strings.Join([]string{color, lvl.String(), "\x1b[0m"}, "")
 }
 
 func getArgDatetime(opts Options) string {
@@ -367,15 +370,23 @@ func getArgCaller(skipCaller int) string {
 	return fileName + ":" + line
 }
 
-func prepareMessageColor(lvl level, b *strings.Builder) {
+func prepareMessageColorOnPrefix(lvl level, b *strings.Builder) {
 	if !opts.DisableMessageColors {
-		switch lvl {
-		case levelError:
-			b.WriteString(lvl.Color())
-			b.WriteString(" ")
-			break
-		}
+		b.WriteString(lvl.ColorMessage())
 	}
+}
+
+func prepareMessageColor(lvl level, msg ...any) []any {
+	if !opts.DisableMessageColors {
+		var nMsg []any
+		for _, vMsg := range msg {
+			sMsg := helper.SimpleConvertToString(vMsg)
+			sMsg = strings.ReplaceAll(sMsg, "\n", fmt.Sprint("\n", lvl.ColorMessage()))
+			nMsg = append(nMsg, sMsg)
+		}
+		return nMsg
+	}
+	return msg
 }
 
 func prepareValue(value any, tag string) any {

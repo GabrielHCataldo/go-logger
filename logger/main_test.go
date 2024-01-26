@@ -4,6 +4,7 @@ import (
 	"errors"
 	"github.com/GabrielHCataldo/go-helper/helper"
 	"go.mongodb.org/mongo-driver/bson/primitive"
+	"runtime/debug"
 	"time"
 )
 
@@ -218,6 +219,9 @@ func initTables() []tableTest {
 		{
 			"datetime argument", "%v %v", 1, []any{"datetime:", primitive.NewDateTimeFromTime(time.Now())},
 		},
+		{
+			"datetime argument", "%v %v", 1, []any{"debug stack:", string(debug.Stack())},
+		},
 	}
 }
 
@@ -228,6 +232,7 @@ func initOptionsTest() {
 
 func initOptionsTestNil() {
 	SetOptions(nil)
+	//SetOptions(&Options{Mode: ModeJson})
 }
 
 func getOptionsTest() *Options {

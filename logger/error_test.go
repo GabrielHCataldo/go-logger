@@ -6,7 +6,7 @@ import (
 
 func TestError(t *testing.T) {
 	for _, table := range initTables() {
-		initOptionsTest()
+		initOptionsTestNil()
 		t.Run(table.name, func(t *testing.T) {
 			Error(table.args...)
 		})

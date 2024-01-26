@@ -49,6 +49,8 @@ type Options struct {
 	HideArgCaller bool
 	// If true, it will disable all argument and prefix colors (default: false)
 	DisablePrefixColors bool
+	// If true, it will disable all message colors (default: false)
+	DisableMessageColors bool
 	// If true, json mode msg field becomes slice (default: false, only if Mode is ModeJson)
 	//
 	// IMPORTANT: If true, the format parameter will not work
@@ -306,6 +308,7 @@ func getLoggerNormalPrefix(lvl level, skipCaller int, opts Options) string {
 		b.WriteString(opts.CustomAfterPrefixText)
 		b.WriteString(" ")
 	}
+	prepareMessageColor(lvl, &b)
 	return b.String()
 }
 
@@ -362,6 +365,17 @@ func getArgCaller(skipCaller int) string {
 	skipCaller = int(math.Max(float64(skipCaller), 0))
 	fileName, line, _ := helper.GetCallerInfo(skipCaller)
 	return fileName + ":" + line
+}
+
+func prepareMessageColor(lvl level, b *strings.Builder) {
+	if !opts.DisableMessageColors {
+		switch lvl {
+		case levelError:
+			b.WriteString(lvl.Color())
+			b.WriteString(" ")
+			break
+		}
+	}
 }
 
 func prepareValue(value any, tag string) any {

@@ -5,7 +5,7 @@ go 1.21.3
 require github.com/iancoleman/orderedmap v0.3.0
 
 require (
-	github.com/GabrielHCataldo/go-helper v1.2.9
+	github.com/GabrielHCataldo/go-helper v1.3.3
 	github.com/cockroachdb/apd v1.1.0 // indirect
 	github.com/gabriel-vasile/mimetype v1.4.3 // indirect
 	github.com/go-playground/locales v0.14.1 // indirect
@@ -17,7 +17,7 @@ require (
 	github.com/nyaruka/phonenumbers v1.3.0 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/shopspring/decimal v1.3.1 // indirect
-	go.mongodb.org/mongo-driver v1.13.1 // indirect
+	go.mongodb.org/mongo-driver v1.13.1
 	golang.org/x/crypto v0.18.0 // indirect
 	golang.org/x/net v0.19.0 // indirect
 	golang.org/x/sys v0.16.0 // indirect

@@ -3,6 +3,7 @@ package logger
 import (
 	"errors"
 	"github.com/GabrielHCataldo/go-helper/helper"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"time"
 )
 
@@ -196,7 +197,8 @@ func initTables() []tableTest {
 		},
 		{
 			"normal arguments", "%s, %s, %s, %s, %s, %s, %s, %s last is %s", 1, []any{"test", true, 12.3, 200,
-				initPointerString(), time.Now(), initPointerStructTest(), initPointerSliceTest(), initSliceBytes()},
+				initPointerString(), time.Now(), initPointerStructTest(), initPointerSliceTest(), initSliceBytes(),
+				[]uint8{123, 23, 54, 65, 213}},
 		},
 		{
 			"map argument", "%v %v", 1, []any{"map:", initMapTest()},
@@ -209,6 +211,12 @@ func initTables() []tableTest {
 		},
 		{
 			"error argument", "%v %v", 1, []any{"error:", errors.New("new error test")},
+		},
+		{
+			"objectId argument", "%v %v", 1, []any{"objectId:", primitive.NewObjectID()},
+		},
+		{
+			"datetime argument", "%v %v", 1, []any{"datetime:", primitive.NewDateTimeFromTime(time.Now())},
 		},
 	}
 }

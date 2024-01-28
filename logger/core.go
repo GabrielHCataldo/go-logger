@@ -396,17 +396,14 @@ func prepareValue(value any, tag string) any {
 		return prepareMapMsg(value, true, tag)
 	} else if helper.IsSlice(value) {
 		return prepareSliceMsg(value, true, tag)
-	} else if strings.Contains(tag, loggerTagHide) || strings.Contains(tag, loggerTagMaskStart) ||
-		strings.Contains(tag, loggerTagMaskEnd) {
-		return convertStringReflectValue(value, tag)
 	} else if helper.IsNotNil(value) {
-		return convertStringReflectValue(value, tag)
+		return convertValueToString(value, tag)
 	} else {
 		return nil
 	}
 }
 
-func convertStringReflectValue(value any, tag string) string {
+func convertValueToString(value any, tag string) string {
 	s := helper.SimpleConvertToString(value)
 	if helper.IsEmpty(s) {
 		return s

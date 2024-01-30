@@ -260,7 +260,7 @@ func prepareMapMsg(value any, sub bool, tag string) any {
 
 func prepareSliceMsg(value any, sub bool, tag string) any {
 	v, _ := reflectValueOf(value)
-	var result []any
+	var result []string
 	for i := 0; i < v.Len(); i++ {
 		var indexRealValue any
 		indexValue := v.Index(i)
@@ -272,7 +272,8 @@ func prepareSliceMsg(value any, sub bool, tag string) any {
 			}
 		}
 		indexValueProcessed := prepareValue(indexValue.Interface(), tag)
-		result = append(result, indexValueProcessed)
+		indexValueString := convertValueToString(indexValueProcessed, tag)
+		result = append(result, indexValueString)
 	}
 	if sub {
 		return result

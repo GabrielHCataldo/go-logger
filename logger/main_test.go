@@ -82,7 +82,7 @@ func initMapTest() map[string]any {
 	hTest := bankTest{
 		AccountDigits: "123",
 		Account:       "123981023",
-		Balance:       30.89,
+		Balance:       0,
 		TotalBalance:  200.17,
 	}
 	return map[string]any{
@@ -121,14 +121,14 @@ func initStructTest() test {
 	bTest := bankTest{
 		AccountDigits: "123",
 		Account:       "123981023",
-		Balance:       30.89,
+		Balance:       0,
 		TotalBalance:  200.17,
 	}
 	wTest := workTest{
 		Name:          "Foo Bar Company",
 		Address:       "Foo Bar Street",
 		AddressNumber: "1234",
-		Years:         2006,
+		Years:         0,
 		Month:         12,
 		Salary:        1238.99,
 	}

@@ -200,13 +200,13 @@ func prepareStructMsg(value any, sub bool, tag string) any {
 		var fieldTag string
 		fieldName = getJsonNameByTag(fieldStruct.Tag.Get("json"))
 		fieldTag = tag
-		if !fieldStruct.IsExported() || !fieldValue.IsValid() {
+		if !fieldStruct.IsExported() || !fieldValue.IsValid() || !fieldValue.CanInterface() {
 			continue
 		}
-		if fieldValue.CanInterface() && !fieldValue.IsZero() && fieldValue.IsValid() {
+		if helper.IsNotNil(fieldValue.Interface()) {
 			fieldRealValue = fieldValue.Interface()
 			if (helper.IsPointer(fieldRealValue) || helper.IsInterface(fieldRealValue)) &&
-				!fieldValue.Elem().IsZero() && fieldValue.Elem().IsValid() && fieldValue.Elem().CanInterface() {
+				helper.IsNotNil(fieldValue.Elem().Interface()) {
 				fieldRealValue = fieldValue.Elem().Interface()
 			}
 		}
@@ -240,10 +240,10 @@ func prepareMapMsg(value any, sub bool, tag string) any {
 		mValue := v.MapIndex(mKey)
 		mKeyString := helper.SimpleConvertToString(mKey.Interface())
 		var mRealValue any
-		if mValue.CanInterface() && !mValue.IsZero() && mValue.IsValid() {
+		if mValue.CanInterface() && helper.IsNotNil(mValue.Interface()) {
 			mRealValue = mValue.Interface()
 			if (helper.IsPointer(mRealValue) || helper.IsInterface(mRealValue)) &&
-				!mValue.Elem().IsZero() && mValue.Elem().CanInterface() {
+				helper.IsNotNil(mValue.Elem().Interface()) {
 				mRealValue = mValue.Elem().Interface()
 			}
 		}
@@ -264,10 +264,10 @@ func prepareSliceMsg(value any, sub bool, tag string) any {
 	for i := 0; i < v.Len(); i++ {
 		var indexRealValue any
 		indexValue := v.Index(i)
-		if indexValue.CanInterface() && !indexValue.IsZero() && indexValue.IsValid() {
+		if indexValue.CanInterface() && helper.IsNotNil(indexValue.Interface()) {
 			indexRealValue = indexValue.Interface()
 			if (helper.IsPointer(indexRealValue) || helper.IsInterface(indexRealValue)) &&
-				!indexValue.Elem().IsZero() && indexValue.Elem().CanInterface() {
+				helper.IsNotNil(indexValue.Elem().Interface()) {
 				indexRealValue = indexValue.Elem().Interface()
 			}
 		}

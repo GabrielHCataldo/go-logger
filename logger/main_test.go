@@ -202,6 +202,9 @@ func initTables() []tableTest {
 				[]uint8{123, 23, 54, 65, 213}},
 		},
 		{
+			"slice struct", "%v %v", 1, []any{"slice struct:", []test{initStructTest()}},
+		},
+		{
 			"map argument", "%v %v", 1, []any{"map:", initMapTest()},
 		},
 		{

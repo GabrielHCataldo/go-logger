@@ -216,8 +216,8 @@ func prepareStructMsg(value any, sub bool, tag string) any {
 		if helper.IsEmpty(fieldTag) {
 			fieldTag = fieldStruct.Tag.Get("logger")
 		}
-		if helper.IsEmpty(fieldRealValue) &&
-			strings.Contains(fieldStruct.Tag.Get("json"), "omitempty") {
+		if strings.Contains(fieldStruct.Tag.Get("json"), "-") || (helper.IsEmpty(fieldRealValue) &&
+			strings.Contains(fieldStruct.Tag.Get("json"), "omitempty")) {
 			continue
 		}
 		fieldValueProcessed := prepareValue(fieldRealValue, fieldTag)
@@ -226,7 +226,7 @@ func prepareStructMsg(value any, sub bool, tag string) any {
 		}
 	}
 	if sub {
-		return result.Values()
+		return result
 	}
 	return helper.SimpleConvertToString(result)
 }
@@ -244,23 +244,23 @@ func prepareMapMsg(value any, sub bool, tag string) any {
 			mRealValue = mValue.Interface()
 			if (helper.IsPointer(mRealValue) || helper.IsInterface(mRealValue)) &&
 				!mValue.Elem().IsZero() && mValue.Elem().CanInterface() {
-				mRealValue = mValue.Elem()
+				mRealValue = mValue.Elem().Interface()
 			}
 		}
-		mValueProcessed := prepareValue(mValue.Interface(), tag)
+		mValueProcessed := prepareValue(mRealValue, tag)
 		if helper.IsNotEmpty(mKeyString) {
 			result.Set(mKeyString, mValueProcessed)
 		}
 	}
 	if sub {
-		return result.Values()
+		return result
 	}
 	return helper.SimpleConvertToString(result)
 }
 
 func prepareSliceMsg(value any, sub bool, tag string) any {
 	v, _ := reflectValueOf(value)
-	var result []string
+	var result []any
 	for i := 0; i < v.Len(); i++ {
 		var indexRealValue any
 		indexValue := v.Index(i)
@@ -268,12 +268,11 @@ func prepareSliceMsg(value any, sub bool, tag string) any {
 			indexRealValue = indexValue.Interface()
 			if (helper.IsPointer(indexRealValue) || helper.IsInterface(indexRealValue)) &&
 				!indexValue.Elem().IsZero() && indexValue.Elem().CanInterface() {
-				indexRealValue = indexValue.Elem()
+				indexRealValue = indexValue.Elem().Interface()
 			}
 		}
-		indexValueProcessed := prepareValue(indexValue.Interface(), tag)
-		indexValueString := convertValueToString(indexValueProcessed, tag)
-		result = append(result, indexValueString)
+		indexValueProcessed := prepareValue(indexRealValue, tag)
+		result = append(result, indexValueProcessed)
 	}
 	if sub {
 		return result

@@ -44,6 +44,33 @@ const (
 	levelWarning level = "WARNING"
 	levelError   level = "ERROR"
 )
+const (
+	StyleReset      = "\x1b[0m"
+	StyleBright     = "\x1b[1m"
+	StyleDim        = "\x1b[2m"
+	StyleUnderscore = "\x1b[4m"
+	StyleBlink      = "\x1b[5m"
+	StyleReverse    = "\x1b[7m"
+	StyleHidden     = "\x1b[8m"
+
+	ForegroundBlack   = "\x1b[30m"
+	ForegroundRed     = "\x1b[31m"
+	ForegroundGreen   = "\x1b[32m"
+	ForegroundYellow  = "\x1b[33m"
+	ForegroundBlue    = "\x1b[34m"
+	ForegroundMagenta = "\x1b[35m"
+	ForegroundCyan    = "\x1b[36m"
+	ForegroundWhite   = "\x1b[37m"
+
+	BackgroundBlack   = "\x1b[40m"
+	BackgroundRed     = "\x1b[41m"
+	BackgroundGreen   = "\x1b[42m"
+	BackgroundYellow  = "\x1b[43m"
+	BackgroundBlue    = "\x1b[44m"
+	BackgroundMagenta = "\x1b[45m"
+	BackgroundCyan    = "\x1b[46m"
+	BackgroundWhite   = "\x1b[47m"
+)
 
 func (d DateFormat) isEnumValid() bool {
 	switch d {
@@ -63,31 +90,31 @@ func (d DateFormat) Format() string {
 	return string(DateFormatFull24h)
 }
 
-func (l level) ColorLevel() string {
+func (l level) colorLevel() string {
 	switch l {
 	case levelInfo:
-		return "\x1b[34m"
+		return ForegroundBlue
 	case levelDebug:
-		return "\x1b[36m"
+		return ForegroundCyan
 	case levelWarning:
-		return "\x1b[33m"
+		return ForegroundYellow
 	case levelError:
-		return "\x1b[31m"
+		return ForegroundRed
 	default:
-		return "\x1b[0m"
+		return StyleReset
 	}
 }
 
-func (l level) ColorMessage() string {
+func (l level) colorMessage() string {
 	switch l {
 	case levelError:
-		return "\x1b[31m"
+		return ForegroundRed
 	default:
-		return "\x1b[0m"
+		return StyleReset
 	}
 }
 
-func (l level) String() string {
+func (l level) string() string {
 	return string(l)
 }
 

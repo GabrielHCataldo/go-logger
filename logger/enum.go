@@ -46,7 +46,7 @@ const (
 )
 const (
 	StyleReset      = "\x1b[0m"
-	StyleBright     = "\x1b[1m"
+	StyleBold       = "\x1b[1m"
 	StyleDim        = "\x1b[2m"
 	StyleUnderscore = "\x1b[4m"
 	StyleBlink      = "\x1b[5m"

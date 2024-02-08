@@ -300,7 +300,7 @@ func getLoggerNormalPrefix(lvl level, skipCaller int, opts Options) string {
 	b.WriteString(getArgLogLevel(lvl, opts))
 	b.WriteString(datetimeString)
 	if !opts.HideAllArgs && !opts.HideArgCaller {
-		b.WriteString(" \x1b[4m")
+		b.WriteString(StyleUnderscore)
 		b.WriteString(getArgCaller(skipCaller))
 		b.WriteString(StyleReset)
 		b.WriteString(":")
@@ -352,7 +352,7 @@ func getLoggerJson(lvl level, skipCaller int, opts Options, format string, v ...
 }
 
 func getArgLogLevel(lvl level, opts Options) string {
-	color := "\x1b[1m"
+	color := StyleBold
 	if opts.DisablePrefixColors {
 		color += level("").colorLevel()
 	} else {

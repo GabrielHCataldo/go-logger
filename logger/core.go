@@ -300,6 +300,7 @@ func getLoggerNormalPrefix(lvl level, skipCaller int, opts Options) string {
 	b.WriteString(getArgLogLevel(lvl, opts))
 	b.WriteString(datetimeString)
 	if !opts.HideAllArgs && !opts.HideArgCaller {
+		b.WriteString(" ")
 		b.WriteString(StyleUnderscore)
 		b.WriteString(getArgCaller(skipCaller))
 		b.WriteString(StyleReset)

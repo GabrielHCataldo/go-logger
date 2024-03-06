@@ -107,8 +107,6 @@ func (l level) colorLevel() string {
 
 func (l level) colorMessage() string {
 	switch l {
-	case levelError:
-		return ForegroundRed
 	default:
 		return StyleReset
 	}

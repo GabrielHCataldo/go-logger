@@ -176,11 +176,11 @@ func printJsonMsg(logger *log.Logger, lvl level, skipCaller int, opts Options, f
 func processMsgValue(value any, tag string, opts Options) any {
 	var processedValue any
 	isSub := helper.Equals(opts.Mode, ModeJson) && opts.EnableJsonMsgFieldForSlice
-	if helper.IsStruct(value) {
+	if helper.IsStructType(value) {
 		processedValue = prepareStructMsg(value, isSub, tag)
-	} else if helper.IsMap(value) {
+	} else if helper.IsMapType(value) {
 		processedValue = prepareMapMsg(value, isSub, tag)
-	} else if helper.IsSlice(value) {
+	} else if helper.IsSliceType(value) {
 		processedValue = prepareSliceMsg(value, isSub, tag)
 	} else {
 		processedValue = prepareValue(value, tag)
@@ -205,7 +205,7 @@ func prepareStructMsg(value any, sub bool, tag string) any {
 		}
 		if helper.IsNotNil(fieldValue.Interface()) {
 			fieldRealValue = fieldValue.Interface()
-			if (helper.IsPointer(fieldRealValue) || helper.IsInterface(fieldRealValue)) &&
+			if (helper.IsPointerType(fieldRealValue) || helper.IsInterfaceType(fieldRealValue)) &&
 				helper.IsNotNil(fieldValue.Elem().Interface()) {
 				fieldRealValue = fieldValue.Elem().Interface()
 			}
@@ -242,7 +242,7 @@ func prepareMapMsg(value any, sub bool, tag string) any {
 		var mRealValue any
 		if mValue.CanInterface() && helper.IsNotNil(mValue.Interface()) {
 			mRealValue = mValue.Interface()
-			if (helper.IsPointer(mRealValue) || helper.IsInterface(mRealValue)) &&
+			if (helper.IsPointerType(mRealValue) || helper.IsInterfaceType(mRealValue)) &&
 				helper.IsNotNil(mValue.Elem().Interface()) {
 				mRealValue = mValue.Elem().Interface()
 			}
@@ -266,7 +266,7 @@ func prepareSliceMsg(value any, sub bool, tag string) any {
 		indexValue := v.Index(i)
 		if indexValue.CanInterface() && helper.IsNotNil(indexValue.Interface()) {
 			indexRealValue = indexValue.Interface()
-			if (helper.IsPointer(indexRealValue) || helper.IsInterface(indexRealValue)) &&
+			if (helper.IsPointerType(indexRealValue) || helper.IsInterfaceType(indexRealValue)) &&
 				helper.IsNotNil(indexValue.Elem().Interface()) {
 				indexRealValue = indexValue.Elem().Interface()
 			}
@@ -392,11 +392,11 @@ func prepareMessageColor(lvl level, msg ...any) []any {
 }
 
 func prepareValue(value any, tag string) any {
-	if helper.IsStruct(value) {
+	if helper.IsStructType(value) {
 		return prepareStructMsg(value, true, tag)
-	} else if helper.IsMap(value) {
+	} else if helper.IsMapType(value) {
 		return prepareMapMsg(value, true, tag)
-	} else if helper.IsSlice(value) {
+	} else if helper.IsSliceType(value) {
 		return prepareSliceMsg(value, true, tag)
 	} else if helper.IsNotNil(value) {
 		return convertValueToString(value, tag)
@@ -457,7 +457,7 @@ func getCurrentTime(useUTC bool) time.Time {
 func reflectValueOf(value any) (reflect.Value, reflect.Type) {
 	v := reflect.ValueOf(value)
 	t := reflect.TypeOf(value)
-	if helper.IsPointer(value) || helper.IsInterface(value) {
+	if helper.IsPointerType(value) || helper.IsInterfaceType(value) {
 		v = v.Elem()
 		t = t.Elem()
 	}

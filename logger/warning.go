@@ -202,7 +202,7 @@ func WarningOptsME(opts Options, v ...any) {
 //
 // [WARNING 2023/12/09 19:26:09] example.go:239: test, true, 112, last is 10.99
 func WarningOptsf(format string, opts Options, v ...any) {
-	printLog(levelWarning, 2, opts, format, loggerTagHide, v...)
+	printLog(levelWarning, 2, opts, format, "", v...)
 }
 
 // WarningOptsfH is a function that records informational messages based on the Options variable passed as a parameter,

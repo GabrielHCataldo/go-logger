@@ -2,7 +2,7 @@ go-logger
 =================
 <img align="right" src="gopher-logger.png" alt="">
 
-[![Project status](https://img.shields.io/badge/version-v1.3.1-vividgreen.svg)](https://github.com/GabrielHCataldo/go-logger/releases/tag/v1.3.1)
+[![Project status](https://img.shields.io/badge/version-v1.3.2-vividgreen.svg)](https://github.com/GabrielHCataldo/go-logger/releases/tag/v1.3.2)
 [![Go Report Card](https://goreportcard.com/badge/github.com/GabrielHCataldo/go-logger)](https://goreportcard.com/report/github.com/GabrielHCataldo/go-logger)
 [![Coverage Status](https://coveralls.io/repos/GabrielHCataldo/go-logger/badge.svg?branch=main&service=github)](https://coveralls.io/github/GabrielHCataldo/go-logger?branch=main)
 [![Open Source Helpers](https://www.codetriage.com/gabrielhcataldo/go-logger/badges/users.svg)](https://www.codetriage.com/gabrielhcataldo/go-logger)
@@ -75,6 +75,10 @@ import "github.com/GabrielHCataldo/go-logger/logger"
 func main() {
     // set on global options
     logger.SetOptions(&logger.Options{
+        // Out represents an io.Writer that is used for the logging output.
+        Out: os.Stdout,
+        // Level field represents the logging level. It is of type `level`.
+        Level: logger.WarnLevel,
         // Print mode (default: ModeDefault)
         Mode: logger.ModeJson,
         // Argument date format (default: DateFormatFull24h)
@@ -118,10 +122,8 @@ func getBasicMsg() []any {
 
 Outputs:
 
-    {"level":"INFO","datetime":"2023/12/10 17:18:09","file":"main.go","func":"main.main","line":"9","msg":"basic example with empty any values  0 {} null"}
-    {"level":"DEBUG","datetime":"2023/12/10 17:18:09","file":"main.go","func":"main.main","line":"10","msg":"basic example with empty any values  0 {} null"}
-    {"level":"WARN","datetime":"2023/12/10 17:18:09","file":"main.go","func":"main.main","line":"11","msg":"basic example with empty any values  0 {} null"}
-    {"level":"ERROR","datetime":"2023/12/10 17:18:09","file":"main.go","func":"main.main","line":"12","msg":"basic example with empty any values  0 {} null"}
+    {"level":"warn","datetime":"2023/12/10 17:18:09","file":"main.go","func":"main.main","line":"11","msg":"basic example with empty any values  0 {} null"}
+    {"level":"error","datetime":"2023/12/10 17:18:09","file":"main.go","func":"main.main","line":"12","msg":"basic example with empty any values  0 {} null"}
 
 You can also pass custom options as a parameter so as not to impact the defined global settings,
 just use the functions with the **Opts** pattern, see:
@@ -176,8 +178,8 @@ func getBasicMsg() []any {
 
 Outputs:
 
-    {"level":"INFO","datetime":"2023/12/11 08:17:09","file":"main.go","func":"main.main","line":"50","msg":"basic example with any values text string 1 12.213 true 2023-12-11T08:17:14-03:00 {\"int\":1,\"float\":12.213,\"string\":\"text string\",\"bool\":true,\"time\":\"2023-12-11T08:17:14-03:00\",\"nilValue\":null} [\"text string\",1,12.213,true,null,\"2023-12-11T08:17:14-03:00\"]"}
-    {"level":"DEBUG","datetime":"2023/12/11 08:17:09","file":"main.go","func":"main.main","line":"53","msg":["basic example with any values","text string",1,12.213,true,"2023-12-11T08:17:14-03:00",{"bool":true,"float":12.213,"int":1,"nilValue":null,"string":"text string","time":"2023-12-11T08:17:14-03:00"},["text string",1,12.213,true,null,"2023-12-11T08:17:14-03:00"]]}
+    {"level":"info","datetime":"2023/12/11 08:17:09","file":"main.go","func":"main.main","line":"50","msg":"basic example with any values text string 1 12.213 true 2023-12-11T08:17:14-03:00 {\"int\":1,\"float\":12.213,\"string\":\"text string\",\"bool\":true,\"time\":\"2023-12-11T08:17:14-03:00\",\"nilValue\":null} [\"text string\",1,12.213,true,null,\"2023-12-11T08:17:14-03:00\"]"}
+    {"level":"debug","datetime":"2023/12/11 08:17:09","file":"main.go","func":"main.main","line":"53","msg":["basic example with any values","text string",1,12.213,true,"2023-12-11T08:17:14-03:00",{"bool":true,"float":12.213,"int":1,"nilValue":null,"string":"text string","time":"2023-12-11T08:17:14-03:00"},["text string",1,12.213,true,null,"2023-12-11T08:17:14-03:00"]]}
     [WARN 2023/12/11 08:17:09] main.go:54: basic example with any values text string 1 12.213 true 2023-12-11T08:17:14-03:00 {"float":12.213,"string":"text string","bool":true,"time":"2023-12-11T08:17:14-03:00","nilValue":null,"int":1} ["text string",1,12.213,true,null,"2023-12-11T08:17:14-03:00"]
     [ERROR 2023/12/11 08:17:09] main.go:55: basic example with any values text string 1 12.213 true 2023-12-11T08:17:14-03:00 {"time":"2023-12-11T08:17:14-03:00","nilValue":null,"int":1,"float":12.213,"string":"text string","bool":true} ["text string",1,12.213,true,null,"2023-12-11T08:17:14-03:00"]
 
@@ -251,9 +253,9 @@ func getBasicMsg() []any {
 Outputs: 
 
     [INFO 2023/12/11 07:53:09] main.go:9: basic example with any values, text string, 1, 12.213, true, 2023-12-11T07:53:41-03:00, {"nilValue":null,"int":1,"float":12.213,"string":"text string","bool":true,"time":"2023-12-11T07:53:41-03:00"}, last is ["text string",1,12.213,true,null,"2023-12-11T07:53:41-03:00"]
-    {"level":"DEBUG","datetime":"Dec 11 Mon 7:53:41 AM","file":"types.go","func":"main.main","line":"10","msg":"*****************************, ***********, *, ******, ****, *************************, {\"time\":\"*************************\",\"nilValue\":null,\"int\":\"*\",\"float\":\"******\",\"string\":\"***********\",\"bool\":\"****\"}, last is [\"***********\",\"*\",\"******\",\"****\",null,\"*************************\"]"}
+    {"level":"debug","datetime":"Dec 11 Mon 7:53:41 AM","file":"types.go","func":"main.main","line":"10","msg":"*****************************, ***********, *, ******, ****, *************************, {\"time\":\"*************************\",\"nilValue\":null,\"int\":\"*\",\"float\":\"******\",\"string\":\"***********\",\"bool\":\"****\"}, last is [\"***********\",\"*\",\"******\",\"****\",null,\"*************************\"]"}
     [WARN 2023/12/11 07:53:09] main.go:11: **************with any values, *****string, *, ***213, **ue, ************7:53:41-03:00, {"nilValue":null,"int":"*","float":"***213","string":"*****string","bool":"**ue","time":"************7:53:41-03:00"}, last is ["*****string","*","***213","**ue",null,"************7:53:41-03:00"]
-    {"level":"ERROR","datetime":"Dec 11 Mon 7:53:41 AM","file":"types.go","func":"main.main","line":"12","msg":"**************with any values, *****string, *, ***213, **ue, ************7:53:41-03:00, {\"float\":\"***213\",\"string\":\"*****string\",\"bool\":\"**ue\",\"time\":\"************7:53:41-03:00\",\"nilValue\":null,\"int\":\"*\"}, last is [\"*****string\",\"*\",\"***213\",\"**ue\",null,\"************7:53:41-03:00\"]"}
+    {"level":"error","datetime":"Dec 11 Mon 7:53:41 AM","file":"types.go","func":"main.main","line":"12","msg":"**************with any values, *****string, *, ***213, **ue, ************7:53:41-03:00, {\"float\":\"***213\",\"string\":\"*****string\",\"bool\":\"**ue\",\"time\":\"************7:53:41-03:00\",\"nilValue\":null,\"int\":\"*\"}, last is [\"*****string\",\"*\",\"***213\",\"**ue\",null,\"************7:53:41-03:00\"]"}
 
 For a clearer debug, we have in our argument the caller's name and line, to be more precise in some cases
 sub calls, for example, you can call functions with the **SkipCaller** pattern and pass the number you want
@@ -329,8 +331,8 @@ func getBasicMsg() []any {
 Outputs:
     
     [INFO 2023/12/11 08:37:09] main.go:23: basic example with any values text string 1 12.213 true 2023-12-11T08:37:01-03:00 {"nilValue":null,"int":1,"float":12.213,"string":"text string","bool":true,"time":"2023-12-11T08:37:01-03:00"} ["text string",1,12.213,true,null,"2023-12-11T08:37:01-03:00"]
-    {"level":"DEBUG","datetime":"2023/12/11 8:37:01AM","file":"main.go","func":"main.subFunc","line":"24","msg":"basic example with any values text string 1 12.213 true 2023-12-11T08:37:01-03:00 {\"time\":\"2023-12-11T08:37:01-03:00\",\"nilValue\":null,\"int\":1,\"float\":12.213,\"string\":\"text string\",\"bool\":true} [\"text string\",1,12.213,true,null,\"2023-12-11T08:37:01-03:00\"]"}
-    {"level":"WARN","datetime":"2023/12/11 8:37:01AM","file":"main.go","func":"main.main","line":"4","msg":"basic example with any values, text string, 1, 12.213, true, 2023-12-11T08:37:01-03:00, {\"nilValue\":null,\"int\":1,\"float\":12.213,\"string\":\"text string\",\"bool\":true,\"time\":\"2023-12-11T08:37:01-03:00\"}, last is [\"text string\",1,12.213,true,null,\"2023-12-11T08:37:01-03:00\"]"}
+    {"level":"debug","datetime":"2023/12/11 8:37:01AM","file":"main.go","func":"main.subFunc","line":"24","msg":"basic example with any values text string 1 12.213 true 2023-12-11T08:37:01-03:00 {\"time\":\"2023-12-11T08:37:01-03:00\",\"nilValue\":null,\"int\":1,\"float\":12.213,\"string\":\"text string\",\"bool\":true} [\"text string\",1,12.213,true,null,\"2023-12-11T08:37:01-03:00\"]"}
+    {"level":"warn","datetime":"2023/12/11 8:37:01AM","file":"main.go","func":"main.main","line":"4","msg":"basic example with any values, text string, 1, 12.213, true, 2023-12-11T08:37:01-03:00, {\"nilValue\":null,\"int\":1,\"float\":12.213,\"string\":\"text string\",\"bool\":true,\"time\":\"2023-12-11T08:37:01-03:00\"}, last is [\"text string\",1,12.213,true,null,\"2023-12-11T08:37:01-03:00\"]"}
     [ERROR 2023/12/11 08:37:09] main.go:4: basic example with any values text string 1 12.213 true 2023-12-11T08:37:01-03:00 {"bool":true,"time":"2023-12-11T08:37:01-03:00","nilValue":null,"int":1,"float":12.213,"string":"text string"} ["text string",1,12.213,true,null,"2023-12-11T08:37:01-03:00"]
 
 We have a complete solution to hide/mask values that works for all types, example
@@ -510,7 +512,7 @@ Outputs:
 
     INFO: basic example with any valuestext string1 12.213 true2023-12-11T08:59:08-03:00{"time":"2023-12-11T08:59:08-03:00","nilValue":null,"int":1,"float":12.213,"string":"text string","bool":true}["text string",1,12.213,true,null,"2023-12-11T08:59:08-03:00"]
     [DEBUG 2023/12/11 08:59:09] types.go:194: basic example with any values text string 1 12.213 true 2023-12-11T08:59:08-03:00 {"bool":true,"time":"2023-12-11T08:59:08-03:00","nilValue":null,"int":1,"float":12.213,"string":"text string"} ["text string",1,12.213,true,null,"2023-12-11T08:59:08-03:00"]
-    {"level":"WARN","msg":"basic example with any values, text string, 1, 12.213, true, 2023-12-11T08:59:08-03:00, {\"nilValue\":null,\"int\":1,\"float\":12.213,\"string\":\"text string\",\"bool\":true,\"time\":\"2023-12-11T08:59:08-03:00\"}, last is [\"text string\",1,12.213,true,null,\"2023-12-11T08:59:08-03:00\"]"}
+    {"level":"warn","msg":"basic example with any values, text string, 1, 12.213, true, 2023-12-11T08:59:08-03:00, {\"nilValue\":null,\"int\":1,\"float\":12.213,\"string\":\"text string\",\"bool\":true,\"time\":\"2023-12-11T08:59:08-03:00\"}, last is [\"text string\",1,12.213,true,null,\"2023-12-11T08:59:08-03:00\"]"}
     ERROR: basic example with any values, text string, 1, 12.213, true, 2023-12-11T08:59:08-03:00, {"nilValue":null,"int":1,"float":12.213,"string":"text string","bool":true,"time":"2023-12-11T08:59:08-03:00"}, last is ["text string",1,12.213,true,null,"2023-12-11T08:59:08-03:00"]
 
 Finally, if you want to print messages asynchronously, you can configure your global options

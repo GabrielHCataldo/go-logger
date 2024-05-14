@@ -240,6 +240,8 @@ func initOptionsTestNil() {
 
 func getOptionsTest() *Options {
 	return &Options{
+		Out:                        RandomOut(),
+		Level:                      RandomLevel(),
 		Mode:                       RandomMode(),
 		DateFormat:                 RandomDateFormat(),
 		CustomPrefixText:           RandomCustomPrefix(),

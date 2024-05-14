@@ -10,7 +10,7 @@ package logger
 //
 // [INFO 2023/12/09 19:26:09] example.go:239: test true 112 10.99
 func Info(v ...any) {
-	printLog(levelInfo, 2, *opts, "", "", v...)
+	printLog(InfoLevel, 2, *opts, "", "", v...)
 }
 
 // Infof is a function that records informational messages based on the Options global variable, using the INFO level.
@@ -25,7 +25,7 @@ func Info(v ...any) {
 //
 // [INFO 2023/12/09 19:26:09] example.go:239: test, true, 112, last is 10.99
 func Infof(format string, v ...any) {
-	printLog(levelInfo, 2, *opts, format, "", v...)
+	printLog(InfoLevel, 2, *opts, format, "", v...)
 }
 
 // InfoOpts is a function that records informational messages, using the INFO level. Unlike Info, this function passes
@@ -40,7 +40,7 @@ func Infof(format string, v ...any) {
 //
 // [INFO 2023/12/09 19:26:09] example.go:239: test true 112 10.99
 func InfoOpts(opts Options, v ...any) {
-	printLog(levelInfo, 2, opts, "", "", v...)
+	printLog(InfoLevel, 2, opts, "", "", v...)
 }
 
 // InfoSkipCaller is a function that logs informational messages based on the Options global variable, using the INFO
@@ -55,7 +55,7 @@ func InfoOpts(opts Options, v ...any) {
 //
 // [INFO 2023/12/09 19:26:09] subexample.go:139: te** tr** 1** 10***
 func InfoSkipCaller(skipCaller int, v ...any) {
-	printLog(levelInfo, skipCaller+1, *opts, "", "", v...)
+	printLog(InfoLevel, skipCaller+1, *opts, "", "", v...)
 }
 
 // InfoH is a function that records informational messages based on the Options global variable, using the INFO level.
@@ -69,7 +69,7 @@ func InfoSkipCaller(skipCaller int, v ...any) {
 //
 // [INFO 2023/12/09 19:26:09] example.go:239: **** **** *** *****
 func InfoH(v ...any) {
-	printLog(levelInfo, 2, *opts, "", loggerTagHide, v...)
+	printLog(InfoLevel, 2, *opts, "", loggerTagHide, v...)
 }
 
 // InfoMS is a function that records informational messages based on the Options global variable, using the INFO level.
@@ -83,7 +83,7 @@ func InfoH(v ...any) {
 //
 // [INFO 2023/12/09 19:26:09] example.go:239: **st **ue **2 ***99
 func InfoMS(v ...any) {
-	printLog(levelInfo, 2, *opts, "", loggerTagMaskStart, v...)
+	printLog(InfoLevel, 2, *opts, "", loggerTagMaskStart, v...)
 }
 
 // InfoME is a function that records informational messages based on the Options global variable, using the INFO level.
@@ -97,7 +97,7 @@ func InfoMS(v ...any) {
 //
 // [INFO 2023/12/09 19:26:09] example.go:239: te** tr** 1** 10***
 func InfoME(v ...any) {
-	printLog(levelInfo, 2, *opts, "", loggerTagMaskEnd, v...)
+	printLog(InfoLevel, 2, *opts, "", loggerTagMaskEnd, v...)
 }
 
 // InfofH is a function that records informational messages based on the Options global variable, using the INFO level,
@@ -112,7 +112,7 @@ func InfoME(v ...any) {
 //
 // [INFO 2023/12/09 19:26:09] example.go:239: ****, ****, ***, last is *****
 func InfofH(format string, v ...any) {
-	printLog(levelInfo, 2, *opts, format, loggerTagHide, v...)
+	printLog(InfoLevel, 2, *opts, format, loggerTagHide, v...)
 }
 
 // InfofMS is a function that records informational messages based on the Options global variable, using the INFO level,
@@ -127,7 +127,7 @@ func InfofH(format string, v ...any) {
 //
 // [INFO 2023/12/09 19:26:09] example.go:239: **st, **ue, **2, last is ***99
 func InfofMS(format string, v ...any) {
-	printLog(levelInfo, 2, *opts, format, loggerTagMaskStart, v...)
+	printLog(InfoLevel, 2, *opts, format, loggerTagMaskStart, v...)
 }
 
 // InfofME is a function that records informational messages based on the Options global variable, using the INFO level,
@@ -142,7 +142,7 @@ func InfofMS(format string, v ...any) {
 //
 // [INFO 2023/12/09 19:26:09] example.go:239: te**, tr**, 1**, last is 10***
 func InfofME(format string, v ...any) {
-	printLog(levelInfo, 2, *opts, format, loggerTagMaskEnd, v...)
+	printLog(InfoLevel, 2, *opts, format, loggerTagMaskEnd, v...)
 }
 
 // InfoOptsH is a function that records informative messages based on the Options variable passed as a parameter,
@@ -157,7 +157,7 @@ func InfofME(format string, v ...any) {
 //
 // [INFO 2023/12/09 19:26:09] example.go:239: ****, ****, ***, *****
 func InfoOptsH(opts Options, v ...any) {
-	printLog(levelInfo, 2, opts, "", loggerTagHide, v...)
+	printLog(InfoLevel, 2, opts, "", loggerTagHide, v...)
 }
 
 // InfoOptsMS is a function that records informative messages based on the Options variable passed as a parameter,
@@ -172,7 +172,7 @@ func InfoOptsH(opts Options, v ...any) {
 //
 // [INFO 2023/12/09 19:26:09] example.go:239: **st **ue **2 ***99
 func InfoOptsMS(opts Options, v ...any) {
-	printLog(levelInfo, 2, opts, "", loggerTagMaskStart, v...)
+	printLog(InfoLevel, 2, opts, "", loggerTagMaskStart, v...)
 }
 
 // InfoOptsME is a function that records informative messages based on the Options variable passed as a parameter,
@@ -187,7 +187,7 @@ func InfoOptsMS(opts Options, v ...any) {
 //
 // [INFO 2023/12/09 19:26:09] example.go:239: te** tr** 1** 10***
 func InfoOptsME(opts Options, v ...any) {
-	printLog(levelInfo, 2, opts, "", loggerTagMaskEnd, v...)
+	printLog(InfoLevel, 2, opts, "", loggerTagMaskEnd, v...)
 }
 
 // InfoOptsf is a function that records informational messages based on the Options variable passed as a parameter,
@@ -202,7 +202,7 @@ func InfoOptsME(opts Options, v ...any) {
 //
 // [INFO 2023/12/09 19:26:09] example.go:239: test, true, 112, last is 10.99
 func InfoOptsf(format string, opts Options, v ...any) {
-	printLog(levelInfo, 2, opts, format, "", v...)
+	printLog(InfoLevel, 2, opts, format, "", v...)
 }
 
 // InfoOptsfH is a function that records informational messages based on the Options variable passed as a parameter,
@@ -217,7 +217,7 @@ func InfoOptsf(format string, opts Options, v ...any) {
 //
 // [INFO 2023/12/09 19:26:09] example.go:239: ****, ****, ***, last is *****
 func InfoOptsfH(format string, opts Options, v ...any) {
-	printLog(levelInfo, 2, opts, format, loggerTagHide, v...)
+	printLog(InfoLevel, 2, opts, format, loggerTagHide, v...)
 }
 
 // InfoOptsfMS is a function that records informational messages based on the Options variable passed as a parameter,
@@ -232,7 +232,7 @@ func InfoOptsfH(format string, opts Options, v ...any) {
 //
 // [INFO 2023/12/09 19:26:09] example.go:239: **st, **ue, **2, last is ***99
 func InfoOptsfMS(format string, opts Options, v ...any) {
-	printLog(levelInfo, 2, opts, format, loggerTagMaskStart, v...)
+	printLog(InfoLevel, 2, opts, format, loggerTagMaskStart, v...)
 }
 
 // InfoOptsfME is a function that records informational messages based on the Options variable passed as a parameter,
@@ -247,7 +247,7 @@ func InfoOptsfMS(format string, opts Options, v ...any) {
 //
 // [INFO 2023/12/09 19:26:09] example.go:239: te**, tr**, 1**, last is 10***
 func InfoOptsfME(format string, opts Options, v ...any) {
-	printLog(levelInfo, 2, opts, format, loggerTagMaskEnd, v...)
+	printLog(InfoLevel, 2, opts, format, loggerTagMaskEnd, v...)
 }
 
 // InfoSkipCallerf is a function that logs informational messages based on the Options global variable, using the
@@ -263,7 +263,7 @@ func InfoOptsfME(format string, opts Options, v ...any) {
 //
 // [INFO 2023/12/09 19:26:09] subexample.go:239: test, true, 112, last is 10.99
 func InfoSkipCallerf(format string, skipCaller int, v ...any) {
-	printLog(levelInfo, skipCaller+1, *opts, format, "", v...)
+	printLog(InfoLevel, skipCaller+1, *opts, format, "", v...)
 }
 
 // InfoSkipCallerH is a function that logs informational messages based on the Options global variable, using the
@@ -278,7 +278,7 @@ func InfoSkipCallerf(format string, skipCaller int, v ...any) {
 //
 // [INFO 2023/12/09 19:26:09] subexample.go:239: ****, ****, ***, *****
 func InfoSkipCallerH(skipCaller int, v ...any) {
-	printLog(levelInfo, skipCaller+1, *opts, "", loggerTagHide, v...)
+	printLog(InfoLevel, skipCaller+1, *opts, "", loggerTagHide, v...)
 }
 
 // InfoSkipCallerMS is a function that logs informational messages based on the Options global variable, using the
@@ -294,7 +294,7 @@ func InfoSkipCallerH(skipCaller int, v ...any) {
 //
 // [INFO 2023/12/09 19:26:09] subexample.go:239: **st **ue **2 ***99
 func InfoSkipCallerMS(skipCaller int, v ...any) {
-	printLog(levelInfo, skipCaller+1, *opts, "", loggerTagMaskStart, v...)
+	printLog(InfoLevel, skipCaller+1, *opts, "", loggerTagMaskStart, v...)
 }
 
 // InfoSkipCallerME is a function that logs informational messages based on the Options global variable, using the
@@ -309,7 +309,7 @@ func InfoSkipCallerMS(skipCaller int, v ...any) {
 //
 // [INFO 2023/12/09 19:26:09] example.go:239: te** tr** 1** 10***
 func InfoSkipCallerME(skipCaller int, v ...any) {
-	printLog(levelInfo, skipCaller+1, *opts, "", loggerTagMaskEnd, v...)
+	printLog(InfoLevel, skipCaller+1, *opts, "", loggerTagMaskEnd, v...)
 }
 
 // InfoSkipCallerfH is a function that writes informational messages based on the Options global variable, using the
@@ -325,7 +325,7 @@ func InfoSkipCallerME(skipCaller int, v ...any) {
 //
 // [INFO 2023/12/09 19:26:09] subexample.go:23: ****, ****, ***, last is *****
 func InfoSkipCallerfH(format string, skipCaller int, v ...any) {
-	printLog(levelInfo, skipCaller+1, *opts, format, loggerTagHide, v...)
+	printLog(InfoLevel, skipCaller+1, *opts, format, loggerTagHide, v...)
 }
 
 // InfoSkipCallerfMS is a function that writes informational messages based on the Options global variable, using the
@@ -342,7 +342,7 @@ func InfoSkipCallerfH(format string, skipCaller int, v ...any) {
 //
 // [INFO 2023/12/09 19:26:09] subexample.go:239: **st, **ue, **2, last is ***99
 func InfoSkipCallerfMS(format string, skipCaller int, v ...any) {
-	printLog(levelInfo, skipCaller+1, *opts, format, loggerTagMaskStart, v...)
+	printLog(InfoLevel, skipCaller+1, *opts, format, loggerTagMaskStart, v...)
 }
 
 // InfoSkipCallerfME is a function that writes informational messages based on the Options global variable, using the
@@ -359,7 +359,7 @@ func InfoSkipCallerfMS(format string, skipCaller int, v ...any) {
 //
 // [INFO 2023/12/09 19:26:09] subexample.go:239: te**, tr**, 1**, last is 10***
 func InfoSkipCallerfME(format string, skipCaller int, v ...any) {
-	printLog(levelInfo, skipCaller+1, *opts, format, loggerTagMaskEnd, v...)
+	printLog(InfoLevel, skipCaller+1, *opts, format, loggerTagMaskEnd, v...)
 }
 
 // InfoSkipCallerOpts is a function that records informational messages, using the INFO level, the file name and line
@@ -375,7 +375,7 @@ func InfoSkipCallerfME(format string, skipCaller int, v ...any) {
 //
 // [INFO 2023/12/09 19:26:09] subexample.go:239: test, true, 112, last is 10.99
 func InfoSkipCallerOpts(skipCaller int, opts Options, v ...any) {
-	printLog(levelInfo, skipCaller+1, opts, "", "", v...)
+	printLog(InfoLevel, skipCaller+1, opts, "", "", v...)
 }
 
 // InfoSkipCallerOptsf is a function that records informational messages based on the Options variable passed as
@@ -391,7 +391,7 @@ func InfoSkipCallerOpts(skipCaller int, opts Options, v ...any) {
 //
 // [INFO 2023/12/09 19:26:09] subexample.go:239: test, true, 112, last is 10.99
 func InfoSkipCallerOptsf(format string, skipCaller int, opts Options, v ...any) {
-	printLog(levelInfo, skipCaller+1, opts, format, "", v...)
+	printLog(InfoLevel, skipCaller+1, opts, format, "", v...)
 }
 
 // InfoSkipCallerOptsH is a function that records informational messages based on the Options variable passed as
@@ -407,7 +407,7 @@ func InfoSkipCallerOptsf(format string, skipCaller int, opts Options, v ...any) 
 //
 // [INFO 2023/12/09 19:26:09] subexample.go:23: **** **** *** *****
 func InfoSkipCallerOptsH(skipCaller int, opts Options, v ...any) {
-	printLog(levelInfo, skipCaller+1, opts, "", loggerTagHide, v...)
+	printLog(InfoLevel, skipCaller+1, opts, "", loggerTagHide, v...)
 }
 
 // InfoSkipCallerOptsMS is a function that records informational messages based on the Options variable passed as
@@ -423,7 +423,7 @@ func InfoSkipCallerOptsH(skipCaller int, opts Options, v ...any) {
 //
 // [INFO 2023/12/09 19:26:09] subexample.go:239: **st **ue **2 ***99
 func InfoSkipCallerOptsMS(skipCaller int, opts Options, v ...any) {
-	printLog(levelInfo, skipCaller+1, opts, "", loggerTagMaskStart, v...)
+	printLog(InfoLevel, skipCaller+1, opts, "", loggerTagMaskStart, v...)
 }
 
 // InfoSkipCallerOptsME is a function that records informational messages based on the Options variable passed as
@@ -439,7 +439,7 @@ func InfoSkipCallerOptsMS(skipCaller int, opts Options, v ...any) {
 //
 // [INFO 2023/12/09 19:26:09] subexample.go:239: te** tr** 1** 10***
 func InfoSkipCallerOptsME(skipCaller int, opts Options, v ...any) {
-	printLog(levelInfo, skipCaller+1, opts, "", loggerTagMaskEnd, v...)
+	printLog(InfoLevel, skipCaller+1, opts, "", loggerTagMaskEnd, v...)
 }
 
 // InfoSkipCallerOptsfH is a function that records informational messages based on the Options variable passed
@@ -456,7 +456,7 @@ func InfoSkipCallerOptsME(skipCaller int, opts Options, v ...any) {
 //
 // [INFO 2023/12/09 19:26:09] subexample.go:23: ****, ****, ***, last is *****
 func InfoSkipCallerOptsfH(format string, skipCaller int, opts Options, v ...any) {
-	printLog(levelInfo, skipCaller+1, opts, format, loggerTagHide, v...)
+	printLog(InfoLevel, skipCaller+1, opts, format, loggerTagHide, v...)
 }
 
 // InfoSkipCallerOptsfMS is a function that records informational messages based on the Options variable passed
@@ -473,7 +473,7 @@ func InfoSkipCallerOptsfH(format string, skipCaller int, opts Options, v ...any)
 //
 // [INFO 2023/12/09 19:26:09] subexample.go:239: **st, **ue, **2, last is ***99
 func InfoSkipCallerOptsfMS(format string, skipCaller int, opts Options, v ...any) {
-	printLog(levelInfo, skipCaller+1, opts, format, loggerTagMaskStart, v...)
+	printLog(InfoLevel, skipCaller+1, opts, format, loggerTagMaskStart, v...)
 }
 
 // InfoSkipCallerOptsfME is a function that records informational messages based on the Options variable passed
@@ -490,5 +490,5 @@ func InfoSkipCallerOptsfMS(format string, skipCaller int, opts Options, v ...any
 //
 // [INFO 2023/12/09 19:26:09] subexample.go:239: te**, tr**, 1**, last is 10***
 func InfoSkipCallerOptsfME(format string, skipCaller int, opts Options, v ...any) {
-	printLog(levelInfo, skipCaller+1, opts, format, loggerTagMaskEnd, v...)
+	printLog(InfoLevel, skipCaller+1, opts, format, loggerTagMaskEnd, v...)
 }

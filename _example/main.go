@@ -49,7 +49,7 @@ func basic() {
 	basicMsg := getBasicMsg()
 	logger.Info(basicMsg...)
 	logger.Debug(basicMsg...)
-	logger.Warning(basicMsg...)
+	logger.Warn(basicMsg...)
 	logger.Error(basicMsg...)
 }
 
@@ -62,7 +62,7 @@ func globalJsonMode() {
 	basicMsg := getBasicMsg()
 	logger.Info(basicMsg...)
 	logger.Debug(basicMsg...)
-	logger.Warning(basicMsg...)
+	logger.Warn(basicMsg...)
 	logger.Error(basicMsg...)
 }
 
@@ -73,7 +73,7 @@ func partialJsonMode() {
 	// field msg json to slice
 	opts.EnableJsonMsgFieldForSlice = true
 	logger.DebugOpts(opts, basicMsg...)
-	logger.Warning(basicMsg...)
+	logger.Warn(basicMsg...)
 	logger.Error(basicMsg...)
 }
 
@@ -82,7 +82,7 @@ func maskHideStruct() {
 	msg := []any{"test mask/hide struct:", testStruct}
 	logger.Info(msg...)
 	logger.Debug(msg...)
-	logger.Warning(msg...)
+	logger.Warn(msg...)
 	logger.Error(msg...)
 }
 
@@ -129,7 +129,7 @@ func formatFunc() {
 	msg := getBasicMsg()
 	logger.Infof(format, msg...)
 	logger.DebugOptsf(format, customOpts, msg...)
-	logger.WarningfMS(format, msg...)
+	logger.WarnfMS(format, msg...)
 	logger.ErrorOptsfMS(format, customOpts, msg...)
 }
 
@@ -171,7 +171,7 @@ func subFunc() {
 	msg := getBasicMsg()
 	logger.InfoSkipCaller(1, msg...)
 	logger.DebugSkipCallerOpts(1, customOpts, msg...)
-	logger.WarningSkipCallerOptsf(format, 2, customOpts, msg...)
+	logger.WarnSkipCallerOptsf(format, 2, customOpts, msg...)
 	logger.ErrorSkipCaller(2, msg...)
 }
 
@@ -182,7 +182,7 @@ func customerOptions() {
 	logger.Info(msg...)
 	logger.ResetOptionsToDefault()
 	logger.Debug(msg...)
-	logger.WarningSkipCallerOptsf(format, 1, *getCustomOptionsExample(), msg...)
+	logger.WarnSkipCallerOptsf(format, 1, *getCustomOptionsExample(), msg...)
 	logger.ErrorOptsf(format, *getCustomOptionsExample(), msg...)
 }
 
@@ -192,7 +192,7 @@ func dontPrintEmptyMessage() {
 	logger.SetOptions(&opt)
 	logger.Info(msg...)
 	logger.Debug(msg...)
-	logger.Warning(msg...)
+	logger.Warn(msg...)
 	logger.Error(msg...)
 }
 

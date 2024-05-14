@@ -2,7 +2,9 @@ package logger
 
 import (
 	"github.com/GabrielHCataldo/go-helper/helper"
+	"io"
 	"math/rand"
+	"os"
 )
 
 type BaseEnum interface {
@@ -39,12 +41,6 @@ const (
 	ModeJson    Mode = "JSON"
 )
 const (
-	levelInfo    level = "INFO"
-	levelDebug   level = "DEBUG"
-	levelWarning level = "WARNING"
-	levelError   level = "ERROR"
-)
-const (
 	StyleReset      = "\x1b[0m"
 	StyleBold       = "\x1b[1m"
 	StyleDim        = "\x1b[2m"
@@ -71,6 +67,12 @@ const (
 	BackgroundCyan    = "\x1b[46m"
 	BackgroundWhite   = "\x1b[47m"
 )
+const (
+	InfoLevel  level = "INFO"
+	DebugLevel level = "DEBUG"
+	WarnLevel  level = "WARN"
+	ErrorLevel level = "ERROR"
+)
 
 func (d DateFormat) isEnumValid() bool {
 	switch d {
@@ -90,15 +92,28 @@ func (d DateFormat) Format() string {
 	return string(DateFormatFull24h)
 }
 
+func (l level) acceptedLevels() []level {
+	switch l {
+	case InfoLevel:
+		return []level{InfoLevel, WarnLevel, ErrorLevel}
+	case WarnLevel:
+		return []level{WarnLevel, ErrorLevel}
+	case ErrorLevel:
+		return []level{ErrorLevel}
+	default:
+		return []level{InfoLevel, DebugLevel, WarnLevel, ErrorLevel}
+	}
+}
+
 func (l level) colorLevel() string {
 	switch l {
-	case levelInfo:
+	case InfoLevel:
 		return ForegroundBlue
-	case levelDebug:
+	case DebugLevel:
 		return ForegroundCyan
-	case levelWarning:
+	case WarnLevel:
 		return ForegroundYellow
-	case levelError:
+	case ErrorLevel:
 		return ForegroundRed
 	default:
 		return StyleReset
@@ -114,6 +129,22 @@ func (l level) colorMessage() string {
 
 func (l level) string() string {
 	return string(l)
+}
+
+func (l level) dontAccepted(lvl level) bool {
+	return helper.NotContains(l.acceptedLevels(), lvl)
+}
+
+func RandomOut() io.Writer {
+	if helper.RandomBool() {
+		return os.Stdout
+	}
+	return nil
+}
+
+func RandomLevel() level {
+	ls := []level{InfoLevel, DebugLevel, WarnLevel, ErrorLevel}
+	return ls[rand.Intn(4)]
 }
 
 func RandomMode() Mode {

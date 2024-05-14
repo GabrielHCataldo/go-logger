@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/GabrielHCataldo/go-helper/helper"
 	"github.com/iancoleman/orderedmap"
+	"io"
 	"log"
 	"math"
 	"os"
@@ -14,17 +15,21 @@ import (
 )
 
 type logJson struct {
-	Level    string `json:"level,omitempty"`
-	Datetime string `json:"datetime,omitempty"`
-	File     string `json:"file,omitempty"`
-	Func     string `json:"func,omitempty"`
-	Line     string `json:"line,omitempty"`
-	Msg      any    `json:"msg"`
+	Level string `json:"level,omitempty"`
+	Time  string `json:"time,omitempty"`
+	File  string `json:"file,omitempty"`
+	Func  string `json:"func,omitempty"`
+	Line  string `json:"line,omitempty"`
+	Msg   any    `json:"msg"`
 }
 
 var opts = &Options{}
 
 type Options struct {
+	// Out represents an io.Writer that is used for the logging output.
+	Out io.Writer
+	// Level field represents the logging level. It is of type `level`.
+	Level level
 	// Print mode (default: ModeDefault)
 	Mode Mode
 	// Argument date format (default: DateFormatFull24h)
@@ -113,6 +118,10 @@ func ResetOptionsToDefault() {
 }
 
 func printLog(lvl level, skipCaller int, opts Options, format string, tag string, v ...any) {
+	if opts.Level.dontAccepted(lvl) {
+		return
+	}
+
 	if opts.EnableAsynchronousMode {
 		opts.HideArgCaller = true
 		go executePrintLog(lvl, 1, opts, format, tag, v...)
@@ -135,10 +144,15 @@ func executePrintLog(lvl level, skipCaller int, opts Options, format string, tag
 }
 
 func getLogger(lvl level, skipCaller int, opts Options) *log.Logger {
-	if helper.Equals(opts.Mode, ModeJson) {
-		return log.New(os.Stdout, "", 0)
+	var writer io.Writer = os.Stdout
+	if helper.IsNotNil(opts.Out) {
+		writer = opts.Out
 	}
-	return log.New(os.Stdout, getLoggerNormalPrefix(lvl, skipCaller+1, opts), 0)
+
+	if helper.Equals(opts.Mode, ModeJson) {
+		return log.New(writer, "", 0)
+	}
+	return log.New(writer, getLoggerNormalPrefix(lvl, skipCaller+1, opts), 0)
 }
 
 func prepareMsg(tag string, opts Options, msgContents ...any) []any {
@@ -228,7 +242,7 @@ func prepareStructMsg(value any, sub bool, tag string) any {
 	if sub {
 		return result
 	}
-	return helper.SimpleConvertToString(result)
+	return helper.CompactString(result)
 }
 
 func prepareMapMsg(value any, sub bool, tag string) any {
@@ -255,7 +269,7 @@ func prepareMapMsg(value any, sub bool, tag string) any {
 	if sub {
 		return result
 	}
-	return helper.SimpleConvertToString(result)
+	return helper.CompactString(result)
 }
 
 func prepareSliceMsg(value any, sub bool, tag string) any {
@@ -284,7 +298,7 @@ func buildDatetimeString(opts Options) string {
 	if opts.HideAllArgs || opts.HideArgDatetime {
 		return ""
 	}
-	return " " + getArgDatetime(opts) + "]"
+	return " " + getArgDatetime(opts)
 }
 
 func getLoggerNormalPrefix(lvl level, skipCaller int, opts Options) string {
@@ -293,21 +307,17 @@ func getLoggerNormalPrefix(lvl level, skipCaller int, opts Options) string {
 		b.WriteString(opts.CustomPrefixText)
 		b.WriteString(" ")
 	}
-	if !opts.HideAllArgs && !opts.HideArgDatetime {
-		b.WriteString("[")
-	}
-	datetimeString := buildDatetimeString(opts)
+	b.WriteString("[")
 	b.WriteString(getArgLogLevel(lvl, opts))
-	b.WriteString(datetimeString)
+	b.WriteString(buildDatetimeString(opts))
 	if !opts.HideAllArgs && !opts.HideArgCaller {
 		b.WriteString(" ")
 		b.WriteString(StyleUnderscore)
 		b.WriteString(getArgCaller(skipCaller))
 		b.WriteString(StyleReset)
-		b.WriteString(":")
-	} else if helper.IsEmpty(datetimeString) {
-		b.WriteString(":")
 	}
+	b.WriteString("]")
+
 	b.WriteString(" ")
 	if helper.IsNotEmpty(opts.CustomAfterPrefixText) {
 		b.WriteString(opts.CustomAfterPrefixText)
@@ -334,14 +344,14 @@ func getLoggerJson(lvl level, skipCaller int, opts Options, format string, v ...
 		msg = helper.Sprintln(v...)
 	}
 	lg := logJson{
-		Level: lvl.string(),
+		Level: strings.ToLower(lvl.string()),
 		Msg:   msg,
 	}
 	if opts.HideAllArgs {
 		return lg
 	}
 	if !opts.HideArgDatetime {
-		lg.Datetime = getArgDatetime(opts)
+		lg.Time = getArgDatetime(opts)
 	}
 	if !opts.HideArgCaller {
 		fileName, line, funcName := helper.GetCallerInfo(skipCaller)
@@ -382,7 +392,7 @@ func prepareMessageColor(lvl level, msg ...any) []any {
 	if !opts.DisableMessageColors {
 		var nMsg []any
 		for _, vMsg := range msg {
-			sMsg := helper.SimpleConvertToString(vMsg)
+			sMsg := helper.CompactString(vMsg)
 			sMsg = strings.ReplaceAll(sMsg, "\n", fmt.Sprint("\n", lvl.colorMessage()))
 			nMsg = append(nMsg, sMsg)
 		}
@@ -406,7 +416,7 @@ func prepareValue(value any, tag string) any {
 }
 
 func convertValueToString(value any, tag string) string {
-	s := helper.SimpleConvertToString(value)
+	s := helper.CompactString(value)
 	if helper.IsEmpty(s) {
 		return s
 	} else if strings.Contains(tag, loggerTagHide) {

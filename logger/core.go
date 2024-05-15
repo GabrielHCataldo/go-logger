@@ -102,6 +102,16 @@ func SetOptions(options *Options) {
 	}
 }
 
+// GetOptions returns the current global options configuration.
+// This function retrieves the current configuration options for the logging package.
+// The options include print mode, date format, asynchronous mode, etc.
+// Return:
+//
+//	Options - The current global options configuration.
+func GetOptions() Options {
+	return *opts
+}
+
 // ResetOptionsToDefault resets the global options to their default values.
 // This function initializes the opts variable with a new instance of the Options struct, effectively resetting all
 // options to their default values.
